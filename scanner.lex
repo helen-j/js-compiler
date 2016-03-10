@@ -9,22 +9,40 @@ letter [a-zA-Z]
  
 %%
 
-while							{ return WHILE; }
+while						{ return WHILE; }
 
-{letter}({letter}|{digit})*		{ yylval.name = yytext; return IDENT; }
+{letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
-{digit}+						{ yylval.num = atoi(yytext); return NUMBER; }
+{digit}+					{ yylval.num = atoi(yytext); return NUMBER; }
 
+,						{ return ','; }		
 
-,								{ return ','; }		
+-						{ return '-'; }
 
->=								{ return GE; }	
+">="						{ return GE; }
 
->								{ return '>'; }	
+"<="						{ return LE; }
 
-[ \r\n\t]						/* skip whitespace */
+"!=="						{ return NEVT; }
 
-.								{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
+"!="						{ return NEV; }
+
+"=="						{ return ET; }	
+
+"++"						{ return INC; }
+
+"+"						{ return '+'; }
+
+"%"						{ return '%'; }
+
+"*"						{ return '*'; }
+
+">"						{ return '>'; }	
+
+"<"						{ return '<'; }
+
+[ \r\n\t]					/* skip whitespace */
+
+.						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
 
 %%
-

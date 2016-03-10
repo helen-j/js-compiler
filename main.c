@@ -33,6 +33,21 @@ int main(int argc, char* argv[])
 		case GE: 
 			printf("GE\n");
 			break;
+		case LE:
+			printf("LE\n");
+			break;
+		case ET:
+			printf("ET\n");
+			break;
+		case NEV:
+			printf("NEV\n");
+			break;
+		case NEVT:
+			printf("NEVT\n");
+			break;
+		case INC:
+			printf("INC\n");
+			break;
 		default: 
 			printf("'%c'\n", token);
 			break;
