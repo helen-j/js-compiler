@@ -48,6 +48,102 @@ int main(int argc, char* argv[])
 		case INC:
 			printf("INC\n");
 			break;
+		case BREAK:
+			printf("BREAK\n");		
+			break;
+		case CASE:	
+			printf("CASE\n");		
+			break;
+		case CATCH:	
+			printf("CATCH\n");		
+			break;
+		case CLASS:	
+			printf("CLASS\n");		
+			break;
+		case CONST:	
+			printf("CONST\n");		
+			break;
+		case CONTINUE:	
+			printf("CONTINUE\n");		
+			break;
+		case DEBUGGER:	
+			printf("DEBUGGER\n");		
+			break;
+		case DEFAULT:	
+			printf("DEFAULT\n");		
+			break;
+		case DELETE:	
+			printf("DELETE\n");		
+			break;
+		case DO:	
+			printf("DO\n");		
+			break;
+		case ELSE:	
+			printf("ELSE\n");		
+			break;
+		case EXPORT:	
+			printf("EXPORT\n");		
+			break;
+		case EXTENDS:	
+			printf("EXTENDS\n");		
+			break;
+		case FINALLY:	
+			printf("FINALLY\n");		
+			break;
+		case FOR:	
+			printf("FOR\n");		
+			break;
+		case FUNCTION:	
+			printf("FUNCTION\n");		
+			break;
+		case IF:	
+			printf("IF\n");		
+			break;
+		case IMPORT:	
+			printf("IMPORT\n");		
+			break;
+		case IN:	
+			printf("IN\n");		
+			break;
+		case INSTANCEOF:	
+			printf("INSTANCEOF\n");		
+			break;
+		case NEW:	
+			printf("NEW\n");		
+			break;
+		case RETURN:	
+			printf("RETURN\n");		
+			break;
+		case SUPER:	
+			printf("SUPER\n");		
+			break;
+		case SWITCH:	
+			printf("SWITCH\n");		
+			break;
+		case THIS:	
+			printf("THIS\n");		
+			break;
+		case THROW:	
+			printf("THROW\n");		
+			break;
+		case TRY:	
+			printf("TRY\n");		
+			break;
+		case TYPEOF:	
+			printf("TYPEOF\n");		
+			break;
+		case VAR:	
+			printf("VAR\n");		
+			break;
+		case VOID:	
+			printf("VOID\n");		
+			break;
+		case WITH:	
+			printf("WITH\n");		
+			break;
+		case YIELD:	
+			printf("YIELD\n");		
+			break;
 		default: 
 			printf("'%c'\n", token);
 			break;
