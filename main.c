@@ -144,6 +144,24 @@ int main(int argc, char* argv[])
 		case YIELD:	
 			printf("YIELD\n");		
 			break;
+		
+			//HJeffrey 
+		case QUESTIONMARK: 
+			printf("QUESTIONMARK\n");
+			break;
+		case OR:
+			printf("OR\n");
+			break;
+		case AND:
+			printf("AND\n");
+			break;
+		case QUOTE:
+			printf("QUOTE\n");
+			break;
+		case APOSTROPHE:
+			printf("APOSTROPHE\n");
+			break;
+						
 		default: 
 			printf("'%c'\n", token);
 			break;
