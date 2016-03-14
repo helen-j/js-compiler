@@ -1,5 +1,4 @@
-enum yytokentype 
-{
+enum yytokentype {
     WHILE = 258,
     NUMBER = 259,
 	IDENT = 260,
@@ -51,8 +50,10 @@ enum yytokentype
 	QUESTIONMARK = 308,
 	OR = 309,
 	AND = 310,
-	QUOTE = 311,
-	APOSTROPHE = 312
+	APOSTROPHE = 312,
+	LPARAM = 313,
+	RPARAM = 314,
+	STRING = 315
 };
 
 typedef union YYSTYPE

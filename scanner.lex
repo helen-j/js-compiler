@@ -42,26 +42,23 @@ var 						{ return VAR; }
 void 						{ return VOID; }
 with						{ return WITH; }
 yield 						{ return YIELD; }
-:							{ return COLON ;}
-=							{ return EQUALS ;} 
-"+="						{ return PLUSEQUALS ;}
-"-="						{ return MINUSEGUALS ;}
-"*="						{ return MULTIPLYEQUALS ;}
-"/="						{ return DIVIDEEQUALS ;}
-\;							{ return SEMICOLON; }
-"?"							{ return QUESTIONMARK; }
-"||"						{ return OR; } 
-"&&"						{ return AND; }
-"\""						{ return QUOTE; }
-"'"							{ return APOSTROPHE; }
+
 
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
+
+["]([^"])*["] 					{ yylval.name = yytext; return STRING; }
 
 [+-]?({digit}*[.])?{digit}+			{ yylval.num = atoi(yytext); return NUMBER; }
 
 ,						{ return ','; }		
 
 -						{ return '-'; }
+
+"."						{ return '.'; }
+
+"("						{ return LPARAM; }
+
+")"						{ return RPARAM; }
 
 ">="						{ return GE; }
 
@@ -85,7 +82,29 @@ yield 						{ return YIELD; }
 
 "<"						{ return '<'; }
 
-[ \r\n\t]					/* skip whitespace */
+:							{ return COLON ;}
+
+=							{ return EQUALS ;} 
+
+"+="						{ return PLUSEQUALS ;}
+
+"-="						{ return MINUSEGUALS ;}
+
+"*="						{ return MULTIPLYEQUALS ;}
+
+"/="						{ return DIVIDEEQUALS ;}
+
+\;							{ return SEMICOLON; }
+
+"?"							{ return QUESTIONMARK; }
+
+"||"						{ return OR; } 
+
+"&&"						{ return AND; }
+
+"'"							{ return APOSTROPHE; }
+
+[ \r\n\t]*					/* skip whitespace */
 
 .						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
 

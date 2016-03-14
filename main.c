@@ -9,10 +9,15 @@ int yywrap(void)
 }
 
 int yylex();
+FILE *yyin;
 
 int main(int argc, char* argv[])
 {
-	//yyin = fopen(argv[1], "r");
+	++argv, --argc;  /* skip over program name */
+	if (argc > 0)
+		yyin = fopen(argv[0], "r");
+	else
+		yyin = stdin;
 
 	int token;
 	do
@@ -21,6 +26,10 @@ int main(int argc, char* argv[])
 		printf("next token: ");
 		switch (token)
 		{
+		
+		case STRING:
+			printf("STRING (%d)\n", yylval.name);
+			break;
 		case NUMBER: 
 			printf("NUMBER (%d)\n", yylval.num);
 			break;
@@ -144,8 +153,6 @@ int main(int argc, char* argv[])
 		case YIELD:	
 			printf("YIELD\n");		
 			break;
-		
-			//HJeffrey 
 		case QUESTIONMARK: 
 			printf("QUESTIONMARK\n");
 			break;
@@ -155,13 +162,18 @@ int main(int argc, char* argv[])
 		case AND:
 			printf("AND\n");
 			break;
-		case QUOTE:
-			printf("QUOTE\n");
-			break;
 		case APOSTROPHE:
 			printf("APOSTROPHE\n");
+			break;		
+		case LPARAM:
+			printf("LPARAM\n");
 			break;
-						
+		case RPARAM:
+			printf("RPARAM\n");
+			break;
+		case SEMICOLON:
+			printf("SEMICOLON\n");
+			break;
 		default: 
 			printf("'%c'\n", token);
 			break;
