@@ -54,6 +54,13 @@ yield 						{ return YIELD; }
 "&&"						{ return AND; }
 "\""						{ return QUOTE; }
 "'"							{ return APOSTROPHE; }
+"<<="						{ return LEFTSHIFTEQUAL; }
+">>="						{ return RIGHTSHIFTEQUAL; }
+">>>="						{ return LOGICRIGHTSHIFTEQUAL; }
+"&="						{ return BINANDEQUAL; }
+"|="						{ return BINOREQUAL; }
+"^="						{ return BINXOREQUAL; }
+"=>"						{ return SHIFTTO; }
 
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
