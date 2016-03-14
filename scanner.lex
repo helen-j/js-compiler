@@ -44,6 +44,7 @@ with						{ return WITH; }
 yield 						{ return YIELD; }
 
 
+
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
 ["]([^"])*["] 					{ yylval.name = yytext; return STRING; }
@@ -81,6 +82,20 @@ yield 						{ return YIELD; }
 ">"						{ return '>'; }	
 
 "<"						{ return '<'; }
+
+"<<="						{ return LEFTSHIFTEQUAL; }
+
+">>="						{ return RIGHTSHIFTEQUAL; }
+
+">>>="						{ return LOGICRIGHTSHIFTEQUAL; }
+
+"&="						{ return BINANDEQUAL; }
+
+"|="						{ return BINOREQUAL; }
+
+"^="						{ return BINXOREQUAL; }
+
+"=>"						{ return SHIFTTO; }
 
 :							{ return COLON ;}
 

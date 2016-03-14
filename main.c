@@ -26,7 +26,6 @@ int main(int argc, char* argv[])
 		printf("next token: ");
 		switch (token)
 		{
-		
 		case STRING:
 			printf("STRING (%d)\n", yylval.name);
 			break;
@@ -173,6 +172,27 @@ int main(int argc, char* argv[])
 			break;
 		case SEMICOLON:
 			printf("SEMICOLON\n");
+			break;
+		case LEFTSHIFTEQUAL:
+			printf("LEFTSHIFTEQUAL\n");
+			break;
+		case RIGHTSHIFTEQUAL:
+			printf("RIGHTSHIFTEQUAL\n");
+			break;
+		case LOGICRIGHTSHIFTEQUAL:
+			printf("LOGICRIGHTSHIFTEQUAL\n");
+			break;
+		case BINANDEQUAL:
+			printf("BINANDEQUAL\n");
+			break;
+		case BINOREQUAL:
+			printf("BINOREQUAL\n");
+			break;
+		case BINXOREQUAL:
+			printf("BINXOREQUAL\n");
+			break;
+		case SHIFTTO:
+			printf("SHIFTTO\n");
 			break;
 		default: 
 			printf("'%c'\n", token);
