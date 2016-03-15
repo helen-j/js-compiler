@@ -42,8 +42,15 @@ var 						{ return VAR; }
 void 						{ return VOID; }
 with						{ return WITH; }
 yield 						{ return YIELD; }
-
-
+abstract						{ return ABSTRACT; }
+arguments					{ return ARGUMENTS; }
+boolean						{ return BOOLEAN; }
+byte						{ return BYTE; }
+char						{ return CHAR; }
+double						{ return DOUBLE; }
+float						{ return FLOAT; }
+int						{ return INT; }
+long						{ return LONG; }
 
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
