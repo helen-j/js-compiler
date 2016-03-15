@@ -152,33 +152,6 @@ int main(int argc, char* argv[])
 		case YIELD:	
 			printf("YIELD\n");		
 			break;
-		case ABSTRACT:
-			printf("ABSTRACT\n");
-			break;
-		case ARGUMENTS:
-			printf("ARGUMENTS\n");
-			break;
-		case BOOLEAN:
-			printf("BOOLEAN\n");
-			break;
-		case BYTE:
-			printf("BYTE\n");
-			break;
-		case CHAR:
-			printf("CHAR\n");
-			break;
-		case DOUBLE:
-			printf("DOUBLE\n");
-			break;
-		case FLOAT:
-			printf("FLOAT\n");
-			break;
-		case INT:
-			printf("INT\n");
-			break;
-		case LONG:
-			printf("LONG\n");
-			break;
 		case QUESTIONMARK: 
 			printf("QUESTIONMARK\n");
 			break;
