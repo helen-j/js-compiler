@@ -103,7 +103,7 @@ yield 						{ return YIELD; }
 
 "+="						{ return PLUSEQUALS ;}
 
-"-="						{ return MINUSEGUALS ;}
+"-="						{ return MINUSEQUALS ;}
 
 "*="						{ return MULTIPLYEQUALS ;}
 
@@ -120,6 +120,8 @@ yield 						{ return YIELD; }
 "'"							{ return APOSTROPHE; }
 
 [ \r\n\t]*					/* skip whitespace */
+
+<<EOF>>						{ return EOF; }
 
 .						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
 
