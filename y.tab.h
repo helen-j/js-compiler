@@ -60,7 +60,16 @@ enum yytokentype {
 	SHIFTTO = 319,
 	LPARAM = 320,
 	RPARAM = 321,
-	STRING = 322
+	STRING = 322,
+	ABSTRACT = 323,
+	ARGUMENTS = 324,
+	BOOLEAN = 325,
+	BYTE = 326,
+	CHAR = 327,
+	DOUBLE = 328,
+	FLOAT = 329,
+	INT = 330,
+	LONG = 331
 };
 
 typedef union YYSTYPE
