@@ -1,6 +1,6 @@
 enum yytokentype {
-    WHILE = 258,
-    NUMBER = 259,
+	WHILE = 258,
+	NUMBER = 259,
 	IDENT = 260,
 	GE = 261,
 	LE = 262,
@@ -50,6 +50,7 @@ enum yytokentype {
 	QUESTIONMARK = 308,
 	OR = 309,
 	AND = 310,
+	QUOTE = 311,
 	APOSTROPHE = 312,
 	LEFTSHIFTEQUAL = 313,
 	RIGHTSHIFTEQUAL = 314,
@@ -61,14 +62,25 @@ enum yytokentype {
 	LPARAM = 320,
 	RPARAM = 321,
 	STRING = 322,
-	DECREMENT =323,
-	EQUALVT =324
+	DECREMENT = 323,
+	EQUALVT = 324,
+	CONSOLELOG = 325,
+	TILDE = 328,
+	EXCLAMATION = 329,
+	AT = 330,
+	HASH = 331,
+	DOLLAR = 332,
+	PERCENT = 333,
+	CARAT = 334,
+	AMPERSAND = 335,
+	UNDERSCORE = 336
+
 };
 
 typedef union YYSTYPE
 {
-  char* name;
-  int num;
+	char* name;
+	int num;
 } YYSTYPE;
 
 extern YYSTYPE yylval;

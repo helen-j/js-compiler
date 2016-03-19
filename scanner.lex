@@ -42,6 +42,27 @@ var 						{ return VAR; }
 void 						{ return VOID; }
 with						{ return WITH; }
 yield 						{ return YIELD; }
+:							{ return COLON ; }
+=							{ return EQUALS ; } 
+\+\=						{ return PLUSEQUALS ; }
+\-\=						{ return MINUSEQUALS ; }
+\*\=						{ return MULTIPLYEQUALS ; }
+\/=							{ return DIVIDEEQUALS ; }
+\;							{ return SEMICOLON; }
+\?							{ return QUESTIONMARK; }
+\|\|						{ return OR; } 
+&&							{ return AND; }
+\"							{ return QUOTE; }
+console\.log				{ return CONSOLELOG; } 
+'							{ return APOSTROPHE; }
+\~							{ return TILDE; }
+\!							{ return EXCLAMATION; }
+\@							{ return AT; }
+\#							{ return HASH; }
+\$							{ return DOLLAR; }
+\^							{ return CARAT; }
+\&							{ return AMPERSAND; } 
+_							{ return UNDERSCORE; } 
 
 
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
@@ -95,28 +116,6 @@ yield 						{ return YIELD; }
 "^="						{ return BINXOREQUAL; }
 
 "=>"						{ return SHIFTTO; }
-
-:							{ return COLON ;}
-
-=							{ return EQUALS ;} 
-
-"+="						{ return PLUSEQUALS ;}
-
-"-="						{ return MINUSEQUALS ;}
-
-"*="						{ return MULTIPLYEQUALS ;}
-
-"/="						{ return DIVIDEEQUALS ;}
-
-\;							{ return SEMICOLON; }
-
-"?"							{ return QUESTIONMARK; }
-
-"||"						{ return OR; } 
-
-"&&"						{ return AND; }
-
-"'"							{ return APOSTROPHE; }
 
 "--"                        { return DECREMENT; }
 

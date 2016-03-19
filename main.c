@@ -3,9 +3,9 @@
 
 YYSTYPE yylval;
 
-int yywrap(void) 
+int yywrap(void)
 {
- return 1;
+	return 1;
 }
 
 int yylex();
@@ -29,16 +29,16 @@ int main(int argc, char* argv[])
 		case STRING:
 			printf("STRING (%d)\n", yylval.name);
 			break;
-		case NUMBER: 
+		case NUMBER:
 			printf("NUMBER (%d)\n", yylval.num);
 			break;
-		case IDENT: 
+		case IDENT:
 			printf("IDENTIFIER (%d)\n", yylval.name);
 			break;
-		case WHILE: 
+		case WHILE:
 			printf("WHILE\n");
 			break;
-		case GE: 
+		case GE:
 			printf("GE\n");
 			break;
 		case LE:
@@ -57,102 +57,102 @@ int main(int argc, char* argv[])
 			printf("INC\n");
 			break;
 		case BREAK:
-			printf("BREAK\n");		
+			printf("BREAK\n");
 			break;
-		case CASE:	
-			printf("CASE\n");		
+		case CASE:
+			printf("CASE\n");
 			break;
-		case CATCH:	
-			printf("CATCH\n");		
+		case CATCH:
+			printf("CATCH\n");
 			break;
-		case CLASS:	
-			printf("CLASS\n");		
+		case CLASS:
+			printf("CLASS\n");
 			break;
-		case CONST:	
-			printf("CONST\n");		
+		case CONST:
+			printf("CONST\n");
 			break;
-		case CONTINUE:	
-			printf("CONTINUE\n");		
+		case CONTINUE:
+			printf("CONTINUE\n");
 			break;
-		case DEBUGGER:	
-			printf("DEBUGGER\n");		
+		case DEBUGGER:
+			printf("DEBUGGER\n");
 			break;
-		case DEFAULT:	
-			printf("DEFAULT\n");		
+		case DEFAULT:
+			printf("DEFAULT\n");
 			break;
-		case DELETE:	
-			printf("DELETE\n");		
+		case DELETE:
+			printf("DELETE\n");
 			break;
-		case DO:	
-			printf("DO\n");		
+		case DO:
+			printf("DO\n");
 			break;
-		case ELSE:	
-			printf("ELSE\n");		
+		case ELSE:
+			printf("ELSE\n");
 			break;
-		case EXPORT:	
-			printf("EXPORT\n");		
+		case EXPORT:
+			printf("EXPORT\n");
 			break;
-		case EXTENDS:	
-			printf("EXTENDS\n");		
+		case EXTENDS:
+			printf("EXTENDS\n");
 			break;
-		case FINALLY:	
-			printf("FINALLY\n");		
+		case FINALLY:
+			printf("FINALLY\n");
 			break;
-		case FOR:	
-			printf("FOR\n");		
+		case FOR:
+			printf("FOR\n");
 			break;
-		case FUNCTION:	
-			printf("FUNCTION\n");		
+		case FUNCTION:
+			printf("FUNCTION\n");
 			break;
-		case IF:	
-			printf("IF\n");		
+		case IF:
+			printf("IF\n");
 			break;
-		case IMPORT:	
-			printf("IMPORT\n");		
+		case IMPORT:
+			printf("IMPORT\n");
 			break;
-		case IN:	
-			printf("IN\n");		
+		case IN:
+			printf("IN\n");
 			break;
-		case INSTANCEOF:	
-			printf("INSTANCEOF\n");		
+		case INSTANCEOF:
+			printf("INSTANCEOF\n");
 			break;
-		case NEW:	
-			printf("NEW\n");		
+		case NEW:
+			printf("NEW\n");
 			break;
-		case RETURN:	
-			printf("RETURN\n");		
+		case RETURN:
+			printf("RETURN\n");
 			break;
-		case SUPER:	
-			printf("SUPER\n");		
+		case SUPER:
+			printf("SUPER\n");
 			break;
-		case SWITCH:	
-			printf("SWITCH\n");		
+		case SWITCH:
+			printf("SWITCH\n");
 			break;
-		case THIS:	
-			printf("THIS\n");		
+		case THIS:
+			printf("THIS\n");
 			break;
-		case THROW:	
-			printf("THROW\n");		
+		case THROW:
+			printf("THROW\n");
 			break;
-		case TRY:	
-			printf("TRY\n");		
+		case TRY:
+			printf("TRY\n");
 			break;
-		case TYPEOF:	
-			printf("TYPEOF\n");		
+		case TYPEOF:
+			printf("TYPEOF\n");
 			break;
-		case VAR:	
-			printf("VAR\n");		
+		case VAR:
+			printf("VAR\n");
 			break;
-		case VOID:	
-			printf("VOID\n");		
+		case VOID:
+			printf("VOID\n");
 			break;
-		case WITH:	
-			printf("WITH\n");		
+		case WITH:
+			printf("WITH\n");
 			break;
-		case YIELD:	
-			printf("YIELD\n");		
+		case YIELD:
+			printf("YIELD\n");
 			break;
-		case QUESTIONMARK: 
+		case QUESTIONMARK:
 			printf("QUESTIONMARK\n");
 			break;
 		case OR:
@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
 			break;
 		case APOSTROPHE:
 			printf("APOSTROPHE\n");
-			break;		
+			break;
 		case LPARAM:
 			printf("LPARAM\n");
 			break;
@@ -194,34 +194,71 @@ int main(int argc, char* argv[])
 		case SHIFTTO:
 			printf("SHIFTTO\n");
 			break;
-<<<<<<< HEAD
+
 		case DECREMENT:
-			printf("DECREMENT\n"£©;
+			printf("DECREMENT\n");
 			break;
 		case EQUALVT:
 			printf("EQUALVT\n");
 			break;
-=======
-		case EQUALS:
-			printf("EQUAL\n");
-			break;
+
+				//Added by HJeffrey 
 		case COLON:
 			printf("COLON\n");
+			break;
+		case EQUALS:
+			printf("EQUALS\n");
+			break;
 		case PLUSEQUALS:
 			printf("PLUSEQUALS\n");
+			break;
 		case MINUSEQUALS:
 			printf("MINUSEQUALS\n");
+			break;
 		case MULTIPLYEQUALS:
 			printf("MULTIPLYEQUALS\n");
-		case DIVIDEEQUALS:
-			printf("DIVIDEEQUALS\n"); 
->>>>>>> origin/master
-		default: 
-			printf("'%c'\n", token);
 			break;
+		case DIVIDEEQUALS:
+			printf("DIVIDEEQUALS\n");
+			break;
+		case TILDE:
+			printf("TILDE\n");
+			break;
+		case EXCLAMATION:
+			printf("EXCLAMATION\n");
+			break;
+		case AT:
+			printf("AT\n");
+			break;
+		case HASH:
+			printf("HASH\n");
+			break;
+		case DOLLAR:
+			printf("DOLLAR\n");
+			break;
+		case PERCENT:
+			printf("PERCENT\n");
+			break;
+		case CARAT:
+			printf("CARAT\n");
+			break;
+		case AMPERSAND:
+			printf("AMPERSAND\n");
+			break;
+		case UNDERSCORE:
+			printf("UNDERSCORE\n");
+			break;
+
+		case CONSOLELOG:
+			printf("CONSOLELOG\n");
+			break;
+
+
+		default:
+			printf("'%c'\n", token);
+			//break;
 		}
-	}
-	while (token != EOF);
+	} while (token != EOF);
 
 	return 0;
 }

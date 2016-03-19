@@ -1,13 +1,16 @@
-%token Number
+%token NUMBER IDENTIFIER
 
 %%
 
-program : Number
-	;
+program : NUMBER
+        ;
+
 
 %%
+
 
 int main(int argc, char* argv[])
 {
-	yyparse();
+    yyparse();
+    return 0;
 }
