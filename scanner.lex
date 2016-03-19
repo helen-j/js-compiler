@@ -44,7 +44,6 @@ with						{ return WITH; }
 yield 						{ return YIELD; }
 
 
-
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
 ["]([^"])*["] 					{ yylval.name = yytext; return STRING; }
@@ -103,7 +102,7 @@ yield 						{ return YIELD; }
 
 "+="						{ return PLUSEQUALS ;}
 
-"-="						{ return MINUSEGUALS ;}
+"-="						{ return MINUSEQUALS ;}
 
 "*="						{ return MULTIPLYEQUALS ;}
 
@@ -124,6 +123,8 @@ yield 						{ return YIELD; }
 "==="                       { return EQUALVT; }
 
 [ \r\n\t]*					/* skip whitespace */
+
+<<EOF>>						{ return EOF; }
 
 .						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
 

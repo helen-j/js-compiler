@@ -194,12 +194,28 @@ int main(int argc, char* argv[])
 		case SHIFTTO:
 			printf("SHIFTTO\n");
 			break;
+<<<<<<< HEAD
 		case DECREMENT:
 			printf("DECREMENT\n"£©;
 			break;
 		case EQUALVT:
 			printf("EQUALVT\n");
 			break;
+=======
+		case EQUALS:
+			printf("EQUAL\n");
+			break;
+		case COLON:
+			printf("COLON\n");
+		case PLUSEQUALS:
+			printf("PLUSEQUALS\n");
+		case MINUSEQUALS:
+			printf("MINUSEQUALS\n");
+		case MULTIPLYEQUALS:
+			printf("MULTIPLYEQUALS\n");
+		case DIVIDEEQUALS:
+			printf("DIVIDEEQUALS\n"); 
+>>>>>>> origin/master
 		default: 
 			printf("'%c'\n", token);
 			break;
