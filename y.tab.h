@@ -61,6 +61,8 @@ enum yytokentype {
 	LPARAM = 320,
 	RPARAM = 321,
 	STRING = 322
+	DECREMENT =323,
+	EQUALVT =324
 };
 
 typedef union YYSTYPE

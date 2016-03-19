@@ -119,6 +119,10 @@ yield 						{ return YIELD; }
 
 "'"							{ return APOSTROPHE; }
 
+"--"                        { return DECREMENT; }
+
+"==="                       { return EQUALVT; }
+
 [ \r\n\t]*					/* skip whitespace */
 
 .						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }

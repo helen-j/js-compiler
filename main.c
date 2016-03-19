@@ -194,6 +194,12 @@ int main(int argc, char* argv[])
 		case SHIFTTO:
 			printf("SHIFTTO\n");
 			break;
+		case DECREMENT:
+			printf("DECREMENT\n"£©;
+			break;
+		case EQUALVT:
+			printf("EQUALVT\n");
+			break;
 		default: 
 			printf("'%c'\n", token);
 			break;
