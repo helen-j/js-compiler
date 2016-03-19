@@ -60,7 +60,7 @@ enum yytokentype {
 	SHIFTTO = 319,
 	LPARAM = 320,
 	RPARAM = 321,
-	STRING = 322
+	STRING = 322,
 	DECREMENT =323,
 	EQUALVT =324
 };
