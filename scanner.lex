@@ -63,7 +63,16 @@ console\.log				{ return CONSOLELOG; }
 \^							{ return CARAT; }
 \&							{ return AMPERSAND; } 
 _							{ return UNDERSCORE; } 
-
+true						{ return TRUE; }
+false						{ return FALSE; }
+enum						{ return ENUM; }
+await						{ return AWAIT; }
+implements					{ return IMPLEMENTS; }
+package						{ return PACKAGE; }
+protected					{ return PROTECTED; }
+interface					{ return INTERFACE; }
+private						{ return PRIVATE; }
+public						{ return PUBLIC; }
 
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
