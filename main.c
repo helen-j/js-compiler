@@ -32,13 +32,8 @@ int main(int argc, char* argv[])
 		case NUMBER:
 			printf("NUMBER (%d)\n", yylval.num);
 			break;
-<<<<<<< HEAD
 		case IDENT: 
 			printf("IDENTIFIER (%s)\n", yylval.name);
-=======
-		case IDENT:
-			printf("IDENTIFIER (%d)\n", yylval.name);
->>>>>>> b7c8157c0a71f9ff990f2550a85cdc83645a393b
 			break;
 		case WHILE:
 			printf("WHILE\n");
