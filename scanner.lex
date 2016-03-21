@@ -119,6 +119,8 @@ yield 						{ return YIELD; }
 
 "'"							{ return APOSTROPHE; }
 
+"/"							{ return '/';	}
+
 [ \r\n\t]*					/* skip whitespace */
 
 <<EOF>>						{ return EOF; }

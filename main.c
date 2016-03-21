@@ -27,13 +27,13 @@ int main(int argc, char* argv[])
 		switch (token)
 		{
 		case STRING:
-			printf("STRING (%d)\n", yylval.name);
+			printf("STRING (%s)\n", yylval.name);
 			break;
 		case NUMBER: 
 			printf("NUMBER (%d)\n", yylval.num);
 			break;
 		case IDENT: 
-			printf("IDENTIFIER (%d)\n", yylval.name);
+			printf("IDENTIFIER (%s)\n", yylval.name);
 			break;
 		case WHILE: 
 			printf("WHILE\n");
@@ -207,6 +207,12 @@ int main(int argc, char* argv[])
 			printf("MULTIPLYEQUALS\n");
 		case DIVIDEEQUALS:
 			printf("DIVIDEEQUALS\n"); 
+		case '+':
+			printf("+\n");
+			break;
+		case '/':
+			printf("/\n");
+			break;
 		default: 
 			printf("'%c'\n", token);
 			break;
