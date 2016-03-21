@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <y.tab.h>
+int yylex();
+YYSTYPE yylval;
 %}
 
 digit	[0-9]
@@ -41,42 +43,12 @@ typeof						{ return TYPEOF; }
 var 						{ return VAR; }
 void 						{ return VOID; }
 with						{ return WITH; }
-yield 						{ return YIELD; }
-:							{ return COLON ; }
-=							{ return EQUALS ; } 
-\+\=						{ return PLUSEQUALS ; }
-\-\=						{ return MINUSEQUALS ; }
-\*\=						{ return MULTIPLYEQUALS ; }
-\/=							{ return DIVIDEEQUALS ; }
-\;							{ return SEMICOLON; }
-\?							{ return QUESTIONMARK; }
-\|\|						{ return OR; } 
-&&							{ return AND; }
-\"							{ return QUOTE; }
-console\.log				{ return CONSOLELOG; } 
-'							{ return APOSTROPHE; }
-\~							{ return TILDE; }
-\!							{ return EXCLAMATION; }
-\@							{ return AT; }
-\#							{ return HASH; }
-\$							{ return DOLLAR; }
-\^							{ return CARAT; }
-\&							{ return AMPERSAND; } 
-_							{ return UNDERSCORE; } 
-true						{ return TRUE; }
-false						{ return FALSE; }
-enum						{ return ENUM; }
-await						{ return AWAIT; }
-implements					{ return IMPLEMENTS; }
-package						{ return PACKAGE; }
-protected					{ return PROTECTED; }
-interface					{ return INTERFACE; }
-private						{ return PRIVATE; }
-public						{ return PUBLIC; }
-
+yield 	 					{ return YIELD; }
+console 					{ return CONSOLE;}
+log						{ return LOG;}
 {letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
 
-["]([^"])*["] 					{ yylval.name = yytext; return STRING; }
+\"([^"])*\" 					{ yylval.name = yytext; return STRING; }
 
 [+-]?({digit}*[.])?{digit}+			{ yylval.num = atoi(yytext); return NUMBER; }
 
@@ -126,11 +98,27 @@ public						{ return PUBLIC; }
 
 "=>"						{ return SHIFTTO; }
 
-"--"                        { return DECREMENT; }
+:						{ return COLON ;}
 
-"==="                       { return EQUALVT; }
+=						{ return EQUALS ;} 
 
-"/"							{ return '/';	}
+"+="						{ return PLUSEQUALS ;}
+
+"-="						{ return MINUSEQUALS ;}
+
+"*="						{ return MULTIPLYEQUALS ;}
+
+"/="						{ return DIVIDEEQUALS ;}
+
+\;						{ return SEMICOLON; }
+
+"?"						{ return QUESTIONMARK; }
+
+"||"						{ return OR; } 
+
+"&&"						{ return AND; }
+
+"'"						{ return APOSTROPHE; }
 
 [ \r\n\t]*					/* skip whitespace */
 
@@ -139,3 +127,7 @@ public						{ return PUBLIC; }
 .						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
 
 %%
+
+int yywrap(void) {
+	return 1;
+}
