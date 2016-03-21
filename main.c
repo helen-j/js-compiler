@@ -252,6 +252,33 @@ int main(int argc, char* argv[])
 		case CONSOLELOG:
 			printf("CONSOLELOG\n");
 			break;
+		case TRUE:
+			printf("TRUE\n");
+			break;
+		case FALSE:
+			printf("FALSE\n");
+			break;
+		case ENUM:
+			printf("ENUM\n");
+			break;
+		case IMPLEMENTS:
+			printf("IMPLEMENTS\n");
+			break;
+		case PACKAGE:
+			printf("PACKAGE\n");
+			break;
+		case PROTECTED:
+			printf("PROTECTED\n");
+			break;
+		case INTERFACE:
+			printf("INTERFACE\n");
+			break;
+		case PRIVATE:
+			printf("PRIVATE\n");
+			break;
+		case PUBLIC:
+			printf("PUBLIC\n");
+			break;
 
 
 		default:
