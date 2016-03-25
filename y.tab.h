@@ -62,7 +62,8 @@ enum yytokentype {
 	SHIFTTO = 318,
 	STRING = 319,
 	CONSOLE = 320,
-	LOG = 321
+	LOG = 321,
+	DECIMALINTEGER = 322
 };
 
 typedef union YYSTYPE

@@ -19,23 +19,105 @@
 %token BINXOREQUAL SHIFTTO
 %token STRING
 %token CONSOLE LOG
+%token DECIMALINTEGER
 
 %%
 
-program : program statement
-	| statement
+Script : ScriptBody
 	;
-	
-statement: IDENT EQUALS IDENT SEMICOLON 
-	 | IDENT EQUALS STRING SEMICOLON
- 	 | IDENT EQUALS NUMBER SEMICOLON
-	 | CONSOLE '.' LOG LPARAM expr RPARAM SEMICOLON
-	 ;
 
-expr:    STRING 
-	| NUMBER
-	| IDENT
+ScriptBody: StatementList
 	;
+
+StatementList: StatementListItem
+	;
+
+StatementListItem: Statement
+	;
+
+Statement: ExpressionStatement
+	;
+
+ExpressionStatement: Expression SEMICOLON
+	;
+
+Expression: AssignmentExpression
+	;
+
+AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression
+		    | ConditionalExpression
+		    ;
+
+ConditionalExpression: LogicalORExpression
+		     ;
+
+LogicalORExpression: LogicalANDExpression
+		   ;
+
+LogicalANDExpression: BitwiseORExpression
+		    ;
+
+BitwiseORExpression: BitwiseXORExpression
+		   ;
+
+BitwiseXORExpression: BitwiseANDExpression
+		    ;
+
+BitwiseANDExpression: EqualityExpression
+		    ;
+
+EqualityExpression: RelationalExpression
+		 ;
+
+RelationalExpression: ShiftExpression
+		    ;
+
+ShiftExpression: AdditiveExpression
+		;
+
+AdditiveExpression: MultiplicativeExpression
+		  ;
+
+MultiplicativeExpression: UnaryExpression
+			;
+
+UnaryExpression: PostfixExpression
+		;
+
+PostfixExpression: LeftHandSideExpression
+		 ;
+
+LeftHandSideExpression: NewExpression
+		      ;
+
+NewExpression: MemberExpression
+	      ;
+
+MemberExpression: PrimaryExpression
+		;
+
+PrimaryExpression: Identifier
+		 | Literal
+		 ;
+
+Identifier: IdentifierName
+	  ;
+
+IdentifierName: IDENT
+	  ;
+
+Literal: NumericLiteral
+	;
+
+NumericLiteral: DecimalLiteral
+	      ;
+	
+DecimalLiteral: DecimalIntegerLiteral
+	      ;
+
+DecimalIntegerLiteral: DECIMALINTEGER
+		     ;
+
 %%
 
 int main(int argc, char* argv[])
