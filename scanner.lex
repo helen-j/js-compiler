@@ -6,7 +6,7 @@ int yylex();
 YYSTYPE yylval;
 %}
 
-digit	[0-9]
+nonzerodigit [1-9]
 letter [a-zA-Z]
  
 %%
@@ -21,16 +21,16 @@ continue 					{ return CONTINUE; }
 debugger 					{ return DEBUGGER; }
 default 					{ return DEFAULT; }
 delete 						{ return DELETE; }
-do 							{ return DO; }
+do 						{ return DO; }
 else 						{ return ELSE; }
 export 						{ return EXPORT; }
 extends 					{ return EXTENDS; }
 finally 					{ return FINALLY; }
 for 						{ return FOR; }
 function 					{ return FUNCTION; }
-if 							{ return IF; }
+if 						{ return IF; }
 import 						{ return IMPORT; }
-in 							{ return IN; }
+in 						{ return IN; }
 instanceof 					{ return INSTANCEOF; }
 new 						{ return NEW; }
 return 						{ return RETURN; }
@@ -46,11 +46,14 @@ with						{ return WITH; }
 yield 	 					{ return YIELD; }
 console 					{ return CONSOLE;}
 log						{ return LOG;}
-{letter}({letter}|{digit})*			{ yylval.name = yytext; return IDENT; }
+
+{letter}({letter}|0|{nonzerodigit})*		{ yylval.name = yytext; return IDENT; }
 
 \"([^"])*\" 					{ yylval.name = yytext; return STRING; }
 
-[+-]?({digit}*[.])?{digit}+			{ yylval.num = atoi(yytext); return NUMBER; }
+{nonzerodigit}+(0|{nonzerodigit})*	        { yylval.num = atoi(yytext); return DECIMALINTEGER; }
+
+[+-]?({nonzerodigit}[.])?(0|{nonzerodigit})+	{ yylval.num = atoi(yytext); return NUMBER; }
 
 ,						{ return ','; }		
 

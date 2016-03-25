@@ -26,6 +26,9 @@ int main(int argc, char* argv[])
 		case NUMBER: 
 			printf("NUMBER (%d)\n", yylval.num);
 			break;
+		case DECIMALINTEGER:
+			printf("INTEGER (%d)\n", yylval.num);
+			break;
 		case IDENT: 
 			printf("IDENTIFIER (%s)\n", yylval.name);
 			break;
