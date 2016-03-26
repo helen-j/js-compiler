@@ -96,9 +96,12 @@ NewExpression: MemberExpression
 MemberExpression: PrimaryExpression
 		;
 
-PrimaryExpression: Identifier
+PrimaryExpression: IdentifierReference
 		 | Literal
 		 ;
+
+IdentifierReference: Identifier
+		   ;
 
 Identifier: IdentifierName
 	  ;
