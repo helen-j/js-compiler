@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "y.tab.h"
+#include "parser.tab.h"
 
 YYSTYPE yylval;
 
