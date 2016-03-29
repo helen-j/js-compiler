@@ -26,6 +26,9 @@
 %token CONSOLE LOG
 %token <num> DECIMALINTEGER
 
+%nonassoc ')'
+%nonassoc ELSE
+
 %%
 
 Script : ScriptBody
@@ -41,7 +44,13 @@ StatementListItem: Statement
 	;
 
 Statement: ExpressionStatement
-	;
+			| EmptyStatement
+			| IfStatement
+			;
+EmptyStatement:
+			;
+IfStatement: IF '('Expression')' Statement ELSE Statement
+			| IF '('Expression')' Statement
 
 ExpressionStatement: Expression SEMICOLON
 	;
@@ -101,7 +110,8 @@ NewExpression: MemberExpression
 MemberExpression: PrimaryExpression
 		;
 
-PrimaryExpression: IdentifierReference
+PrimaryExpression: THIS
+			| IdentifierReference
 			| Literal
 			;
 
