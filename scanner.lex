@@ -21,16 +21,16 @@ continue 					{ return CONTINUE; }
 debugger 					{ return DEBUGGER; }
 default 					{ return DEFAULT; }
 delete 						{ return DELETE; }
-do 						{ return DO; }
+do 							{ return DO; }
 else 						{ return ELSE; }
 export 						{ return EXPORT; }
 extends 					{ return EXTENDS; }
 finally 					{ return FINALLY; }
 for 						{ return FOR; }
 function 					{ return FUNCTION; }
-if 						{ return IF; }
+if 							{ return IF; }
 import 						{ return IMPORT; }
-in 						{ return IN; }
+in 							{ return IN; }
 instanceof 					{ return INSTANCEOF; }
 new 						{ return NEW; }
 return 						{ return RETURN; }
@@ -45,7 +45,12 @@ void 						{ return VOID; }
 with						{ return WITH; }
 yield 	 					{ return YIELD; }
 console 					{ return CONSOLE;}
-log						{ return LOG;}
+log							{ return LOG;}
+true						{ return TRUE;}
+false						{ return FALSE;}
+null						{ return NULLKEY;}
+enum 						{ return ENUM;}
+await						{ return AWAIT;}
 
 {letter}({letter}|0|{nonzerodigit})*		{ yylval.name = yytext; return IDENT; }
 

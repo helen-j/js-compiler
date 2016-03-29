@@ -206,6 +206,19 @@ int main(int argc, char* argv[])
 			printf("DIVIDEEQUALS\n"); 
 		case CONSOLE:
 			printf("CONSOLE\n");
+		case TRUE:
+			printf("TRUE\n"); 
+		case FALSE:
+			printf("FALSE\n");
+		case NULLKEY:
+			printf("NULLKEY\n");
+		case ENUM:
+			printf("ENUM\n");
+		case AWAIT:
+			printf("AWAIT\n");
+				
+			
+			
 		default: 
 			printf("'%c'\n", token);
 			break;

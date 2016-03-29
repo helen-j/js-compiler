@@ -18,7 +18,7 @@
 %token <num> NUMBER 
 %token EQUALS GE LE ET NEV NEVT INC
 %token BREAK CASE CATCH CLASS CONST CONTINUE DEBUGGER DEFAULT DELETE DO ELSE EXPORT
-%token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH
+%token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH TRUE FALSE ENUM AWAIT NULLKEY
 %token THIS THROW TRY TYPEOF VAR VOID WITH YIELD COLON PLUSEQUALS MINUSEQUALS MULTIPLYEQUALS DIVIDEEQUALS
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFTEQUAL RIGHTSHIFTEQUAL LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
 %token BINXOREQUAL SHIFTTO
@@ -50,7 +50,7 @@ Expression: AssignmentExpression
 	;
 
 AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression
-		    | ConditionalExpression
+			| ConditionalExpression
 		    ;
 
 ConditionalExpression: LogicalORExpression
@@ -102,8 +102,8 @@ MemberExpression: PrimaryExpression
 		;
 
 PrimaryExpression: IdentifierReference
-		 | Literal
-		 ;
+			| Literal
+			;
 
 IdentifierReference: Identifier
 		   ;
@@ -112,9 +112,13 @@ Identifier: IdentifierName
 	  ;
 
 IdentifierName: IDENT
-	  ;
+			;
 
 Literal: NumericLiteral
+			| StringLiteral
+			| NullLiteral
+			| BooleanLiteral
+			;
 	;
 
 NumericLiteral: DecimalLiteral
@@ -126,6 +130,15 @@ DecimalLiteral: DecimalIntegerLiteral
 DecimalIntegerLiteral: DECIMALINTEGER
 		     ;
 
+BooleanLiteral: TRUE
+			| FALSE
+			;
+NullLiteral: NULLKEY
+			;
+
+StringLiteral: STRING
+			;
+			 
 %%
 
 int main(int argc, char* argv[])
