@@ -1,6 +1,6 @@
 enum yytokentype {
     WHILE = 258,
-    NUMBER = 259,
+	DIGIT = 259,
 	IDENT = 260,
 	GE = 261,
 	LE = 262,
@@ -63,9 +63,11 @@ enum yytokentype {
 	STRING = 322,
 	TRUE = 323,
 	FALSE = 324,
-	NULLKEY=325,
+	NULLKEY = 325,
 	ENUM = 326,
-	AWAIT = 327
+	AWAIT = 327,
+	CONSOLE = 328,
+	LOG = 329
 };
 
 typedef union YYSTYPE

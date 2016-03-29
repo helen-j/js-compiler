@@ -15,7 +15,6 @@
 %token WHILE
 %token LPARAM RPARAM
 %token <name> IDENT 
-%token <num> NUMBER 
 %token EQUALS GE LE ET NEV NEVT INC
 %token BREAK CASE CATCH CLASS CONST CONTINUE DEBUGGER DEFAULT DELETE DO ELSE EXPORT
 %token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH TRUE FALSE ENUM AWAIT NULLKEY
@@ -24,7 +23,6 @@
 %token BINXOREQUAL SHIFTTO
 %token <name> STRING
 %token CONSOLE LOG
-%token <num> DECIMALINTEGER
 
 %nonassoc ')'
 %nonassoc ELSE
@@ -51,6 +49,7 @@ EmptyStatement:
 			;
 IfStatement: IF '('Expression')' Statement ELSE Statement
 			| IF '('Expression')' Statement
+			;
 
 ExpressionStatement: Expression SEMICOLON
 	;
@@ -129,16 +128,28 @@ Literal: NumericLiteral
 			| NullLiteral
 			| BooleanLiteral
 			;
-	;
 
 NumericLiteral: DecimalLiteral
-	      ;
-	
-DecimalLiteral: DecimalIntegerLiteral
-	      ;
+			;
 
-DecimalIntegerLiteral: DECIMALINTEGER
-		     ;
+DecimalLiteral: DecimalIntegerLiteral '.' DecimalDigits
+			| '.' DecimalDigits
+			| DecimalIntegerLiteral
+			;
+		  
+DecimalIntegerLiteral: NonZeroDigit DecimalDigits
+			| NonZeroDigit 
+			| '0'
+			;
+
+DecimalDigits:DecimalDigits DecimalDigit
+			| DecimalDigit
+		    ;
+DecimalDigit: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+			;
+NonZeroDigit:  '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+			;
+			
 
 BooleanLiteral: TRUE
 			| FALSE
