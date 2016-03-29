@@ -106,7 +106,8 @@
      SHIFTTO = 322,
      STRING = 323,
      CONSOLE = 324,
-     LOG = 325
+     LOG = 325,
+     LOWER_THAN_ELSE = 326
    };
 #endif
 
@@ -125,7 +126,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 129 "parser.tab.h"
+#line 130 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

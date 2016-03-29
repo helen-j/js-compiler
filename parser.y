@@ -22,10 +22,12 @@
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFTEQUAL RIGHTSHIFTEQUAL LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
 %token BINXOREQUAL SHIFTTO
 %token <name> STRING
-%token CONSOLE LOG
+%token CONSOLE LOG LOWER_THAN_ELSE
 
-%nonassoc ')'
+%nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
+%left '+' '-'
+%left '*' '/' '%'
 
 %%
 
@@ -36,19 +38,18 @@ ScriptBody: StatementList
 	;
 
 StatementList: StatementListItem
-	;
+			| StatementList StatementListItem
+			;
 
 StatementListItem: Statement
 	;
 
-Statement: ExpressionStatement
-			| EmptyStatement
+Statement:    ExpressionStatement
 			| IfStatement
 			;
-EmptyStatement:
-			;
+
 IfStatement: IF '('Expression')' Statement ELSE Statement
-			| IF '('Expression')' Statement
+			| IF '('Expression')' Statement %prec LOWER_THAN_ELSE
 			;
 
 ExpressionStatement: Expression SEMICOLON
@@ -83,19 +84,28 @@ EqualityExpression: RelationalExpression
 		 ;
 
 RelationalExpression: ShiftExpression
+			| RelationalExpression '<' ShiftExpression
+			| RelationalExpression '>' ShiftExpression
+			| RelationalExpression LE ShiftExpression
+			| RelationalExpression GE ShiftExpression
 		    ;
 
 ShiftExpression: AdditiveExpression
 		;
 
 AdditiveExpression: MultiplicativeExpression
-		  ;
+			| AdditiveExpression '+' MultiplicativeExpression
+			| AdditiveExpression '-' MultiplicativeExpression
+			;
 
 MultiplicativeExpression: UnaryExpression
+			| MultiplicativeExpression MultiplicativeOperator UnaryExpression
 			;
 
 UnaryExpression: PostfixExpression
-		;
+			| '+' UnaryExpression
+			| '-' UnaryExpression
+			;
 
 PostfixExpression: LeftHandSideExpression
 		 ;
@@ -160,6 +170,14 @@ NullLiteral: NULLKEY
 StringLiteral: STRING
 			;
 			 
+MultiplicativeOperator: '*'
+			| '/'
+			| '%'
+			;
+
+
+
+
 %%
 
 int main(int argc, char* argv[])
