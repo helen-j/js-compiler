@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "parser.tab.h"
+#include "y.tab.h"
 
 YYSTYPE yylval;
 
@@ -22,12 +22,6 @@ int main(int argc, char* argv[])
 		{
 		case STRING:
 			printf("STRING (%s)\n", yylval.name);
-			break;
-		case NUMBER: 
-			printf("NUMBER (%d)\n", yylval.num);
-			break;
-		case DECIMALINTEGER:
-			printf("INTEGER (%d)\n", yylval.num);
 			break;
 		case IDENT: 
 			printf("IDENTIFIER (%s)\n", yylval.name);
@@ -196,16 +190,40 @@ int main(int argc, char* argv[])
 			break;
 		case COLON:
 			printf("COLON\n");
+			break;
 		case PLUSEQUALS:
 			printf("PLUSEQUALS\n");
+			break;
 		case MINUSEQUALS:
 			printf("MINUSEQUALS\n");
+			break;
 		case MULTIPLYEQUALS:
 			printf("MULTIPLYEQUALS\n");
+			break;
 		case DIVIDEEQUALS:
 			printf("DIVIDEEQUALS\n"); 
+			break;
 		case CONSOLE:
 			printf("CONSOLE\n");
+			break;
+		case LOG:
+			printf("LOG\n");
+			break;
+		case TRUE:
+			printf("TRUE\n"); 
+			break;
+		case FALSE:
+			printf("FALSE\n");
+			break;
+		case NULLKEY:
+			printf("NULLKEY\n");
+			break;
+		case ENUM:
+			printf("ENUM\n");
+			break;
+		case AWAIT:
+			printf("AWAIT\n");
+			break;
 		default: 
 			printf("'%c'\n", token);
 			break;

@@ -6,7 +6,8 @@ int yylex();
 YYSTYPE yylval;
 %}
 
-nonzerodigit [1-9]
+
+digit [0-9]
 letter [a-zA-Z]
  
 %%
@@ -21,16 +22,16 @@ continue 					{ return CONTINUE; }
 debugger 					{ return DEBUGGER; }
 default 					{ return DEFAULT; }
 delete 						{ return DELETE; }
-do 						{ return DO; }
+do 							{ return DO; }
 else 						{ return ELSE; }
 export 						{ return EXPORT; }
 extends 					{ return EXTENDS; }
 finally 					{ return FINALLY; }
 for 						{ return FOR; }
 function 					{ return FUNCTION; }
-if 						{ return IF; }
+if 							{ return IF; }
 import 						{ return IMPORT; }
-in 						{ return IN; }
+in 							{ return IN; }
 instanceof 					{ return INSTANCEOF; }
 new 						{ return NEW; }
 return 						{ return RETURN; }
@@ -45,15 +46,28 @@ void 						{ return VOID; }
 with						{ return WITH; }
 yield 	 					{ return YIELD; }
 console 					{ return CONSOLE;}
-log						{ return LOG;}
+log							{ return LOG;}
+true						{ return TRUE;}
+false						{ return FALSE;}
+null						{ return NULLKEY;}
+enum 						{ return ENUM;}
+await						{ return AWAIT;}
 
-{letter}({letter}|0|{nonzerodigit})*		{ yylval.name = yytext; return IDENT; }
+{letter}({letter}|{digit})*		{ yylval.name = yytext; return IDENT; }
 
 \"([^"])*\" 					{ yylval.name = yytext; return STRING; }
 
-{nonzerodigit}+(0|{nonzerodigit})*	        { yylval.num = atoi(yytext); return DECIMALINTEGER; }
+0						{ return '0'; }
+1						{ return '1'; }
+2						{ return '2'; }
+3						{ return '3'; }
+4						{ return '4'; }
+5						{ return '5'; }
+6						{ return '6'; }
+7						{ return '7'; }
+8						{ return '8'; }
+9						{ return '9'; }
 
-[+-]?({nonzerodigit}[.])?(0|{nonzerodigit})+	{ yylval.num = atoi(yytext); return NUMBER; }
 
 ,						{ return ','; }		
 
@@ -122,6 +136,8 @@ log						{ return LOG;}
 "&&"						{ return AND; }
 
 "'"						{ return APOSTROPHE; }
+
+'/'						{return '/'; }
 
 [ \r\n\t]*					/* skip whitespace */
 
