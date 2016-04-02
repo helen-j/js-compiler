@@ -6,10 +6,9 @@ int yylex();
 YYSTYPE yylval;
 %}
 
-
-digit [0-9]
+nonzerodigit [1-9]   
 letter [a-zA-Z]
- 
+
 %%
 
 while						{ return WHILE; }
@@ -22,16 +21,16 @@ continue 					{ return CONTINUE; }
 debugger 					{ return DEBUGGER; }
 default 					{ return DEFAULT; }
 delete 						{ return DELETE; }
-do 							{ return DO; }
+do 						{ return DO; }
 else 						{ return ELSE; }
 export 						{ return EXPORT; }
 extends 					{ return EXTENDS; }
 finally 					{ return FINALLY; }
 for 						{ return FOR; }
 function 					{ return FUNCTION; }
-if 							{ return IF; }
+if 						{ return IF; }
 import 						{ return IMPORT; }
-in 							{ return IN; }
+in 						{ return IN; }
 instanceof 					{ return INSTANCEOF; }
 new 						{ return NEW; }
 return 						{ return RETURN; }
@@ -45,29 +44,23 @@ var 						{ return VAR; }
 void 						{ return VOID; }
 with						{ return WITH; }
 yield 	 					{ return YIELD; }
-console 					{ return CONSOLE;}
-log							{ return LOG;}
-true						{ return TRUE;}
-false						{ return FALSE;}
-null						{ return NULLKEY;}
-enum 						{ return ENUM;}
-await						{ return AWAIT;}
+null						{ return NULLLITERAL; }   /*Lina*/
+false						{ yylval.num = 0; return BOOLEANLITERAL; }  /*Lina*/
+true						{ yylval.num = 0; return BOOLEANLITERAL; }  /*Lina*/
+  
+enum						/*Future reserved words - Lina*/			
 
-{letter}({letter}|{digit})*		{ yylval.name = yytext; return IDENT; }
+({letter}|\$|\_)({letter}|\$|\_|0|{nonzerodigit})*	{ yylval.name = yytext; return IDENTIFIERNAME; }  /*Lina*/
 
-\"([^"])*\" 					{ yylval.name = yytext; return STRING; }
+\"(\\.|[^"\n\t\r])*\" 				{ yylval.name = yytext; return STRINGLITERAL; }  /*Lina*/
 
-0						{ return '0'; }
-1						{ return '1'; }
-2						{ return '2'; }
-3						{ return '3'; }
-4						{ return '4'; }
-5						{ return '5'; }
-6						{ return '6'; }
-7						{ return '7'; }
-8						{ return '8'; }
-9						{ return '9'; }
+\'(\\.|[^'\n\t\r])*\'				{ yylval.name = yytext; return STRINGLITERAL; }  /*Lina*/
 
+{nonzerodigit}(0|{nonzerodigit})*	        { yylval.num = atoi(yytext); return DECIMALINTEGERLITERAL; } /*Lina*/
+
+[+-]?({nonzerodigit}[.])?({nonzerodigit})+	{ yylval.num = atoi(yytext); return NUMBER; }
+
+0						{ yylval.num = atoi(yytext); return DECIMALINTEGERLITERAL; } /*Lina*/
 
 ,						{ return ','; }		
 
@@ -134,10 +127,6 @@ await						{ return AWAIT;}
 "||"						{ return OR; } 
 
 "&&"						{ return AND; }
-
-"'"						{ return APOSTROPHE; }
-
-'/'						{return '/'; }
 
 [ \r\n\t]*					/* skip whitespace */
 
