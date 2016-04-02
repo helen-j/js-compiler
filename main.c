@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "y.tab.h"
+#include "parser.tab.h"
 
 YYSTYPE yylval;
 
@@ -20,10 +20,16 @@ int main(int argc, char* argv[])
 		printf("next token: ");
 		switch (token)
 		{
-		case STRING:
+		case STRINGLITERAL:
 			printf("STRING (%s)\n", yylval.name);
 			break;
-		case IDENT: 
+		case NUMBER: 
+			printf("NUMBER (%d)\n", yylval.num);
+			break;
+		case DECIMALINTEGERLITERAL:
+			printf("INTEGER (%d)\n", yylval.num);
+			break;
+		case IDENTIFIERNAME: 
 			printf("IDENTIFIER (%s)\n", yylval.name);
 			break;
 		case WHILE: 
@@ -203,26 +209,11 @@ int main(int argc, char* argv[])
 		case DIVIDEEQUALS:
 			printf("DIVIDEEQUALS\n"); 
 			break;
-		case CONSOLE:
-			printf("CONSOLE\n");
+		case NULLLITERAL:
+			printf("NULL\n");
 			break;
-		case LOG:
-			printf("LOG\n");
-			break;
-		case TRUE:
-			printf("TRUE\n"); 
-			break;
-		case FALSE:
-			printf("FALSE\n");
-			break;
-		case NULLKEY:
-			printf("NULLKEY\n");
-			break;
-		case ENUM:
-			printf("ENUM\n");
-			break;
-		case AWAIT:
-			printf("AWAIT\n");
+		case BOOLEANLITERAL:
+			printf("BOOLEAN(%d)\n",yylval.num);
 			break;
 		default: 
 			printf("'%c'\n", token);
