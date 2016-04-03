@@ -149,6 +149,8 @@ enum
 
 "&&"							{ return AND; }
 
+"/"								{ return '/'; }
+
 
 		/* Misc */
 

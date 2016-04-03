@@ -125,14 +125,23 @@ RelationalExpression: ShiftExpression
 ShiftExpression: AdditiveExpression
 		;
 
+
+
 AdditiveExpression: MultiplicativeExpression
-		  ;
+			| AdditiveExpression '+' MultiplicativeExpression
+			| AdditiveExpression '-' MultiplicativeExpression
+			;
 
 MultiplicativeExpression: UnaryExpression
+			| MultiplicativeExpression MultiplicativeOperator UnaryExpression
 			;
 
 UnaryExpression: PostfixExpression
-		;
+			| '+' UnaryExpression
+			| '-' UnaryExpression
+			;
+
+
 
 PostfixExpression: LeftHandSideExpression
 		 ;
@@ -165,6 +174,10 @@ Literal: NumericLiteral
 NumericLiteral: DecimalLiteral
 		| BinaryIntegerLiteral
 	      ;
+		  
+MultiplicativeOperator: '*' | '/' | '%'
+			;
+
 
 %%
 

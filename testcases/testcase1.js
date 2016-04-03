@@ -30,3 +30,12 @@ if(a==42){
 	if(b==10){ans=true;}
 } else {ans=false;}
 
+
+c=a+b;
+c=a-b;
+c=a*b;
+c=a/b;
+c=a--b;
+c=a+-b;
+c=a%b;
+c=a*-b;
