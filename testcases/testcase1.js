@@ -18,3 +18,15 @@ x=.1e4;
 x=420E9;
 x=0b10101;
 x=0B01;
+
+a=42;
+b=10;
+ans=false;
+
+if(a==42){ans=true;}
+
+ans=false;
+if(a==42){
+	if(b==10){ans=true;}
+} else {ans=false;}
+

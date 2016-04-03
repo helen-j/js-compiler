@@ -50,9 +50,9 @@ with							{ return WITH; }
 yield 							{ return YIELD; }
 
 		/* NullLiteral and BooleanLiteral */
-null						{ return NULLLITERAL; }   
-false						{ yylval.num = 0; return BOOLEANLITERAL; }  
-true						{ yylval.num = 1; return BOOLEANLITERAL; }  
+null							{ return NULLLITERAL; }   
+false							{ yylval.num = 0; return BOOLEANLITERAL; }  
+true							{ yylval.num = 1; return BOOLEANLITERAL; }  
 
 		/* FutureReservedWord */
 enum
@@ -71,88 +71,92 @@ enum
 0[bB][01]+														 {yylval.num=strtol(yytext+2,NULL,2); return BinaryIntegerLiteral;}
 
 
-\"(\\.|[^"\n\t\r])*\" 				{ yylval.name = yytext; return STRINGLITERAL; }  
+\"(\\.|[^"\n\t\r])*\" 			{ yylval.name = yytext; return STRINGLITERAL; }  
 
-\'(\\.|[^'\n\t\r])*\'				{ yylval.name = yytext; return STRINGLITERAL; }  
+\'(\\.|[^'\n\t\r])*\'			{ yylval.name = yytext; return STRINGLITERAL; }  
 
 
 		/* Punctuators */
-,						{ return ','; }		
+\{								{ return LBRACE; }
 
--						{ return '-'; }
+\}								{ return RBRACE; }
 
-"."						{ return '.'; }
+,								{ return ','; }		
 
-"("						{ return LPARAM; }
+-								{ return '-'; }
 
-")"						{ return RPARAM; }
+"."								{ return '.'; }
 
-">="						{ return GE; }
+"("								{ return LPARAM; }
 
-"<="						{ return LE; }
+")"								{ return RPARAM; }
 
-"!=="						{ return NEVT; }
+">="							{ return GE; }
 
-"!="						{ return NEV; }
+"<="							{ return LE; }
 
-"=="						{ return ET; }	
+"!=="							{ return NEVT; }
 
-"++"						{ return INC; }
+"!="							{ return NEV; }
 
-"+"						{ return '+'; }
+"=="							{ return ET; }	
+	
+"==="							{ return ETT; }
 
-"%"						{ return '%'; }
+"++"							{ return INC; }
 
-"*"						{ return '*'; }
+"+"								{ return '+'; }
 
-">"						{ return '>'; }	
+"%"								{ return '%'; }
 
-"<"						{ return '<'; }
+"*"								{ return '*'; }
 
-"<<="						{ return LEFTSHIFTEQUAL; }
+">"								{ return '>'; }	
 
-">>="						{ return RIGHTSHIFTEQUAL; }
+"<"								{ return '<'; }
 
-">>>="						{ return LOGICRIGHTSHIFTEQUAL; }
+"<<="							{ return LEFTSHIFTEQUAL; }
 
-"&="						{ return BINANDEQUAL; }
+">>="							{ return RIGHTSHIFTEQUAL; }
 
-"|="						{ return BINOREQUAL; }
+">>>="							{ return LOGICRIGHTSHIFTEQUAL; }
 
-"^="						{ return BINXOREQUAL; }
+"&="							{ return BINANDEQUAL; }
 
-"=>"						{ return SHIFTTO; }
+"|="							{ return BINOREQUAL; }
 
-:						{ return COLON ;}
+"^="							{ return BINXOREQUAL; }
 
-=						{ return EQUALS ;} 
+"=>"							{ return SHIFTTO; }
 
-"+="						{ return PLUSEQUALS ;}
+:								{ return COLON ;}
+	
+=								{ return EQUALS ;} 
 
-"-="						{ return MINUSEQUALS ;}
+"+="							{ return PLUSEQUALS ;}
 
-"*="						{ return MULTIPLYEQUALS ;}
+"-="							{ return MINUSEQUALS ;}
 
-"/="						{ return DIVIDEEQUALS ;}
+"*="							{ return MULTIPLYEQUALS ;}
 
-\;						{ return SEMICOLON; }
+"/="							{ return DIVIDEEQUALS ;}
 
-"?"						{ return QUESTIONMARK; }
+\;								{ return SEMICOLON; }
 
-"||"						{ return OR; } 
+"?"								{ return QUESTIONMARK; }
 
-"&&"						{ return AND; }
+"||"							{ return OR; } 
 
-		/* Operators */
+"&&"							{ return AND; }
 
 
 		/* Misc */
 
 [ \r\n\t]*					/* skip whitespace */
 
-<<EOF>>						{ return EOF; }
+<<EOF>>							{ return EOF; }
 
-.						{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
+.								{ fprintf(stderr, "invalid character '%c'\n", *yytext); exit(0); }
 
 %%
 

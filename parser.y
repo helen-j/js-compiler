@@ -13,10 +13,10 @@
 }
 
 %token WHILE
-%token LPARAM RPARAM
+%token LPARAM RPARAM LBRACE RBRACE
 %token <name> IDENTIFIERNAME 
 %token <num> NUMBER 
-%token EQUALS GE LE ET NEV NEVT INC
+%token EQUALS GE LE ET NEV NEVT INC ETT
 %token BREAK CASE CATCH CLASS CONST CONTINUE DEBUGGER DEFAULT DELETE DO ELSE EXPORT
 %token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH
 %token THIS THROW TRY TYPEOF VAR VOID WITH YIELD COLON PLUSEQUALS MINUSEQUALS MULTIPLYEQUALS DIVIDEEQUALS
@@ -27,6 +27,11 @@
 %token <num> BinaryIntegerLiteral
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
+
+%nonassoc LOWER_THAN_ELSE
+%nonassoc ELSE
+%left '+' '-'
+%left '*' '/' '%'
 
 %%
 
@@ -43,9 +48,20 @@ StatementListItem: Statement
 		 | StatementList Statement
 	;
 
-Statement: ExpressionStatement
-	 | VariableStatement
+BlockStatement: Block
+			;
+Block: LBRACE StatementList RBRACE
+			;	
+
+Statement: BlockStatement
+			| ExpressionStatement
+			| VariableStatement
+			| IfStatement
 	;
+	
+IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
+			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
+			;
 
 VariableStatement: VAR VariableDeclarationList SEMICOLON
 		 ;
@@ -90,9 +106,20 @@ BitwiseANDExpression: EqualityExpression
 		    ;
 
 EqualityExpression: RelationalExpression
+			| EqualityExpression ET RelationalExpression
+			| EqualityExpression NEV RelationalExpression
+			| EqualityExpression NEVT RelationalExpression
+			| EqualityExpression ETT RelationalExpression
+
 		 ;
 
 RelationalExpression: ShiftExpression
+			| RelationalExpression '<' ShiftExpression
+			| RelationalExpression '>' ShiftExpression
+			| RelationalExpression LE ShiftExpression
+			| RelationalExpression GE ShiftExpression
+			| RelationalExpression INSTANCEOF ShiftExpression
+			| RelationalExpression IN ShiftExpression
 		    ;
 
 ShiftExpression: AdditiveExpression
