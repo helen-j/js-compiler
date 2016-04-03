@@ -23,7 +23,7 @@
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFTEQUAL RIGHTSHIFTEQUAL LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
 %token BINXOREQUAL SHIFTTO
 %token <name> STRINGLITERAL
-%token <num> DECIMALINTEGERLITERAL
+%token <num> DecimalLiteral
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
 
@@ -136,9 +136,6 @@ Literal: NumericLiteral
 
 NumericLiteral: DecimalLiteral
 	      ;
-	
-DecimalLiteral: DECIMALINTEGERLITERAL
-		;
 
 %%
 

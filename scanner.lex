@@ -6,62 +6,76 @@ int yylex();
 YYSTYPE yylval;
 %}
 
-nonzerodigit [1-9]   
+NonZeroDigit [1-9]   
+DecimalDigit [0-9]
 letter [a-zA-Z]
+DecimalIntegerLiteral (0|({NonZeroDigit}({DecimalDigit})*))	
+SignedInteger {DecimalDigit}+|([+-]({DecimalDigit})+)
 
 %%
 
-while						{ return WHILE; }
-break						{ return BREAK; }
-case						{ return CASE;	}
-catch 						{ return CATCH; }
-class 						{ return CLASS; }
-const 						{ return CONST; }
-continue 					{ return CONTINUE; }
-debugger 					{ return DEBUGGER; }
-default 					{ return DEFAULT; }
-delete 						{ return DELETE; }
-do 						{ return DO; }
-else 						{ return ELSE; }
-export 						{ return EXPORT; }
-extends 					{ return EXTENDS; }
-finally 					{ return FINALLY; }
-for 						{ return FOR; }
-function 					{ return FUNCTION; }
-if 						{ return IF; }
-import 						{ return IMPORT; }
-in 						{ return IN; }
-instanceof 					{ return INSTANCEOF; }
-new 						{ return NEW; }
-return 						{ return RETURN; }
-super 						{ return SUPER; }
-switch 						{ return SWITCH; }
-this 						{ return THIS; }
-throw 						{ return THROW; }
-try 						{ return TRY; }
-typeof						{ return TYPEOF; }
-var 						{ return VAR; }
-void 						{ return VOID; }
-with						{ return WITH; }
-yield 	 					{ return YIELD; }
-null						{ return NULLLITERAL; }   /*Lina*/
-false						{ yylval.num = 0; return BOOLEANLITERAL; }  /*Lina*/
-true						{ yylval.num = 0; return BOOLEANLITERAL; }  /*Lina*/
-  
-enum						/*Future reserved words - Lina*/			
+		/* Keywords */
+break							{ return BREAK; }
+case							{ return CASE;}
+catch 							{ return CATCH; }
+class 							{ return CLASS; }
+const 							{ return CONST; }
+continue 						{ return CONTINUE; }
+debugger 						{ return DEBUGGER; }
+default 						{ return DEFAULT; }
+delete 							{ return DELETE; }
+do 								{ return DO; }
+else 							{ return ELSE; }
+export 							{ return EXPORT; }
+extends 						{ return EXTENDS; }
+finally 						{ return FINALLY; }
+for 							{ return FOR; }
+function 						{ return FUNCTION; }
+if 								{ return IF; }
+import 							{ return IMPORT; }
+in 								{ return IN; }
+instanceof 						{ return INSTANCEOF; }
+new 							{ return NEW; }
+return 							{ return RETURN; }
+super 							{ return SUPER; }
+switch 							{ return SWITCH; }
+this 							{ return THIS; }
+throw 							{ return THROW; }
+try 							{ return TRY; }
+typeof							{ return TYPEOF; }
+var 							{ return VAR; }
+void 							{ return VOID; }
+while							{ return WHILE; }
+with							{ return WITH; }
+yield 							{ return YIELD; }
 
-({letter}|\$|\_)({letter}|\$|\_|0|{nonzerodigit})*	{ yylval.name = yytext; return IDENTIFIERNAME; }  /*Lina*/
+		/* NullLiteral and BooleanLiteral */
+null						{ return NULLLITERAL; }   
+false						{ yylval.num = 0; return BOOLEANLITERAL; }  
+true						{ yylval.num = 1; return BOOLEANLITERAL; }  
 
-\"(\\.|[^"\n\t\r])*\" 				{ yylval.name = yytext; return STRINGLITERAL; }  /*Lina*/
+		/* FutureReservedWord */
+enum
+							
 
-\'(\\.|[^'\n\t\r])*\'				{ yylval.name = yytext; return STRINGLITERAL; }  /*Lina*/
+({letter}|\$|\_)({letter}|\$|\_|0|{NonZeroDigit})*	{ yylval.name = yytext; return IDENTIFIERNAME; }  
 
-{nonzerodigit}(0|{nonzerodigit})*	        { yylval.num = atoi(yytext); return DECIMALINTEGERLITERAL; } /*Lina*/
 
-[+-]?({nonzerodigit}[.])?({nonzerodigit})+	{ yylval.num = atoi(yytext); return NUMBER; }
 
-0						{ yylval.num = atoi(yytext); return DECIMALINTEGERLITERAL; } /*Lina*/
+		/* Numeric Literal and Subtypes */
 
+
+{DecimalIntegerLiteral}([eE]{SignedInteger})? {yylval.num=atoi(yytext); return DecimalLiteral;}  //eg 5e10 or 5012 
+\.{DecimalDigit}+([eE]{SignedInteger})?  {yylval.num=atoi(yytext); return DecimalLiteral;} //eg .1 or .1e10
+{DecimalIntegerLiteral}\.{DecimalDigit}*([eE]{SignedInteger})?  {yylval.num=atoi(yytext); return DecimalLiteral;} //eg 1.11 or 1.11e10 or 1.e10
+
+
+\"(\\.|[^"\n\t\r])*\" 				{ yylval.name = yytext; return STRINGLITERAL; }  
+
+\'(\\.|[^'\n\t\r])*\'				{ yylval.name = yytext; return STRINGLITERAL; }  
+
+
+		/* Punctuators */
 ,						{ return ','; }		
 
 -						{ return '-'; }
@@ -127,6 +141,11 @@ enum						/*Future reserved words - Lina*/
 "||"						{ return OR; } 
 
 "&&"						{ return AND; }
+
+		/* Operators */
+
+
+		/* Misc */
 
 [ \r\n\t]*					/* skip whitespace */
 
