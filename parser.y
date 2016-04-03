@@ -24,6 +24,7 @@
 %token BINXOREQUAL SHIFTTO
 %token <name> STRINGLITERAL
 %token <num> DecimalLiteral
+%token <num> BinaryIntegerLiteral
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
 
@@ -135,6 +136,7 @@ Literal: NumericLiteral
 	;
 
 NumericLiteral: DecimalLiteral
+		| BinaryIntegerLiteral
 	      ;
 
 %%
