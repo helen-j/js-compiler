@@ -78,9 +78,35 @@ ContinueStatement: CONTINUE
 				  ;
 
 BreakableStatement: IterationStatement
+			| SwitchStatement
                         ;
+
+SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock;
+
+CaseBlock: LBRACE RBRACE
+			| LBRACE CaseClauses RBRACE
+			| LBRACE DefaultClause RBRACE
+			| LBRACE CaseClauses DefaultClause RBRACE
+			| LBRACE DefaultClause CaseClauses RBRACE
+			| LBRACE CaseClauses DefaultClause CaseClauses RBRACE
+		;
+
+CaseClauses: CaseClause
+			| CaseClauses CaseClause
+		;
+
+CaseClause: CASE Expression COLON
+			| CASE Expression COLON StatementList
+		;
+
+DefaultClause: DEFAULT COLON
+			| DEFAULT COLON StatementList
+		;
+
+
 IterationStatement: 	WHILE LPARAM Expression RPARAM Statement
                         ;
+
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
 			;
