@@ -20,7 +20,7 @@
 %token BREAK CASE CATCH CLASS CONST CONTINUE DEBUGGER DEFAULT DELETE DO ELSE EXPORT
 %token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH
 %token THIS THROW TRY TYPEOF VAR VOID WITH YIELD COLON PLUSEQUALS MINUSEQUALS MULTIPLYEQUALS DIVIDEEQUALS
-%token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFTEQUAL RIGHTSHIFTEQUAL LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
+%token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFT LEFTSHIFTEQUAL RIGHTSHIFT RIGHTSHIFTEQUAL LOGICRIGHTSHIFT LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
 %token BINXOREQUAL SHIFTTO
 %token <name> STRINGLITERAL
 %token <num> DecimalLiteral
@@ -88,12 +88,15 @@ AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression
 		    ;
 
 ConditionalExpression: LogicalORExpression
+			| LogicalORExpression QUESTIONMARK AssignmentExpression COLON AssignmentExpression
 		     ;
 
 LogicalORExpression: LogicalANDExpression
+			| LogicalANDExpression OR BitwiseORExpression
 		   ;
 
 LogicalANDExpression: BitwiseORExpression
+			| LogicalANDExpression AND BitwiseORExpression
 		    ;
 
 BitwiseORExpression: BitwiseXORExpression
@@ -126,7 +129,10 @@ RelationalExpression: ShiftExpression
 		    ;
 
 ShiftExpression: AdditiveExpression
-		;
+			| ShiftExpression LEFTSHIFT AdditiveExpression
+			| ShiftExpression RIGHTSHIFT AdditiveExpression
+			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression
+			;
 
 
 
