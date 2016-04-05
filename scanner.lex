@@ -117,9 +117,15 @@ enum
 
 "<"								{ return '<'; }
 
+"<<"							{ return LEFTSHIFT; }
+
 "<<="							{ return LEFTSHIFTEQUAL; }
 
+">>"							{ return RIGHTSHIFT; }
+
 ">>="							{ return RIGHTSHIFTEQUAL; }
+
+">>>"							{ return LOGICRIGHTSHIFT; }
 
 ">>>="							{ return LOGICRIGHTSHIFTEQUAL; }
 
@@ -153,9 +159,6 @@ enum
 
 "/"								{ return '/'; }
 
-">>>"							{ return UNSIGNEDRIGHTSHIFT ; }
-">>"							{ return SIGNEDRIGHTSHIFT ; }
-"<<"							{ return LEFTSHIFT ; }
 
 		/* Misc */
 
