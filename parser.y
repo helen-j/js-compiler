@@ -60,7 +60,19 @@ Statement: BlockStatement
 			| IfStatement
             | BreakableStatement
 			| ContinueStatement
+			| BreakStatement
+			| ReturnStatement
+			| WithStatement
 	;
+
+WithStatement: WITH LPARAM Expression RPARAM Statement
+			   ;
+
+ReturnStatement: RETURN
+				 ;
+
+BreakStatement: BREAK
+				;
 
 ContinueStatement: CONTINUE
 				  ;

@@ -42,9 +42,14 @@ c=a*-b;
 ++3;
 --3;
 
-continue
-
 x=0;
 while(x<=42) x=x+1;
 
+continue
+
+break
+
+return
+
+with(a=1) b=a+1;
 
