@@ -105,6 +105,8 @@ enum
 
 "++"							{ return INC; }
 
+"--"							{ return DEC; }
+
 "+"								{ return '+'; }
 
 "%"								{ return '%'; }
