@@ -58,8 +58,13 @@ Statement: BlockStatement
 			| ExpressionStatement
 			| VariableStatement
 			| IfStatement
+                        | BreakableStatement
 	;
-	
+
+BreakableStatement: IterationStatement
+                        ;
+IterationStatement: 	WHILE LPARAM Expression RPARAM Statement
+                        ;
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
 			;
