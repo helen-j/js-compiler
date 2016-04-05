@@ -16,17 +16,18 @@
 %token LPARAM RPARAM LBRACE RBRACE
 %token <name> IDENTIFIERNAME 
 %token <num> NUMBER 
-%token EQUALS GE LE ET NEV NEVT INC ETT
+%token EQUALS GE LE ET NEV NEVT INC ETT DEC
 %token BREAK CASE CATCH CLASS CONST CONTINUE DEBUGGER DEFAULT DELETE DO ELSE EXPORT
 %token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH
 %token THIS THROW TRY TYPEOF VAR VOID WITH YIELD COLON PLUSEQUALS MINUSEQUALS MULTIPLYEQUALS DIVIDEEQUALS
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFTEQUAL RIGHTSHIFTEQUAL LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
-%token BINXOREQUAL SHIFTTO
+%token BINXOREQUAL SHIFTTO UNSIGNEDRIGHTSHIFT SIGNEDRIGHTSHIFT LEFTSHIFT
 %token <name> STRINGLITERAL
 %token <num> DecimalLiteral
 %token <num> BinaryIntegerLiteral
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
+
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -141,9 +142,10 @@ RelationalExpression: ShiftExpression
 		    ;
 
 ShiftExpression: AdditiveExpression
+		| ShiftExpression LEFTSHIFT AdditiveExpression
+		| ShiftExpression UNSIGNEDRIGHTSHIFT AdditiveExpression
+		| ShiftExpression SIGNEDRIGHTSHIFT AdditiveExpression
 		;
-
-
 
 AdditiveExpression: MultiplicativeExpression
 			| AdditiveExpression '+' MultiplicativeExpression
@@ -155,8 +157,11 @@ MultiplicativeExpression: UnaryExpression
 			;
 
 UnaryExpression: PostfixExpression
+			| DELETE UnaryExpression
 			| '+' UnaryExpression
 			| '-' UnaryExpression
+			| INC UnaryExpression
+			| DEC UnaryExpression
 			;
 
 
