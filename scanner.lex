@@ -105,6 +105,8 @@ enum
 
 "++"							{ return INC; }
 
+"--"							{ return DEC; }
+
 "+"								{ return '+'; }
 
 "%"								{ return '%'; }
@@ -115,15 +117,9 @@ enum
 
 "<"								{ return '<'; }
 
-"<<"							{ return LEFTSHIFT; }
-
 "<<="							{ return LEFTSHIFTEQUAL; }
 
-">>"							{ return RIGHTSHIFT; }
-
 ">>="							{ return RIGHTSHIFTEQUAL; }
-
-">>>"							{ return LOGICRIGHTSHIFT; }
 
 ">>>="							{ return LOGICRIGHTSHIFTEQUAL; }
 
@@ -157,11 +153,9 @@ enum
 
 "/"								{ return '/'; }
 
-"&"								{ return '&'; }
-
-"^"								{ return '^'; }
-
-"|"								{ return '|'; }
+">>>"							{ return UNSIGNEDRIGHTSHIFT ; }
+">>"							{ return SIGNEDRIGHTSHIFT ; }
+"<<"							{ return LEFTSHIFT ; }
 
 		/* Misc */
 

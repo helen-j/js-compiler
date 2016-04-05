@@ -35,17 +35,40 @@ c=a+b;
 c=a-b;
 c=a*b;
 c=a/b;
-c=a--b;
+
 c=a+-b;
 c=a%b;
 c=a*-b;
-a|b;
-5^0;
-0&5;
-x=42 ? a=12 : a=7;
-5&&7;
-b||d;
-5>>7;
-12<<5;
-9>>>10;
+++3;
+--3;
 
+x=0;
+while(x<=42) x=x+1;
+
+continue
+
+break
+
+return
+
+with(a=1) b=a+1;
+
+a=0;
+switch (a) {
+    case 0:
+        day = "Sunday";
+    case 1:
+        day = "Monday";
+    case 2:
+        day = "Tuesday";
+    case 3:
+        day = "Wednesday";
+    case 4:
+        day = "Thursday";
+    case 5:
+        day = "Friday";
+    case 6:
+        day = "Saturday";
+    default:
+        day = "Invalid Day";
+}
