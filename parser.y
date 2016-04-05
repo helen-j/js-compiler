@@ -97,12 +97,15 @@ LogicalANDExpression: BitwiseORExpression
 		    ;
 
 BitwiseORExpression: BitwiseXORExpression
-		   ;
+			| BitwiseORExpression '|' BitwiseXORExpression
+		    ;
 
 BitwiseXORExpression: BitwiseANDExpression
+			| BitwiseXORExpression '^' BitwiseANDExpression
 		    ;
 
 BitwiseANDExpression: EqualityExpression
+			| BitwiseANDExpression '&' EqualityExpression
 		    ;
 
 EqualityExpression: RelationalExpression

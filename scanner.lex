@@ -151,6 +151,11 @@ enum
 
 "/"								{ return '/'; }
 
+"&"								{ return '&'; }
+
+"^"								{ return '^'; }
+
+"|"								{ return '|'; }
 
 		/* Misc */
 
