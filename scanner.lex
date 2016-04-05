@@ -153,6 +153,9 @@ enum
 
 "/"								{ return '/'; }
 
+">>>"							{ return UNSIGNEDRIGHTSHIFT ; }
+">>"							{ return SIGNEDRIGHTSHIFT ; }
+"<<"							{ return LEFTSHIFT ; }
 
 		/* Misc */
 
