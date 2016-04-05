@@ -58,26 +58,8 @@ Statement: BlockStatement
 			| ExpressionStatement
 			| VariableStatement
 			| IfStatement
-			| SwitchStatement
 	;
-
-SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock
-			;
-
-CaseBlock: LBRACE CaseClauses RBRACE 
-			| LBRACE CaseClauses DefaultClause CaseClauses RBRACE
-			;
-
-CaseClauses: CaseClause
-			| CaseClauses CaseClause
-			;
-
-CaseClause: CASE Expression COLON StatementList
-			;
 	
-DefaultClause: DEFAULT COLON StatementList
-			;
-
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
 			;
