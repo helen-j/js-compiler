@@ -58,8 +58,12 @@ Statement: BlockStatement
 			| ExpressionStatement
 			| VariableStatement
 			| IfStatement
-                        | BreakableStatement
+            | BreakableStatement
+			| ContinueStatement
 	;
+
+ContinueStatement: CONTINUE
+				  ;
 
 BreakableStatement: IterationStatement
                         ;
