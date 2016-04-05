@@ -105,6 +105,8 @@ enum
 
 "++"							{ return INC; }
 
+"--"							{ return DEC; }
+
 "+"								{ return '+'; }
 
 "%"								{ return '%'; }
@@ -157,11 +159,6 @@ enum
 
 "/"								{ return '/'; }
 
-"&"								{ return '&'; }
-
-"^"								{ return '^'; }
-
-"|"								{ return '|'; }
 
 		/* Misc */
 

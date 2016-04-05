@@ -16,7 +16,7 @@
 %token LPARAM RPARAM LBRACE RBRACE
 %token <name> IDENTIFIERNAME 
 %token <num> NUMBER 
-%token EQUALS GE LE ET NEV NEVT INC ETT
+%token EQUALS GE LE ET NEV NEVT INC ETT DEC
 %token BREAK CASE CATCH CLASS CONST CONTINUE DEBUGGER DEFAULT DELETE DO ELSE EXPORT
 %token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH
 %token THIS THROW TRY TYPEOF VAR VOID WITH YIELD COLON PLUSEQUALS MINUSEQUALS MULTIPLYEQUALS DIVIDEEQUALS
@@ -27,6 +27,7 @@
 %token <num> BinaryIntegerLiteral
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
+
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -57,8 +58,55 @@ Statement: BlockStatement
 			| ExpressionStatement
 			| VariableStatement
 			| IfStatement
+            | BreakableStatement
+			| ContinueStatement
+			| BreakStatement
+			| ReturnStatement
+			| WithStatement
 	;
-	
+
+WithStatement: WITH LPARAM Expression RPARAM Statement
+			   ;
+
+ReturnStatement: RETURN
+				 ;
+
+BreakStatement: BREAK
+				;
+
+ContinueStatement: CONTINUE
+				  ;
+
+BreakableStatement: IterationStatement
+			| SwitchStatement
+                        ;
+
+SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock;
+
+CaseBlock: LBRACE RBRACE
+			| LBRACE CaseClauses RBRACE
+			| LBRACE DefaultClause RBRACE
+			| LBRACE CaseClauses DefaultClause RBRACE
+			| LBRACE DefaultClause CaseClauses RBRACE
+			| LBRACE CaseClauses DefaultClause CaseClauses RBRACE
+		;
+
+CaseClauses: CaseClause
+			| CaseClauses CaseClause
+		;
+
+CaseClause: CASE Expression COLON
+			| CASE Expression COLON StatementList
+		;
+
+DefaultClause: DEFAULT COLON
+			| DEFAULT COLON StatementList
+		;
+
+
+IterationStatement: 	WHILE LPARAM Expression RPARAM Statement
+                        ;
+
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
 			;
@@ -135,7 +183,6 @@ ShiftExpression: AdditiveExpression
 			;
 
 
-
 AdditiveExpression: MultiplicativeExpression
 			| AdditiveExpression '+' MultiplicativeExpression
 			| AdditiveExpression '-' MultiplicativeExpression
@@ -146,8 +193,11 @@ MultiplicativeExpression: UnaryExpression
 			;
 
 UnaryExpression: PostfixExpression
+			| DELETE UnaryExpression
 			| '+' UnaryExpression
 			| '-' UnaryExpression
+			| INC UnaryExpression
+			| DEC UnaryExpression
 			;
 
 
