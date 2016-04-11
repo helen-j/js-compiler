@@ -68,13 +68,13 @@ Statement: BlockStatement
 WithStatement: WITH LPARAM Expression RPARAM Statement
 			   ;
 
-ReturnStatement: RETURN
+ReturnStatement: RETURN SEMICOLON
 				 ;
 
-BreakStatement: BREAK
+BreakStatement: BREAK SEMICOLON
 				;
 
-ContinueStatement: CONTINUE
+ContinueStatement: CONTINUE SEMICOLON
 				  ;
 
 BreakableStatement: IterationStatement
