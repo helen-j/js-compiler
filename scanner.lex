@@ -159,7 +159,11 @@ enum
 
 "/"								{ return '/'; }
 
+"|"								{ return '|';}
 
+"^"								{ return '^';}
+
+"&"								{ return '&';}
 		/* Misc */
 
 [ \r\n\t]*					/* skip whitespace */
