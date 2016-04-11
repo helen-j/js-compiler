@@ -21,7 +21,7 @@
 %token EXTENDS FINALLY FOR FUNCTION IF IMPORT IN INSTANCEOF NEW RETURN SUPER SWITCH
 %token THIS THROW TRY TYPEOF VAR VOID WITH YIELD COLON PLUSEQUALS MINUSEQUALS MULTIPLYEQUALS DIVIDEEQUALS
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFT LEFTSHIFTEQUAL RIGHTSHIFT RIGHTSHIFTEQUAL LOGICRIGHTSHIFT LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
-%token BINXOREQUAL SHIFTTO
+%token BINXOREQUAL SHIFTTO "<<"
 %token <name> STRINGLITERAL
 %token <num> DecimalLiteral
 %token <num> BinaryIntegerLiteral
@@ -177,7 +177,7 @@ RelationalExpression: ShiftExpression
 		    ;
 
 ShiftExpression: AdditiveExpression
-			| ShiftExpression LEFTSHIFT AdditiveExpression
+			| ShiftExpression "<<" AdditiveExpression
 			| ShiftExpression RIGHTSHIFT AdditiveExpression
 			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression
 			;
@@ -203,7 +203,9 @@ UnaryExpression: PostfixExpression
 
 
 PostfixExpression: LeftHandSideExpression
-		 ;
+			| LeftHandSideExpression INC
+			| LeftHandSideExpression DEC
+			;
 
 LeftHandSideExpression: NewExpression
 		      ;
