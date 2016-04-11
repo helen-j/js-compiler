@@ -241,7 +241,7 @@ MultiplicativeOperator: '*' | '/' | '%'
 
 
 %%
-
+/*
 int main(int argc, char* argv[])
 {
 	if (argc >1)
@@ -250,4 +250,4 @@ int main(int argc, char* argv[])
 		yyin = stdin;
 	yyparse();
 }
-
+*/
