@@ -26,10 +26,7 @@ ans=false;
 if(a==42){ans=true;}
 
 ans=false;
-if(a==42){
-	if(b==10){ans=true;}
-} else {ans=false;}
-
+if(a==42){if(b==10){ans=true;}} else {ans=false;}
 
 c=a+b;
 c=a-b;
@@ -45,15 +42,16 @@ c=a*-b;
 x=0;
 while(x<=42) x=x+1;
 
-continue
+continue;
 
-break
+break;
 
-return
+return;
 
 with(a=1) b=a+1;
 
 a=0;
+day="";
 switch (a) {
     case 0:
         day = "Sunday";
