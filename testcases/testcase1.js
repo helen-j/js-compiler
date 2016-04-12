@@ -80,3 +80,9 @@ b||d;
 5>>7;
 12<<5;
 9>>>10;
+
+do {
+    text = "The number is ";
+    i=i+1;
+}
+while (i < 10);

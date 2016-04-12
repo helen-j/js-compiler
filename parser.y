@@ -105,6 +105,7 @@ DefaultClause: DEFAULT COLON
 
 
 IterationStatement: 	WHILE LPARAM Expression RPARAM Statement
+			| DO Statement WHILE LPARAM Expression RPARAM SEMICOLON
                         ;
 
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
