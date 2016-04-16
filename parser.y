@@ -50,7 +50,7 @@ ScriptBody: StatementList
 	;
 
 StatementList: Statement
-		 | StatementList Statement
+	     | StatementList Statement
 	;
 
 BlockStatement: Block
