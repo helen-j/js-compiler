@@ -49,11 +49,8 @@ Script : ScriptBody
 ScriptBody: StatementList
 	;
 
-StatementList: StatementList
-		 | StatementListItem 
-	;
 
-StatementListItem: Statement
+StatementList: Statement
 		 | StatementList Statement
 	;
 
