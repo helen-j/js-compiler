@@ -1,9 +1,11 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
+#include "Node.h"
+#include "Expression.h"
 #include <parser.tab.h>
-int yylex();
-YYSTYPE yylval;
+extern int yylex();
+extern YYSTYPE yylval;
 %}
 
 NonZeroDigit [1-9]   

@@ -1,13 +1,19 @@
 %{
 	#include <stdio.h>
 	#include <string.h>
+	#include "Node.h"
+	#include "Expression.h"
+	#include "AssignmentExpression.h"
+	#include "IdentifierExpression.h"
+	#include "IntegerLiteralExpression.h"
 	int yylex();
-	FILE *yyin;
+	extern FILE *yyin;
 	void yyerror(char const *s) {
 		fprintf(stderr, "%s\n",s);
 	}
 %}
 %union {
+	Expression *e;
 	int num;
 	char *name;
 }
@@ -28,6 +34,7 @@
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
 
+%type <e> Identifier
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -105,8 +112,8 @@ DefaultClause: DEFAULT COLON
 		;
 
 
-IterationStatement: 	WHILE LPARAM Expression RPARAM Statement
-			| DO Statement WHILE LPARAM Expression RPARAM SEMICOLON
+IterationStatement: WHILE LPARAM Expression RPARAM Statement
+		  | DO Statement WHILE LPARAM Expression RPARAM SEMICOLON
                         ;
 
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
@@ -156,7 +163,7 @@ BitwiseORExpression: BitwiseXORExpression
 BitwiseXORExpression: BitwiseANDExpression
 			| BitwiseXORExpression '^' BitwiseANDExpression
 		    ;
-
+			
 BitwiseANDExpression: EqualityExpression
 			| BitwiseANDExpression '&' EqualityExpression
 		    ;
@@ -202,8 +209,6 @@ UnaryExpression: PostfixExpression
 			| DEC UnaryExpression
 			;
 
-
-
 PostfixExpression: LeftHandSideExpression
 		 ;
 
@@ -223,7 +228,7 @@ PrimaryExpression: IdentifierReference
 IdentifierReference: Identifier
 		   ;
 
-Identifier: IDENTIFIERNAME
+Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 	  ;
 
 Literal: NumericLiteral
@@ -251,5 +256,5 @@ int main(int argc, char* argv[])
 		yyin = stdin;
 	yyparse();
 }
-*/
 
+*/
