@@ -2,6 +2,7 @@
 	#include <stdio.h>
 	#include <string.h>
 	#include "Node.h"
+	#include "Statement.h"
 	#include "Expression.h"
 	#include "AssignmentExpression.h"
 	#include "IdentifierExpression.h"
@@ -11,8 +12,11 @@
 	void yyerror(char const *s) {
 		fprintf(stderr, "%s\n",s);
 	}
+extern "C" int yywrap();
+Statement *root;
 %}
 %union {
+    Statement *s;
 	Expression *e;
 	int num;
 	char *name;
@@ -35,6 +39,8 @@
 %token NULLLITERAL
 
 %type <e> Identifier
+%type <e> IdentifierReference PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
+%type <s> Statement ExpressionStatement StatementList
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -50,7 +56,7 @@ ScriptBody: StatementList
 	;
 
 
-StatementList: Statement
+StatementList: Statement { root = $1;}
 	     | StatementList Statement
 	;
 
@@ -60,7 +66,7 @@ Block: LBRACE StatementList RBRACE
 			;	
 
 Statement: BlockStatement
-			| ExpressionStatement
+			| ExpressionStatement {$$ = $1;}
 			| VariableStatement
 			| IfStatement
             | BreakableStatement
@@ -120,52 +126,52 @@ IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
 VariableStatement: VAR VariableDeclarationList SEMICOLON
 		 ;
 
-VariableDeclarationList: VariableDeclaration
+VariableDeclarationList: VariableDeclaration 
 			| VariableDeclarationList ',' VariableDeclaration
 			;
 
-VariableDeclaration: Identifier Initialiser
+VariableDeclaration: Identifier Initialiser 
 		   | Identifier
 		   ;
 
-Initialiser: EQUALS AssignmentExpression
+Initialiser: EQUALS AssignmentExpression 
 	   ;
 
-ExpressionStatement: Expression SEMICOLON
+ExpressionStatement: Expression SEMICOLON {$$ = new ExpressionStatement($1);}
 	;
 
-Expression: AssignmentExpression
+Expression: AssignmentExpression {$$ = $1;}
 	;
 
-AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression
+AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression {$$ = new AssignmentExpression($1, $3);}
 		    | ConditionalExpression
 		    ;
 
-ConditionalExpression: LogicalORExpression
+ConditionalExpression: LogicalORExpression {$$ = $1;}
 			| LogicalORExpression QUESTIONMARK AssignmentExpression COLON AssignmentExpression
 		     ;
 
-LogicalORExpression: LogicalANDExpression
+LogicalORExpression: LogicalANDExpression {$$ = $1;}
 			| LogicalANDExpression OR BitwiseORExpression
 		   ;
 
-LogicalANDExpression: BitwiseORExpression
+LogicalANDExpression: BitwiseORExpression {$$ = $1;}
 			| LogicalANDExpression AND BitwiseORExpression
 		    ;
 
-BitwiseORExpression: BitwiseXORExpression
+BitwiseORExpression: BitwiseXORExpression {$$ = $1;}
 			| BitwiseORExpression '|' BitwiseXORExpression
 		    ;
 
-BitwiseXORExpression: BitwiseANDExpression
+BitwiseXORExpression: BitwiseANDExpression {$$ = $1;}
 			| BitwiseXORExpression '^' BitwiseANDExpression
 		    ;
 			
-BitwiseANDExpression: EqualityExpression
+BitwiseANDExpression: EqualityExpression {$$ = $1;}
 			| BitwiseANDExpression '&' EqualityExpression
 		    ;
 
-EqualityExpression: RelationalExpression
+EqualityExpression: RelationalExpression {$$ = $1;}
 			| EqualityExpression ET RelationalExpression
 			| EqualityExpression NEV RelationalExpression
 			| EqualityExpression NEVT RelationalExpression
@@ -173,7 +179,7 @@ EqualityExpression: RelationalExpression
 
 		 ;
 
-RelationalExpression: ShiftExpression
+RelationalExpression: ShiftExpression {$$ = $1;}
 			| RelationalExpression '<' ShiftExpression
 			| RelationalExpression '>' ShiftExpression
 			| RelationalExpression LE ShiftExpression
@@ -182,23 +188,23 @@ RelationalExpression: ShiftExpression
 			| RelationalExpression IN ShiftExpression
 		    ;
 
-ShiftExpression: AdditiveExpression
+ShiftExpression: AdditiveExpression {$$ = $1;}
 			| ShiftExpression LEFTSHIFT AdditiveExpression
 			| ShiftExpression RIGHTSHIFT AdditiveExpression
 			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression
 			;
 
 
-AdditiveExpression: MultiplicativeExpression
+AdditiveExpression: MultiplicativeExpression {$$ = $1;}
 			| AdditiveExpression '+' MultiplicativeExpression
 			| AdditiveExpression '-' MultiplicativeExpression
 			;
 
-MultiplicativeExpression: UnaryExpression
+MultiplicativeExpression: UnaryExpression {$$ = $1;}
 			| MultiplicativeExpression MultiplicativeOperator UnaryExpression
 			;
 
-UnaryExpression: PostfixExpression
+UnaryExpression: PostfixExpression {$$ = $1;}
 			| DELETE UnaryExpression
 			| '+' UnaryExpression
 			| '-' UnaryExpression
@@ -206,23 +212,23 @@ UnaryExpression: PostfixExpression
 			| DEC UnaryExpression
 			;
 
-PostfixExpression: LeftHandSideExpression
+PostfixExpression: LeftHandSideExpression {$$ = $1;}
 		 ;
 
-LeftHandSideExpression: NewExpression
+LeftHandSideExpression: NewExpression {$$ = $1;}
 		      ;
 
-NewExpression: MemberExpression
+NewExpression: MemberExpression {$$ = $1;}
 	      ;
 
-MemberExpression: PrimaryExpression
+MemberExpression: PrimaryExpression {$$ = $1;}
 		;
 
-PrimaryExpression: IdentifierReference
+PrimaryExpression: IdentifierReference {$$ = $1;}
 		 | Literal
 		 ;
 
-IdentifierReference: Identifier
+IdentifierReference: Identifier {$$ = $1;}
 		   ;
 
 Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
