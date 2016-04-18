@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <iostream>
+#ifndef Expression_H_
 #include "Expression.h"
+#endif
 using namespace std;
 
 
@@ -18,7 +20,7 @@ public:
 	void DumpValue(int indent) {
 		this->Indent(indent);
 		cout << Myname << endl;
-		lhs->DumpValue(indent + 2);
-		rhs->DumpValue(indent + 2);
+		lhs->DumpValue(indent + 1);
+		rhs->DumpValue(indent + 1);
 	};
 };

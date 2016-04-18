@@ -33,13 +33,13 @@ Statement *root;
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFT LEFTSHIFTEQUAL RIGHTSHIFT RIGHTSHIFTEQUAL LOGICRIGHTSHIFT LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
 %token BINXOREQUAL SHIFTTO
 %token <name> STRINGLITERAL
-%token <num> DecimalLiteral
-%token <num> BinaryIntegerLiteral
+%token <num> DECIMALLITERAL
+%token <num> BINARYINTEGERLITERAL
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
 
-%type <e> Identifier
-%type <e> IdentifierReference PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
+%type <e> Identifier IdentifierReference
+%type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
 %type <s> Statement ExpressionStatement StatementList
 
 %nonassoc LOWER_THAN_ELSE
@@ -225,7 +225,7 @@ MemberExpression: PrimaryExpression {$$ = $1;}
 		;
 
 PrimaryExpression: IdentifierReference {$$ = $1;}
-		 | Literal
+		 | Literal {$$ = $1;}
 		 ;
 
 IdentifierReference: Identifier {$$ = $1;}
@@ -234,14 +234,14 @@ IdentifierReference: Identifier {$$ = $1;}
 Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 	  ;
 
-Literal: NumericLiteral
+Literal: NumericLiteral  {$$ = $1;}
 	|STRINGLITERAL
 	|NULLLITERAL
 	|BOOLEANLITERAL
 	;
 
-NumericLiteral: DecimalLiteral
-		| BinaryIntegerLiteral
+NumericLiteral: DECIMALLITERAL {$$ = new IntegerLiteralExpression($1);}
+		| BINARYINTEGERLITERAL
 	      ;
 		  
 MultiplicativeOperator: '*' | '/' | '%'

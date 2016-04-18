@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include <iostream>
+#ifndef Expression_H_
 #include "Expression.h"
+#endif
 using namespace std;
 
 class IdentifierExpression : public Expression
@@ -18,11 +20,11 @@ public:
 	void DumpValue(int indent) {
 		this->Indent(indent);
 		cout << Myname << endl;
-		this->Indent(indent + 2);
+		this->Indent(indent + 1);
 		cout << "{" << endl;
-		this->Indent(indent + 3);
-		cout << name << endl;
 		this->Indent(indent + 2);
+		cout << name << endl;
+		this->Indent(indent + 1);
 		cout << "}" << endl;
 	};
 };
