@@ -1,19 +1,24 @@
 #pragma once
-#ifndef _Node__H_
-#define _Node_H_
 
-
+#include <cstdarg>
 #include <iostream>
 using namespace std;
 
-class Node { 
-public:	
-	void Indent(int n)
+class Node
+{
+public:
+	virtual void DumpValue(int indent) = 0;
+	void Indent(int N)
 	{
-		for (int i = 0; i < n; i++)
-			cout << "    ";
-	};
-	virtual void DumpValue(int) {};
+		for (int i = 0; i < N; i++)
+			printf("    ");
+	}
+	void label(int i, char* fmt, ...)
+	{
+		Indent(i);
+		va_list args;
+		va_start(args, fmt);
+		vprintf(fmt, args);
+		va_end(args);
+	}
 };
-
-#endif

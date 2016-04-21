@@ -1,22 +1,23 @@
 %{
 	#include <stdio.h>
-	#include <string.h>
 	#include "Node.h"
 	#include "Statement.h"
+	#include "VariableStatement.h"
 	#include "Expression.h"
-	#include "AssignmentExpression.h"
+	#include "ExpressionStatement.h"
 	#include "IdentifierExpression.h"
 	#include "IntegerLiteralExpression.h"
+	#include "StringLiteral.h"
 	int yylex();
 	extern FILE *yyin;
-	void yyerror(char const *s) {
-		fprintf(stderr, "%s\n",s);
-	}
-extern "C" int yywrap();
-Statement *root;
+	void yyerror(char*);
+	extern "C" int yywrap();
+	Statement *root;
 %}
 %union {
     Statement *s;
+	vector<Statement*> *stmts;
+	vector<Expression*> *exprs;
 	Expression *e;
 	int num;
 	char *name;
@@ -38,9 +39,11 @@ Statement *root;
 %token <num> BOOLEANLITERAL
 %token NULLLITERAL
 
-%type <e> Identifier IdentifierReference
+%type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement StatementList
+%type <s> Statement ExpressionStatement VariableStatement ScriptBody Script
+%type <exprs> VariableDeclarationList
+%type <stmts> StatementList
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -49,15 +52,15 @@ Statement *root;
 
 %%
 
-Script : ScriptBody
+Script : ScriptBody			{root = $1;}
 	;
 
-ScriptBody: StatementList
+ScriptBody: StatementList	{$$=new CompoundStatement($1);}
 	;
 
 
-StatementList: Statement { root = $1;}
-	     | StatementList Statement
+StatementList: Statement	 {$$=new vector<Statement*>(); $$->push_back($1);}
+	     | StatementList Statement   { $$ = $1; $$->push_back($2);    }
 	;
 
 BlockStatement: Block
@@ -65,9 +68,9 @@ BlockStatement: Block
 Block: LBRACE StatementList RBRACE
 			;	
 
-Statement: BlockStatement
+Statement:  BlockStatement
 			| ExpressionStatement {$$ = $1;}
-			| VariableStatement
+			| VariableStatement   {$$ = $1;}
 			| IfStatement
             | BreakableStatement
 			| ContinueStatement
@@ -123,18 +126,18 @@ IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
 			;
 
-VariableStatement: VAR VariableDeclarationList SEMICOLON
+VariableStatement: VAR VariableDeclarationList SEMICOLON  {$$=new VariableStatement($2);}
 		 ;
 
-VariableDeclarationList: VariableDeclaration 
-			| VariableDeclarationList ',' VariableDeclaration
+VariableDeclarationList: VariableDeclaration  {$$=new vector<Expression*>(); $$->push_back($1);}
+			| VariableDeclarationList ',' VariableDeclaration {$$=$1; $$->push_back($3);}
 			;
 
-VariableDeclaration: Identifier Initialiser 
-		   | Identifier
+VariableDeclaration: Identifier Initialiser  {$$ = new VariableExpression($1,$2);}
+		   | Identifier {$$=$1;}
 		   ;
 
-Initialiser: EQUALS AssignmentExpression 
+Initialiser: EQUALS AssignmentExpression  {$$=$2;}
 	   ;
 
 ExpressionStatement: Expression SEMICOLON {$$ = new ExpressionStatement($1);}
@@ -176,7 +179,6 @@ EqualityExpression: RelationalExpression {$$ = $1;}
 			| EqualityExpression NEV RelationalExpression
 			| EqualityExpression NEVT RelationalExpression
 			| EqualityExpression ETT RelationalExpression
-
 		 ;
 
 RelationalExpression: ShiftExpression {$$ = $1;}
@@ -235,7 +237,7 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 	  ;
 
 Literal: NumericLiteral  {$$ = $1;}
-	|STRINGLITERAL
+	|STRINGLITERAL {$$=new StringLiteral($1);}
 	|NULLLITERAL
 	|BOOLEANLITERAL
 	;
@@ -249,6 +251,11 @@ MultiplicativeOperator: '*' | '/' | '%'
 
 
 %%
+
+int yywrap()
+{
+    return 1;
+}
 
 /*
 int main(int argc, char* argv[])

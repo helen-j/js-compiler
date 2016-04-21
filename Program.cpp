@@ -1,9 +1,4 @@
-#include "Node.h"
 #include "Statement.h"
-#include "Expression.h"
-#include "AssignmentExpression.h"
-#include "IdentifierExpression.h"
-#include "IntegerLiteralExpression.h"
 
 using namespace std;
 
@@ -14,6 +9,7 @@ extern Statement *root;
 int main(int argc, char* argv[])
 {
 	yyin = fopen(argv[1], "r");
+	//yyin = fopen("C:\QUT\ProjectFiles\testcase2.js", "r");
 	yyparse();
-	root->DumpValue(1);
+	root->DumpValue(0);
 }
