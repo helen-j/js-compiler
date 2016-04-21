@@ -5,24 +5,23 @@
 #endif
 using namespace std;
 
-class IdentifierExpression : public Expression
+
+class StringLiteral : public Expression
 {
 private:
-	string name;
-	string Myname;
+	string value;
 public:
-	IdentifierExpression(string name)
+	StringLiteral(string value)
 	{
-		this->name = name;
-		this->Myname = "IdentifierName";
+		this->value = value;
 	};
 	void DumpValue(int indent) {
 		this->Indent(indent);
-		cout << Myname << endl;
+		cout << "StringLiteral" << endl;
 		this->Indent(indent + 1);
 		cout << "{" << endl;
 		this->Indent(indent + 2);
-		cout << name << endl;
+		cout << value << endl;
 		this->Indent(indent + 1);
 		cout << "}" << endl;
 	};

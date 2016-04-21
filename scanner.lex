@@ -1,12 +1,11 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
-#include "Node.h"
 #include "Statement.h"
 #include "Expression.h"
 #include <parser.tab.h>
-extern int yylex();
-extern YYSTYPE yylval;
+//extern int yylex();
+//extern YYSTYPE yylval;
 %}
 
 NonZeroDigit [1-9]   
@@ -177,6 +176,7 @@ enum
 
 %%
 
-int yywrap(void) {
-	return 1;
+void yyerror(char* message)
+{
+    fprintf(stderr, "Error: %s\n", message);
 }

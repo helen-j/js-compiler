@@ -5,21 +5,25 @@
 #ifndef Expression_H_
 #include "Expression.h"
 #endif
+
+#include <vector>
+
 using namespace std;
 
 class Statement : public Node { };
 
-class ExpressionStatement : public Statement
+
+class CompoundStatement : public Statement
 {
-private :
-	Expression *expr;
+private:
+	vector<Statement*> *stmts;
 public:
-	ExpressionStatement(Expression *expr) : expr(expr) {
-		this->expr = expr;
-	};
-	void DumpValue(int indent) {
+	CompoundStatement(vector<Statement*> *stmts) : stmts(stmts) { };
+	void DumpValue(int indent)
+	{
 		this->Indent(indent);
-		cout << "ExpressionStatement" << endl;
-	    expr->DumpValue(indent + 1);
-	};
+		cout<<"CompoundStatement"<<endl;
+		for (std::vector<Statement*>::iterator iter = stmts->begin(); iter != stmts->end(); ++iter)
+			(*iter)->DumpValue(indent + 1);
+	}
 };
