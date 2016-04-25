@@ -3,6 +3,7 @@
 	#include "Node.h"
 	#include "Statement.h"
 	#include "VariableStatement.h"
+	#include "IfStatement.h"
 	#include "Expression.h"
 	#include "ExpressionStatement.h"
 	#include "IdentifierExpression.h"
@@ -44,9 +45,9 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement VariableStatement ScriptBody Script
+%type <s> Statement ExpressionStatement IfStatement BlockStatement Block VariableStatement ScriptBody Script
 %type <exprs> VariableDeclarationList
-%type <stmts> StatementList
+%type <stmts> StatementList 
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -66,15 +67,15 @@ StatementList: Statement	 {$$=new vector<Statement*>(); $$->push_back($1);}
 	     | StatementList Statement   { $$ = $1; $$->push_back($2);    }
 	;
 
-BlockStatement: Block
+BlockStatement: Block			 {$$=$1;}
 			;
-Block: LBRACE StatementList RBRACE
+Block: LBRACE StatementList RBRACE	{$$=new CompoundStatement($2);}
 			;	
 
-Statement:  BlockStatement
+Statement:  BlockStatement		  {$$ = $1;}
 			| ExpressionStatement {$$ = $1;}
 			| VariableStatement   {$$ = $1;}
-			| IfStatement
+			| IfStatement		  {$$ = $1;}
             | BreakableStatement
 			| ContinueStatement
 			| BreakStatement
@@ -125,8 +126,8 @@ IterationStatement: WHILE LPARAM Expression RPARAM Statement
 		  | DO Statement WHILE LPARAM Expression RPARAM SEMICOLON
                         ;
 
-IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
-			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
+IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement	{$$=new IfStatement($3,$5,$7);}
+			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE {$$=new IfStatement($3,$5,NULL);}
 			;
 
 VariableStatement: VAR VariableDeclarationList SEMICOLON  {$$=new VariableStatement($2);}
