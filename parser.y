@@ -12,6 +12,9 @@
 	#include "MultiplicativeExpression.h"
 	#include "NumericLiteralExpression.h"
 	#include "StringLiteral.h"
+	#include "BooleanLiteral.h"
+	#include "WhileStatement.h"
+	#include "DoWhileStatement.h"
 	int yylex();
 	extern FILE *yyin;
 	void yyerror(char*);
@@ -45,7 +48,7 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement BlockStatement Block VariableStatement ScriptBody Script
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script WhileStatement DoWhileStatement BreakableStatement
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -76,7 +79,7 @@ Statement:  BlockStatement		  {$$ = $1;}
 			| ExpressionStatement {$$ = $1;}
 			| VariableStatement   {$$ = $1;}
 			| IfStatement		  {$$ = $1;}
-            | BreakableStatement
+            | BreakableStatement  {$$ = $1;}
 			| ContinueStatement
 			| BreakStatement
 			| ReturnStatement
@@ -95,7 +98,7 @@ BreakStatement: BREAK SEMICOLON
 ContinueStatement: CONTINUE SEMICOLON
 				  ;
 
-BreakableStatement: IterationStatement
+BreakableStatement: IterationStatement {$$=$1;}
 			| SwitchStatement
                         ;
 
@@ -122,9 +125,13 @@ DefaultClause: DEFAULT COLON
 		;
 
 
-IterationStatement: WHILE LPARAM Expression RPARAM Statement
-		  | DO Statement WHILE LPARAM Expression RPARAM SEMICOLON
+IterationStatement: WhileStatement {$$ = $1;}
+		  	| DoWhileStatement {$$ = $1;}
                         ;
+WhileStatement: WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
+			;
+DoWhileStatement: DO Statement WHILE LPARAM Expression RPARAM SEMICOLON {$$=new DoWhileStatement($2,$5);}
+			;
 
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement	{$$=new IfStatement($3,$5,$7);}
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE {$$=new IfStatement($3,$5,NULL);}
@@ -244,8 +251,8 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 
 Literal: NumericLiteral  {$$ = $1;}
 	|STRINGLITERAL {$$=new StringLiteral($1);}
-	|NULLLITERAL
-	|BOOLEANLITERAL
+	|NULLLITERAL   
+	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
 	;
 
 NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}
