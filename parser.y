@@ -6,7 +6,10 @@
 	#include "Expression.h"
 	#include "ExpressionStatement.h"
 	#include "IdentifierExpression.h"
-	#include "IntegerLiteralExpression.h"
+	#include "AssignmentExpression.h"
+	#include "AdditiveExpression.h"
+	#include "MultiplicativeExpression.h"
+	#include "NumericLiteralExpression.h"
 	#include "StringLiteral.h"
 	int yylex();
 	extern FILE *yyin;
@@ -19,7 +22,7 @@
 	vector<Statement*> *stmts;
 	vector<Expression*> *exprs;
 	Expression *e;
-	int num;
+	double num;
 	char *name;
 }
 
@@ -198,14 +201,16 @@ ShiftExpression: AdditiveExpression {$$ = $1;}
 
 
 AdditiveExpression: MultiplicativeExpression {$$ = $1;}
-			| AdditiveExpression '+' MultiplicativeExpression
-			| AdditiveExpression '-' MultiplicativeExpression
+			| AdditiveExpression '+' MultiplicativeExpression	{$$ = new AdditiveExpression("+",$1,$3)}
+			| AdditiveExpression '-' MultiplicativeExpression	{$$ = new AdditiveExpression("-",$1,$3)}
 			;
 
 MultiplicativeExpression: UnaryExpression {$$ = $1;}
-			| MultiplicativeExpression MultiplicativeOperator UnaryExpression
+			| MultiplicativeExpression '*' UnaryExpression {$$ = new MultiplicativeExpression("*",$1,$3)}
+			| MultiplicativeExpression '/' UnaryExpression {$$ = new MultiplicativeExpression("/",$1,$3)}
+			| MultiplicativeExpression '%' UnaryExpression {$$ = new MultiplicativeExpression("%",$1,$3)}
 			;
-
+			
 UnaryExpression: PostfixExpression {$$ = $1;}
 			| DELETE UnaryExpression
 			| '+' UnaryExpression
@@ -242,13 +247,10 @@ Literal: NumericLiteral  {$$ = $1;}
 	|BOOLEANLITERAL
 	;
 
-NumericLiteral: DECIMALLITERAL {$$ = new IntegerLiteralExpression($1);}
+NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}
 		| BINARYINTEGERLITERAL
 	      ;
 		  
-MultiplicativeOperator: '*' | '/' | '%'
-			;
-
 
 %%
 

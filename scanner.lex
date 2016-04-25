@@ -67,9 +67,9 @@ enum
 		/* Numeric Literal and Subtypes */
 
 
-{DecimalIntegerLiteral}([eE]{SignedInteger})? {yylval.num=atoi(yytext); return DECIMALLITERAL;}  //eg 5e10 or 5012 
-\.{DecimalDigit}+([eE]{SignedInteger})?  {yylval.num=atoi(yytext); return DECIMALLITERAL;} //eg .1 or .1e10
-{DecimalIntegerLiteral}\.{DecimalDigit}*([eE]{SignedInteger})?  {yylval.num=atoi(yytext); return DECIMALLITERAL;} //eg 1.11 or 1.11e10 or 1.e10
+{DecimalIntegerLiteral}([eE]{SignedInteger})? {yylval.num=atof(yytext); return DECIMALLITERAL;}  //eg 5e10 or 5012 
+\.{DecimalDigit}+([eE]{SignedInteger})?  {yylval.num=atof(yytext); return DECIMALLITERAL;} //eg .1 or .1e10
+{DecimalIntegerLiteral}\.{DecimalDigit}*([eE]{SignedInteger})?  {yylval.num=atof(yytext); return DECIMALLITERAL;} //eg 1.11 or 1.11e10 or 1.e10
 0[bB][01]+														 {yylval.num=strtol(yytext+2,NULL,2); return BINARYINTEGERLITERAL;}
 
 

@@ -9,7 +9,8 @@ extern Statement *root;
 int main(int argc, char* argv[])
 {
 	yyin = fopen(argv[1], "r");
-	//yyin = fopen("C:\QUT\ProjectFiles\testcase2.js", "r");
+	//yyin = fopen("YOURPATH\testcases", "r");
 	yyparse();
 	root->DumpValue(0);
+	//getchar();
 }
