@@ -28,4 +28,3 @@ public:
 		(exp)->DumpValue(indent+1);
 		}
 	};
-};

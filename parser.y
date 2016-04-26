@@ -12,9 +12,9 @@
 	#include "MultiplicativeExpression.h"
 	#include "NumericLiteralExpression.h"
 	#include "StringLiteral.h"
-	//#include "BooleanLiteral.h"
+	#include "BooleanLiteral.h"
 	#include "WhileStatement.h"
-	//#include "DoWhileStatement.h"
+	#include "DoWhileStatement.h"
 	#include "WithStatement.h"
 	int yylex();
 	extern FILE *yyin;
@@ -131,7 +131,7 @@ IterationStatement: WhileStatement {$$ = $1;}
                         ;
 WhileStatement: WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
 			;
-DoWhileStatement: DO Statement WHILE LPARAM Expression RPARAM SEMICOLON 
+DoWhileStatement: DO Statement WHILE LPARAM Expression RPARAM SEMICOLON {$$=new DoWhileStatement($2,$5);}
 			;
 
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement	{$$=new IfStatement($3,$5,$7);}
@@ -253,7 +253,7 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 Literal: NumericLiteral  {$$ = $1;}
 	|STRINGLITERAL {$$=new StringLiteral($1);}
 	|NULLLITERAL   
-	|BOOLEANLITERAL 
+	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
 	;
 
 NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}

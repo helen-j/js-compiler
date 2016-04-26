@@ -13,3 +13,14 @@ with (x)
 {
  y=6;
 }
+z=false;
+
+while(x=3){
+	t=10;
+}
+
+do{
+	t=11;
+}while(x=3);
+
+

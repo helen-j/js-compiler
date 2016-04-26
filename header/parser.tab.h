@@ -123,7 +123,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 21 "parser.y"
+#line 25 "parser.y"
 
     Statement *s;
 	vector<Statement*> *stmts;

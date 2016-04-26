@@ -10,9 +10,9 @@ class BooleanLiteral : public Expression
 {
 private:
 	string Myname;
-	Boolean value;
+	bool value;
 public:
-	BooleanLiteral(Boolean value)
+	BooleanLiteral(bool value)
 	{
 		this->value = value;
 		this->Myname = "BooleanLiteral";
