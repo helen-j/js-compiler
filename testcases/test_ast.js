@@ -1,4 +1,4 @@
-var x,y,z,t;
+var x,y,z,t,m;
 var i=0,m=1,c="";
 x=42;
 y="Hello";
@@ -22,5 +22,9 @@ while(x=3){
 do{
 	t=11;
 }while(x=3);
+
+m=null;
+
+
 
 

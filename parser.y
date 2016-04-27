@@ -16,6 +16,7 @@
 	#include "WhileStatement.h"
 	#include "DoWhileStatement.h"
 	#include "WithStatement.h"
+	#include "NullLiteral.h"
 	int yylex();
 	extern FILE *yyin;
 	void yyerror(char*);
@@ -45,7 +46,7 @@
 %token <num> DECIMALLITERAL
 %token <num> BINARYINTEGERLITERAL
 %token <num> BOOLEANLITERAL
-%token NULLLITERAL
+%token <num> NULLLITERAL
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
@@ -252,7 +253,7 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 
 Literal: NumericLiteral  {$$ = $1;}
 	|STRINGLITERAL {$$=new StringLiteral($1);}
-	|NULLLITERAL   
+	|NULLLITERAL   {$$=new NullLiteral($1);}
 	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
 	;
 
