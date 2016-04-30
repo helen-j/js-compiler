@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <string>
 #ifndef Statement_H_
 #include "Statement.h"

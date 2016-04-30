@@ -15,6 +15,7 @@
 	#include "BooleanLiteral.h"
 	#include "WhileStatement.h"
 	#include "DoWhileStatement.h"
+	#include "ForStatement.h"
 	#include "WithStatement.h"
 	#include "NullLiteral.h"
 	int yylex();
@@ -50,7 +51,7 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script WhileStatement DoWhileStatement BreakableStatement WithStatement
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement 
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -127,13 +128,17 @@ DefaultClause: DEFAULT COLON
 		;
 
 
-IterationStatement: WhileStatement {$$ = $1;}
-		  	| DoWhileStatement {$$ = $1;}
-                        ;
-WhileStatement: WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
-			;
-DoWhileStatement: DO Statement WHILE LPARAM Expression RPARAM SEMICOLON {$$=new DoWhileStatement($2,$5);}
-			;
+IterationStatement:  DO Statement WHILE LPARAM Expression RPARAM SEMICOLON {$$=new DoWhileStatement($2,$5);}
+			| WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
+			| FOR LPARAM Expression SEMICOLON Expression SEMICOLON Expression RPARAM Statement {$$ = new ForStatement($3,$5,$7,$9);}
+			| FOR LPARAM Expression SEMICOLON Expression SEMICOLON RPARAM Statement {$$ = new ForStatement($3,$5,NULL,$8);}
+			| FOR LPARAM Expression  SEMICOLON SEMICOLON  Expression RPARAM Statement {$$ = new ForStatement($3,NULL,$6,$8);}
+			| FOR LPARAM Expression  SEMICOLON SEMICOLON  RPARAM Statement {$$ = new ForStatement($3,NULL,NULL,$7);}
+			| FOR LPARAM SEMICOLON Expression SEMICOLON Expression RPARAM Statement {$$ = new ForStatement(NULL, $4, $6, $8);}
+			| FOR LPARAM SEMICOLON Expression SEMICOLON  RPARAM Statement {$$ = new ForStatement(NULL, $4, NULL, $7);}
+			| FOR LPARAM SEMICOLON SEMICOLON Expression RPARAM Statement {$$ = new ForStatement(NULL,NULL,$5,$7);}
+			| FOR LPARAM SEMICOLON SEMICOLON RPARAM Statement {$$ = new ForStatement(NULL,NULL,NULL,$6);}
+			; 
 
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement	{$$=new IfStatement($3,$5,$7);}
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE {$$=new IfStatement($3,$5,NULL);}
