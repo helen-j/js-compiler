@@ -22,18 +22,3 @@ public:
 	};
 };
 
-class AssignmentExpression : public Expression {
-private:
-	Expression *lhs, *rhs;
-public:
-	AssignmentExpression(Expression* lhs, Expression* rhs) {
-		this->lhs = lhs;
-		this->rhs = rhs;
-	};
-	void DumpValue(int indent) {
-		this->Indent(indent);
-		cout << "AssignmentExpression" << endl;
-		lhs->DumpValue(indent + 1);
-		rhs->DumpValue(indent + 1);
-	};
-};
