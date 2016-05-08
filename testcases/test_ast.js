@@ -37,3 +37,8 @@ for ( ; i<x ;) {
 	x=2;
 }
 
+var text = "";
+var x;
+for (x in person) {
+    text += person[x];
+}
