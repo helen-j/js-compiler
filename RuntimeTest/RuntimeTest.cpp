@@ -7,11 +7,11 @@ int main(int argc, char* argv[])
 
 	jsValue* y = Plus(x, new jsNumber(4));
 
-	//consolelog(y);
+	consolelog(y);
 
 	x = new jsString("hello");
 
 	y = Plus(x, new jsNumber(4));
 
-	//consolelog(y);
+	consolelog(y);
 }
