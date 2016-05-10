@@ -37,8 +37,14 @@ for ( ; i<x ;) {
 	x=2;
 }
 
+<<<<<<< HEAD
 var text = "";
 var x;
 for (x in person) {
     text += person[x];
 }
+=======
+x << 3;
+t >> 2;
+y >>> 6;
+>>>>>>> origin/master

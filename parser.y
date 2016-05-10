@@ -205,9 +205,15 @@ RelationalExpression: ShiftExpression {$$ = $1;}
 		    ;
 
 ShiftExpression: AdditiveExpression {$$ = $1;}
+<<<<<<< HEAD
 			| ShiftExpression LEFTSHIFT AdditiveExpression
 			| ShiftExpression RIGHTSHIFT AdditiveExpression
 			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression
+=======
+			| ShiftExpression LEFTSHIFT AdditiveExpression		{$$ = new BinaryExpression($1, LEFTSHIFT, $3);}
+			| ShiftExpression RIGHTSHIFT AdditiveExpression		{$$ = new BinaryExpression($1, RIGHTSHIFT, $3);}
+			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression {$$ = new BinaryExpression($1, LOGICRIGHTSHIFT, $3);}
+>>>>>>> origin/master
 			;
 
 
