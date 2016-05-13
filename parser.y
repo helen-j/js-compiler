@@ -5,18 +5,21 @@
 	#include "VariableStatement.h"
 	#include "IfStatement.h"
 	#include "Expression.h"
+	#include "BinaryExpression.h"
 	#include "ExpressionStatement.h"
 	#include "IdentifierExpression.h"
 	#include "AssignmentExpression.h"
 	#include "AdditiveExpression.h"
 	#include "MultiplicativeExpression.h"
 	#include "NumericLiteralExpression.h"
-	#include "ForInStatement.h"
 	#include "StringLiteral.h"
-	//#include "BooleanLiteral.h"
+	#include "BooleanLiteral.h"
 	#include "WhileStatement.h"
-	//#include "DoWhileStatement.h"
+	#include "DoWhileStatement.h"
+	#include "ForStatement.h"
 	#include "WithStatement.h"
+	#include "NullLiteral.h"
+	#include "BreakStatement.h"
 	int yylex();
 	extern FILE *yyin;
 	void yyerror(char*);
@@ -46,11 +49,11 @@
 %token <num> DECIMALLITERAL
 %token <num> BINARYINTEGERLITERAL
 %token <num> BOOLEANLITERAL
-%token NULLLITERAL
+%token <num> NULLLITERAL
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script WhileStatement DoWhileStatement BreakableStatement WithStatement
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -95,6 +98,7 @@ ReturnStatement: RETURN SEMICOLON
 				 ;
 
 BreakStatement: BREAK SEMICOLON
+			| BREAK Identifier SEMICOLON {$$= new BreakStatement($2);}
 				;
 
 ContinueStatement: CONTINUE SEMICOLON
@@ -127,14 +131,17 @@ DefaultClause: DEFAULT COLON
 		;
 
 
-IterationStatement: WhileStatement {$$ = $1;}
-		  	| DoWhileStatement {$$ = $1;}
-			| FOR LPARAM LeftHandSideExpression IN Expression RPARAM Statement {$$=new ForInStatement($3,$5,$7);}
-                        ;
-WhileStatement: WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
-			;
-DoWhileStatement: DO Statement WHILE LPARAM Expression RPARAM SEMICOLON 
-			;
+IterationStatement:  DO Statement WHILE LPARAM Expression RPARAM SEMICOLON {$$=new DoWhileStatement($2,$5);}
+			| WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
+			| FOR LPARAM Expression SEMICOLON Expression SEMICOLON Expression RPARAM Statement {$$ = new ForStatement($3,$5,$7,$9);}
+			| FOR LPARAM Expression SEMICOLON Expression SEMICOLON RPARAM Statement {$$ = new ForStatement($3,$5,NULL,$8);}
+			| FOR LPARAM Expression  SEMICOLON SEMICOLON  Expression RPARAM Statement {$$ = new ForStatement($3,NULL,$6,$8);}
+			| FOR LPARAM Expression  SEMICOLON SEMICOLON  RPARAM Statement {$$ = new ForStatement($3,NULL,NULL,$7);}
+			| FOR LPARAM SEMICOLON Expression SEMICOLON Expression RPARAM Statement {$$ = new ForStatement(NULL, $4, $6, $8);}
+			| FOR LPARAM SEMICOLON Expression SEMICOLON  RPARAM Statement {$$ = new ForStatement(NULL, $4, NULL, $7);}
+			| FOR LPARAM SEMICOLON SEMICOLON Expression RPARAM Statement {$$ = new ForStatement(NULL,NULL,$5,$7);}
+			| FOR LPARAM SEMICOLON SEMICOLON RPARAM Statement {$$ = new ForStatement(NULL,NULL,NULL,$6);}
+			; 
 
 IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement	{$$=new IfStatement($3,$5,$7);}
 			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE {$$=new IfStatement($3,$5,NULL);}
@@ -205,15 +212,9 @@ RelationalExpression: ShiftExpression {$$ = $1;}
 		    ;
 
 ShiftExpression: AdditiveExpression {$$ = $1;}
-<<<<<<< HEAD
-			| ShiftExpression LEFTSHIFT AdditiveExpression
-			| ShiftExpression RIGHTSHIFT AdditiveExpression
-			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression
-=======
 			| ShiftExpression LEFTSHIFT AdditiveExpression		{$$ = new BinaryExpression($1, LEFTSHIFT, $3);}
 			| ShiftExpression RIGHTSHIFT AdditiveExpression		{$$ = new BinaryExpression($1, RIGHTSHIFT, $3);}
 			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression {$$ = new BinaryExpression($1, LOGICRIGHTSHIFT, $3);}
->>>>>>> origin/master
 			;
 
 
@@ -260,8 +261,8 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 
 Literal: NumericLiteral  {$$ = $1;}
 	|STRINGLITERAL {$$=new StringLiteral($1);}
-	|NULLLITERAL   
-	|BOOLEANLITERAL 
+	|NULLLITERAL   {$$=new NullLiteral($1);}
+	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
 	;
 
 NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}
