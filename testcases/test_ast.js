@@ -44,3 +44,9 @@ y >>> 6;
 if( x == 42 ) {
 	break;
 } 
+
+if(x == 42) {
+	
+	var t = 10;
+	return x+t;
+}
