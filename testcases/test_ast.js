@@ -50,3 +50,12 @@ if(x == 42) {
 	var t = 10;
 	return x+t;
 }
+
+if(x == 42) {
+
+	continue;
+}
+
+Test: if(x = 42) {
+	t = 12;
+}

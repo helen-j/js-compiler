@@ -21,6 +21,11 @@
 	#include "NullLiteral.h"
 	#include "BreakStatement.h"
 	#include "ReturnStatement.h"
+	#include "ContinueStatement.h"
+	#include "LabelledStatement.h"
+
+
+
 	int yylex();
 	extern FILE *yyin;
 	void yyerror(char*);
@@ -54,7 +59,7 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement ContinueStatement LabelledStatement
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -86,10 +91,11 @@ Statement:  BlockStatement		  {$$ = $1;}
 			| VariableStatement   {$$ = $1;}
 			| IfStatement		  {$$ = $1;}
             | BreakableStatement  {$$ = $1;}
-			| ContinueStatement
-			| BreakStatement
-			| ReturnStatement
+			| ContinueStatement   {$$ = $1;}
+			| BreakStatement      {$$ = $1;}
+			| ReturnStatement     {$$ = $1;}
 			| WithStatement       {$$ = $1;}
+			| LabelledStatement   {$$ = $1;}
 	;
 
 WithStatement: WITH LPARAM Expression RPARAM Statement  {$$= new WithStatement($3,$5);}
@@ -104,6 +110,7 @@ BreakStatement: BREAK SEMICOLON
 				;
 
 ContinueStatement: CONTINUE SEMICOLON
+			| CONTINUE Identifier SEMICOLON {$$= new ContinueStatement($2);}
 				  ;
 
 BreakableStatement: IterationStatement {$$=$1;}
@@ -111,6 +118,8 @@ BreakableStatement: IterationStatement {$$=$1;}
                         ;
 
 SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock;
+
+LabelledStatement: Identifier COLON Statement {$$= new LabelledStatement($1,$3);}
 
 CaseBlock: LBRACE RBRACE
 			| LBRACE CaseClauses RBRACE
