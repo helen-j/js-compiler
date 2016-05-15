@@ -40,3 +40,13 @@ for ( ; i<x ;) {
 x << 3;
 t >> 2;
 y >>> 6;
+
+if( x == 42 ) {
+	break;
+} 
+
+if(x == 42) {
+	
+	var t = 10;
+	return x+t;
+}

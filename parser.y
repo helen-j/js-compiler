@@ -19,6 +19,8 @@
 	#include "ForStatement.h"
 	#include "WithStatement.h"
 	#include "NullLiteral.h"
+	#include "BreakStatement.h"
+	#include "ReturnStatement.h"
 	int yylex();
 	extern FILE *yyin;
 	void yyerror(char*);
@@ -52,7 +54,7 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement 
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -94,9 +96,11 @@ WithStatement: WITH LPARAM Expression RPARAM Statement  {$$= new WithStatement($
 			   ;
 
 ReturnStatement: RETURN SEMICOLON
+			| RETURN Expression SEMICOLON {$$= new ReturnStatement($2);}
 				 ;
 
 BreakStatement: BREAK SEMICOLON
+			| BREAK Identifier SEMICOLON {$$= new BreakStatement($2);}
 				;
 
 ContinueStatement: CONTINUE SEMICOLON
