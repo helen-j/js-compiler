@@ -210,3 +210,13 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+
+*.c
+
+lex.yy.c
+
+parser.tab.c
+
+parser.tab.h
+
+scanner.lex

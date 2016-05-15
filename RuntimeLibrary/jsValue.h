@@ -6,7 +6,6 @@ enum jsType {Number,String};
 class jsNumber;
 class jsString;
 
-
 class jsValue 
 {
 public:
@@ -14,6 +13,7 @@ public:
 	virtual jsNumber* ToNumber() = 0;
 	virtual jsString* ToString() = 0;
 };
+
 
 class jsString : public jsValue {
 public:

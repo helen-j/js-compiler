@@ -1,17 +1,21 @@
 #include "jsValue.h"
+#include "jsObject.h"
 
 int main(int argc, char* argv[])
 {
 
-	jsValue* x = new jsNumber(42);
+	jsObject* global = new jsObject();
 
-	jsValue* y = Plus(x, new jsNumber(4));
+	global->set("x", new jsNumber(42));
 
-	consolelog(y);
+	global->set("y", Plus(global->get("x"), new jsNumber(4)));
 
-	x = new jsString("hello");
+	consolelog(global->get("y"));
 
-	y = Plus(x, new jsNumber(4));
+	global->set("x", new jsString("hello"));
 
-	consolelog(y);
+	global->set("y", Plus(global->get("x"), new jsNumber(4)));
+
+	consolelog(global->get("y"));
+
 }
