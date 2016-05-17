@@ -1,9 +1,9 @@
 #include "jsValue.h"
 #include "jsObject.h"
+#include "jsFunction.h"
 
 int main(int argc, char* argv[])
-{
-
+{	
 	jsObject* global = new jsObject();
 
 	global->set("x", new jsNumber(42));
@@ -24,9 +24,9 @@ int main(int argc, char* argv[])
 
 	
 	// if (z)
-	// y=10;
 	if (global->get("z")->ToBool()->value){
-		cout << "x=hello"<<endl;
+
+		cout << "x=hello" <<endl;
 	}
 
 
