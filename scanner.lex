@@ -1,9 +1,11 @@
 %{
 #include <stdlib.h>
 #include <stdio.h>
+#include "Statement.h"
+#include "Expression.h"
 #include <parser.tab.h>
-int yylex();
-YYSTYPE yylval;
+//extern int yylex();
+//extern YYSTYPE yylval;
 %}
 
 NonZeroDigit [1-9]   
@@ -65,10 +67,10 @@ enum
 		/* Numeric Literal and Subtypes */
 
 
-{DecimalIntegerLiteral}([eE]{SignedInteger})? {yylval.num=atoi(yytext); return DecimalLiteral;}  //eg 5e10 or 5012 
-\.{DecimalDigit}+([eE]{SignedInteger})?  {yylval.num=atoi(yytext); return DecimalLiteral;} //eg .1 or .1e10
-{DecimalIntegerLiteral}\.{DecimalDigit}*([eE]{SignedInteger})?  {yylval.num=atoi(yytext); return DecimalLiteral;} //eg 1.11 or 1.11e10 or 1.e10
-0[bB][01]+														 {yylval.num=strtol(yytext+2,NULL,2); return BinaryIntegerLiteral;}
+{DecimalIntegerLiteral}([eE]{SignedInteger})? {yylval.num=atof(yytext); return DECIMALLITERAL;}  //eg 5e10 or 5012 
+\.{DecimalDigit}+([eE]{SignedInteger})?  {yylval.num=atof(yytext); return DECIMALLITERAL;} //eg .1 or .1e10
+{DecimalIntegerLiteral}\.{DecimalDigit}*([eE]{SignedInteger})?  {yylval.num=atof(yytext); return DECIMALLITERAL;} //eg 1.11 or 1.11e10 or 1.e10
+0[bB][01]+														 {yylval.num=strtol(yytext+2,NULL,2); return BINARYINTEGERLITERAL;}
 
 
 \"(\\.|[^"\n\t\r])*\" 			{ yylval.name = yytext; return STRINGLITERAL; }  
@@ -159,7 +161,11 @@ enum
 
 "/"								{ return '/'; }
 
+"|"								{ return '|';}
 
+"^"								{ return '^';}
+
+"&"								{ return '&';}
 		/* Misc */
 
 [ \r\n\t]*					/* skip whitespace */
@@ -170,6 +176,7 @@ enum
 
 %%
 
-int yywrap(void) {
-	return 1;
+void yyerror(char* message)
+{
+    fprintf(stderr, "Error: %s\n", message);
 }

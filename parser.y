@@ -1,14 +1,43 @@
 %{
 	#include <stdio.h>
-	#include <string.h>
+	#include "Node.h"
+	#include "Statement.h"
+	#include "VariableStatement.h"
+	#include "IfStatement.h"
+	#include "Expression.h"
+	#include "BinaryExpression.h"
+	#include "ExpressionStatement.h"
+	#include "IdentifierExpression.h"
+	#include "AssignmentExpression.h"
+	#include "AdditiveExpression.h"
+	#include "MultiplicativeExpression.h"
+	#include "NumericLiteralExpression.h"
+	#include "StringLiteral.h"
+	#include "BooleanLiteral.h"
+	#include "WhileStatement.h"
+	#include "DoWhileStatement.h"
+	#include "ForStatement.h"
+	#include "WithStatement.h"
+	#include "NullLiteral.h"
+	#include "BreakStatement.h"
+	#include "ReturnStatement.h"
+	#include "ContinueStatement.h"
+	#include "LabelledStatement.h"
+
+
+
 	int yylex();
-	FILE *yyin;
-	void yyerror(char const *s) {
-		fprintf(stderr, "%s\n",s);
-	}
+	extern FILE *yyin;
+	void yyerror(char*);
+	extern "C" int yywrap();
+	Statement *root;
 %}
 %union {
-	int num;
+    Statement *s;
+	vector<Statement*> *stmts;
+	vector<Expression*> *exprs;
+	Expression *e;
+	double num;
 	char *name;
 }
 
@@ -23,11 +52,16 @@
 %token SEMICOLON QUESTIONMARK OR AND APOSTROPHE LEFTSHIFT LEFTSHIFTEQUAL RIGHTSHIFT RIGHTSHIFTEQUAL LOGICRIGHTSHIFT LOGICRIGHTSHIFTEQUAL BINANDEQUAL BINOREQUAL
 %token BINXOREQUAL SHIFTTO
 %token <name> STRINGLITERAL
-%token <num> DecimalLiteral
-%token <num> BinaryIntegerLiteral
+%token <num> DECIMALLITERAL
+%token <num> BINARYINTEGERLITERAL
 %token <num> BOOLEANLITERAL
-%token NULLLITERAL
+%token <num> NULLLITERAL
 
+%type <e> Identifier IdentifierReference VariableDeclaration Initialiser
+%type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement ContinueStatement LabelledStatement
+%type <exprs> VariableDeclarationList
+%type <stmts> StatementList 
 
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
@@ -36,52 +70,56 @@
 
 %%
 
-Script : ScriptBody
+Script : ScriptBody			{root = $1;}
 	;
 
-ScriptBody: StatementList
+ScriptBody: StatementList	{$$=new CompoundStatement($1);}
 	;
 
-StatementList: StatementListItem
+
+StatementList: Statement	 {$$=new vector<Statement*>(); $$->push_back($1);}
+	     | StatementList Statement   { $$ = $1; $$->push_back($2);    }
 	;
 
-StatementListItem: Statement
-		 | StatementList Statement
-	;
-
-BlockStatement: Block
+BlockStatement: Block			 {$$=$1;}
 			;
-Block: LBRACE StatementList RBRACE
+Block: LBRACE StatementList RBRACE	{$$=new CompoundStatement($2);}
 			;	
 
-Statement: BlockStatement
-			| ExpressionStatement
-			| VariableStatement
-			| IfStatement
-            | BreakableStatement
-			| ContinueStatement
-			| BreakStatement
-			| ReturnStatement
-			| WithStatement
+Statement:  BlockStatement		  {$$ = $1;}
+			| ExpressionStatement {$$ = $1;}
+			| VariableStatement   {$$ = $1;}
+			| IfStatement		  {$$ = $1;}
+            | BreakableStatement  {$$ = $1;}
+			| ContinueStatement   {$$ = $1;}
+			| BreakStatement      {$$ = $1;}
+			| ReturnStatement     {$$ = $1;}
+			| WithStatement       {$$ = $1;}
+			| LabelledStatement   {$$ = $1;}
 	;
 
-WithStatement: WITH LPARAM Expression RPARAM Statement
+WithStatement: WITH LPARAM Expression RPARAM Statement  {$$= new WithStatement($3,$5);}
 			   ;
 
-ReturnStatement: RETURN
+ReturnStatement: RETURN SEMICOLON
+			| RETURN Expression SEMICOLON {$$= new ReturnStatement($2);}
 				 ;
 
-BreakStatement: BREAK
+BreakStatement: BREAK SEMICOLON
+			| BREAK Identifier SEMICOLON {$$= new BreakStatement($2);}
 				;
 
-ContinueStatement: CONTINUE
+ContinueStatement: CONTINUE SEMICOLON
+			| CONTINUE Identifier SEMICOLON {$$= new ContinueStatement($2);}
 				  ;
 
-BreakableStatement: IterationStatement
+BreakableStatement: IterationStatement {$$=$1;}
 			| SwitchStatement
                         ;
 
 SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock;
+
+LabelledStatement: Identifier COLON Statement {$$= new LabelledStatement($1,$3);}
 
 CaseBlock: LBRACE RBRACE
 			| LBRACE CaseClauses RBRACE
@@ -104,70 +142,78 @@ DefaultClause: DEFAULT COLON
 		;
 
 
-IterationStatement: 	WHILE LPARAM Expression RPARAM Statement
-                        ;
+IterationStatement:  DO Statement WHILE LPARAM Expression RPARAM SEMICOLON {$$=new DoWhileStatement($2,$5);}
+			| WHILE LPARAM Expression RPARAM Statement {$$=new WhileStatement($3,$5);}
+			| FOR LPARAM Expression SEMICOLON Expression SEMICOLON Expression RPARAM Statement {$$ = new ForStatement($3,$5,$7,$9);}
+			| FOR LPARAM Expression SEMICOLON Expression SEMICOLON RPARAM Statement {$$ = new ForStatement($3,$5,NULL,$8);}
+			| FOR LPARAM Expression  SEMICOLON SEMICOLON  Expression RPARAM Statement {$$ = new ForStatement($3,NULL,$6,$8);}
+			| FOR LPARAM Expression  SEMICOLON SEMICOLON  RPARAM Statement {$$ = new ForStatement($3,NULL,NULL,$7);}
+			| FOR LPARAM SEMICOLON Expression SEMICOLON Expression RPARAM Statement {$$ = new ForStatement(NULL, $4, $6, $8);}
+			| FOR LPARAM SEMICOLON Expression SEMICOLON  RPARAM Statement {$$ = new ForStatement(NULL, $4, NULL, $7);}
+			| FOR LPARAM SEMICOLON SEMICOLON Expression RPARAM Statement {$$ = new ForStatement(NULL,NULL,$5,$7);}
+			| FOR LPARAM SEMICOLON SEMICOLON RPARAM Statement {$$ = new ForStatement(NULL,NULL,NULL,$6);}
+			; 
 
-IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement
-			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE
+IfStatement: IF LPARAM Expression RPARAM Statement ELSE Statement	{$$=new IfStatement($3,$5,$7);}
+			| IF LPARAM Expression RPARAM Statement %prec LOWER_THAN_ELSE {$$=new IfStatement($3,$5,NULL);}
 			;
 
-VariableStatement: VAR VariableDeclarationList SEMICOLON
+VariableStatement: VAR VariableDeclarationList SEMICOLON  {$$=new VariableStatement($2);}
 		 ;
 
-VariableDeclarationList: VariableDeclaration
-			| VariableDeclarationList ',' VariableDeclaration
+VariableDeclarationList: VariableDeclaration  {$$=new vector<Expression*>(); $$->push_back($1);}
+			| VariableDeclarationList ',' VariableDeclaration {$$=$1; $$->push_back($3);}
 			;
 
-VariableDeclaration: Identifier Initialiser
-		   | Identifier
+VariableDeclaration: Identifier Initialiser  {$$ = new VariableExpression($1,$2);}
+		   | Identifier {$$=$1;}
 		   ;
 
-Initialiser: EQUALS AssignmentExpression
+Initialiser: EQUALS AssignmentExpression  {$$=$2;}
 	   ;
 
-ExpressionStatement: Expression SEMICOLON
+ExpressionStatement: Expression SEMICOLON {$$ = new ExpressionStatement($1);}
 	;
 
-Expression: AssignmentExpression
+Expression: AssignmentExpression {$$ = $1;}
 	;
 
-AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression
+AssignmentExpression: LeftHandSideExpression EQUALS AssignmentExpression {$$ = new AssignmentExpression($1, $3);}
 		    | ConditionalExpression
 		    ;
 
-ConditionalExpression: LogicalORExpression
+ConditionalExpression: LogicalORExpression {$$ = $1;}
 			| LogicalORExpression QUESTIONMARK AssignmentExpression COLON AssignmentExpression
 		     ;
 
-LogicalORExpression: LogicalANDExpression
+LogicalORExpression: LogicalANDExpression {$$ = $1;}
 			| LogicalANDExpression OR BitwiseORExpression
 		   ;
 
-LogicalANDExpression: BitwiseORExpression
+LogicalANDExpression: BitwiseORExpression {$$ = $1;}
 			| LogicalANDExpression AND BitwiseORExpression
 		    ;
 
-BitwiseORExpression: BitwiseXORExpression
+BitwiseORExpression: BitwiseXORExpression {$$ = $1;}
 			| BitwiseORExpression '|' BitwiseXORExpression
 		    ;
 
-BitwiseXORExpression: BitwiseANDExpression
+BitwiseXORExpression: BitwiseANDExpression {$$ = $1;}
 			| BitwiseXORExpression '^' BitwiseANDExpression
 		    ;
-
-BitwiseANDExpression: EqualityExpression
+			
+BitwiseANDExpression: EqualityExpression {$$ = $1;}
 			| BitwiseANDExpression '&' EqualityExpression
 		    ;
 
-EqualityExpression: RelationalExpression
+EqualityExpression: RelationalExpression {$$ = $1;}
 			| EqualityExpression ET RelationalExpression
 			| EqualityExpression NEV RelationalExpression
 			| EqualityExpression NEVT RelationalExpression
 			| EqualityExpression ETT RelationalExpression
-
 		 ;
 
-RelationalExpression: ShiftExpression
+RelationalExpression: ShiftExpression {$$ = $1;}
 			| RelationalExpression '<' ShiftExpression
 			| RelationalExpression '>' ShiftExpression
 			| RelationalExpression LE ShiftExpression
@@ -176,23 +222,25 @@ RelationalExpression: ShiftExpression
 			| RelationalExpression IN ShiftExpression
 		    ;
 
-ShiftExpression: AdditiveExpression
-			| ShiftExpression LEFTSHIFT AdditiveExpression
-			| ShiftExpression RIGHTSHIFT AdditiveExpression
-			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression
+ShiftExpression: AdditiveExpression {$$ = $1;}
+			| ShiftExpression LEFTSHIFT AdditiveExpression		{$$ = new BinaryExpression($1, LEFTSHIFT, $3);}
+			| ShiftExpression RIGHTSHIFT AdditiveExpression		{$$ = new BinaryExpression($1, RIGHTSHIFT, $3);}
+			| ShiftExpression LOGICRIGHTSHIFT AdditiveExpression {$$ = new BinaryExpression($1, LOGICRIGHTSHIFT, $3);}
 			;
 
 
-AdditiveExpression: MultiplicativeExpression
-			| AdditiveExpression '+' MultiplicativeExpression
-			| AdditiveExpression '-' MultiplicativeExpression
+AdditiveExpression: MultiplicativeExpression {$$ = $1;}
+			| AdditiveExpression '+' MultiplicativeExpression	{$$ = new AdditiveExpression("+",$1,$3)}
+			| AdditiveExpression '-' MultiplicativeExpression	{$$ = new AdditiveExpression("-",$1,$3)}
 			;
 
-MultiplicativeExpression: UnaryExpression
-			| MultiplicativeExpression MultiplicativeOperator UnaryExpression
+MultiplicativeExpression: UnaryExpression {$$ = $1;}
+			| MultiplicativeExpression '*' UnaryExpression {$$ = new MultiplicativeExpression("*",$1,$3)}
+			| MultiplicativeExpression '/' UnaryExpression {$$ = new MultiplicativeExpression("/",$1,$3)}
+			| MultiplicativeExpression '%' UnaryExpression {$$ = new MultiplicativeExpression("%",$1,$3)}
 			;
-
-UnaryExpression: PostfixExpression
+			
+UnaryExpression: PostfixExpression {$$ = $1;}
 			| DELETE UnaryExpression
 			| '+' UnaryExpression
 			| '-' UnaryExpression
@@ -200,46 +248,47 @@ UnaryExpression: PostfixExpression
 			| DEC UnaryExpression
 			;
 
-
-
-PostfixExpression: LeftHandSideExpression
+PostfixExpression: LeftHandSideExpression {$$ = $1;}
 		 ;
 
-LeftHandSideExpression: NewExpression
+LeftHandSideExpression: NewExpression {$$ = $1;}
 		      ;
 
-NewExpression: MemberExpression
+NewExpression: MemberExpression {$$ = $1;}
 	      ;
 
-MemberExpression: PrimaryExpression
+MemberExpression: PrimaryExpression {$$ = $1;}
 		;
 
-PrimaryExpression: IdentifierReference
-		 | Literal
+PrimaryExpression: IdentifierReference {$$ = $1;}
+		 | Literal {$$ = $1;}
 		 ;
 
-IdentifierReference: Identifier
+IdentifierReference: Identifier {$$ = $1;}
 		   ;
 
-Identifier: IDENTIFIERNAME
+Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 	  ;
 
-Literal: NumericLiteral
-	|STRINGLITERAL
-	|NULLLITERAL
-	|BOOLEANLITERAL
+Literal: NumericLiteral  {$$ = $1;}
+	|STRINGLITERAL {$$=new StringLiteral($1);}
+	|NULLLITERAL   {$$=new NullLiteral($1);}
+	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
 	;
 
-NumericLiteral: DecimalLiteral
-		| BinaryIntegerLiteral
+NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}
+		| BINARYINTEGERLITERAL
 	      ;
 		  
-MultiplicativeOperator: '*' | '/' | '%'
-			;
-
 
 %%
 
+int yywrap()
+{
+    return 1;
+}
+
+/*
 int main(int argc, char* argv[])
 {
 	if (argc >1)
@@ -249,3 +298,4 @@ int main(int argc, char* argv[])
 	yyparse();
 }
 
+*/
