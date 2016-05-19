@@ -23,6 +23,7 @@
 	#include "ReturnStatement.h"
 	#include "ContinueStatement.h"
 	#include "LabelledStatement.h"
+	#include "SwitchStatement.h"
 
 
 
@@ -59,7 +60,7 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement ContinueStatement LabelledStatement
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement ContinueStatement LabelledStatement SwitchStatement
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -114,10 +115,10 @@ ContinueStatement: CONTINUE SEMICOLON
 				  ;
 
 BreakableStatement: IterationStatement {$$=$1;}
-			| SwitchStatement
+			| SwitchStatement {$$=$1;}
                         ;
 
-SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock;
+SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock {$$=new SwitchStatement($3);}
 
 LabelledStatement: Identifier COLON Statement {$$= new LabelledStatement($1,$3);}
 
