@@ -24,7 +24,6 @@
 	#include "ContinueStatement.h"
 	#include "LabelledStatement.h"
 	#include "SwitchStatement.h"
-	#include "RelationalStatement.h"
 
 
 
@@ -216,12 +215,12 @@ EqualityExpression: RelationalExpression {$$ = $1;}
 		 ;
 
 RelationalExpression: ShiftExpression {$$ = $1;}
-			| RelationalExpression '<' ShiftExpression {$$ = new RelationalExpression($1,"<",$3)}
-			| RelationalExpression '>' ShiftExpression {$$ = new RelationalExpression($1,">",$3)}
-			| RelationalExpression LE ShiftExpression  {$$ = new RelationalExpression($1, LE, $3);}
-			| RelationalExpression GE ShiftExpression  {$$ = new RelationalExpression($1, GE, $3);}
-			| RelationalExpression INSTANCEOF ShiftExpression  {$$ = new RelationalExpression($1, INSTANCEOF, $3);}
-			| RelationalExpression IN ShiftExpression  {$$ = new RelationalExpression($1, IN, $3);}
+			| RelationalExpression '<' ShiftExpression
+			| RelationalExpression '>' ShiftExpression
+			| RelationalExpression LE ShiftExpression
+			| RelationalExpression GE ShiftExpression
+			| RelationalExpression INSTANCEOF ShiftExpression
+			| RelationalExpression IN ShiftExpression
 		    ;
 
 ShiftExpression: AdditiveExpression {$$ = $1;}
