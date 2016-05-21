@@ -23,6 +23,8 @@
 	#include "ReturnStatement.h"
 	#include "ContinueStatement.h"
 	#include "LabelledStatement.h"
+	#include "SwitchStatement.h"
+	#include "RelationalStatement.h"
 
 
 
@@ -59,7 +61,7 @@
 
 %type <e> Identifier IdentifierReference VariableDeclaration Initialiser
 %type <e> NumericLiteral Literal PrimaryExpression MemberExpression NewExpression Expression AssignmentExpression ConditionalExpression LogicalORExpression LogicalANDExpression BitwiseORExpression BitwiseXORExpression BitwiseANDExpression EqualityExpression RelationalExpression ShiftExpression AdditiveExpression MultiplicativeExpression UnaryExpression PostfixExpression LeftHandSideExpression 
-%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement ContinueStatement LabelledStatement
+%type <s> Statement ExpressionStatement IfStatement IterationStatement BlockStatement Block VariableStatement ScriptBody Script BreakableStatement WithStatement BreakStatement ReturnStatement ContinueStatement LabelledStatement SwitchStatement
 %type <exprs> VariableDeclarationList
 %type <stmts> StatementList 
 
@@ -114,10 +116,10 @@ ContinueStatement: CONTINUE SEMICOLON
 				  ;
 
 BreakableStatement: IterationStatement {$$=$1;}
-			| SwitchStatement
+			| SwitchStatement {$$=$1;}
                         ;
 
-SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock;
+SwitchStatement: SWITCH LPARAM Expression RPARAM CaseBlock {$$=new SwitchStatement($3);}
 
 LabelledStatement: Identifier COLON Statement {$$= new LabelledStatement($1,$3);}
 
@@ -214,12 +216,12 @@ EqualityExpression: RelationalExpression {$$ = $1;}
 		 ;
 
 RelationalExpression: ShiftExpression {$$ = $1;}
-			| RelationalExpression '<' ShiftExpression
-			| RelationalExpression '>' ShiftExpression
-			| RelationalExpression LE ShiftExpression
-			| RelationalExpression GE ShiftExpression
-			| RelationalExpression INSTANCEOF ShiftExpression
-			| RelationalExpression IN ShiftExpression
+			| RelationalExpression '<' ShiftExpression {$$ = new RelationalExpression($1,"<",$3)}
+			| RelationalExpression '>' ShiftExpression {$$ = new RelationalExpression($1,">",$3)}
+			| RelationalExpression LE ShiftExpression  {$$ = new RelationalExpression($1, LE, $3);}
+			| RelationalExpression GE ShiftExpression  {$$ = new RelationalExpression($1, GE, $3);}
+			| RelationalExpression INSTANCEOF ShiftExpression  {$$ = new RelationalExpression($1, INSTANCEOF, $3);}
+			| RelationalExpression IN ShiftExpression  {$$ = new RelationalExpression($1, IN, $3);}
 		    ;
 
 ShiftExpression: AdditiveExpression {$$ = $1;}
