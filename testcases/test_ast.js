@@ -41,6 +41,17 @@ x << 3;
 t >> 2;
 y >>> 6;
 
+if (x>y) {
+    x=y;
+}
+
+x<y;
+x>=y;
+x<=y;
+
+Test: if(x = 42) {
+    t = 12;
+}
 
 switch (day) {
     case 0:
@@ -67,20 +78,15 @@ switch (day) {
 }
 
 if( x == 42 ) {
-    break;
+    break x;
 } 
 
-if(x == 42) {
-	
+if(x == 42) {	
     var t = 10;
-    return x+t;
+    return;
 }
 
 if(x == 42) {
-
-    continue;
+    continue y;
 }
 
-Test: if(x = 42) {
-    t = 12;
-}

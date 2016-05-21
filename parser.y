@@ -24,7 +24,7 @@
 	#include "ContinueStatement.h"
 	#include "LabelledStatement.h"
 	#include "SwitchStatement.h"
-	#include "RelationalStatement.h"
+	#include "RelationalExpression.h"
 
 
 
@@ -103,7 +103,7 @@ Statement:  BlockStatement		  {$$ = $1;}
 WithStatement: WITH LPARAM Expression RPARAM Statement  {$$= new WithStatement($3,$5);}
 			   ;
 
-ReturnStatement: RETURN SEMICOLON
+ReturnStatement: RETURN SEMICOLON {$$=new ReturnStatement(NULL);}
 			| RETURN Expression SEMICOLON {$$= new ReturnStatement($2);}
 				 ;
 
@@ -216,8 +216,8 @@ EqualityExpression: RelationalExpression {$$ = $1;}
 		 ;
 
 RelationalExpression: ShiftExpression {$$ = $1;}
-			| RelationalExpression '<' ShiftExpression {$$ = new RelationalExpression($1,"<",$3)}
-			| RelationalExpression '>' ShiftExpression {$$ = new RelationalExpression($1,">",$3)}
+			| RelationalExpression '<' ShiftExpression {$$ = new RelationalExpression($1,'<',$3)}
+			| RelationalExpression '>' ShiftExpression {$$ = new RelationalExpression($1,'>',$3)}
 			| RelationalExpression LE ShiftExpression  {$$ = new RelationalExpression($1, LE, $3);}
 			| RelationalExpression GE ShiftExpression  {$$ = new RelationalExpression($1, GE, $3);}
 			| RelationalExpression INSTANCEOF ShiftExpression  {$$ = new RelationalExpression($1, INSTANCEOF, $3);}

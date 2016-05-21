@@ -11,9 +11,9 @@ class RelationalExpression : public Expression {
 private:
 	string Myname;
 	Expression *lhs, *rhs;
-	char *op;
+	int op;
 public:
-	RelationalExpression(Expression* lhs, char* op, Expression* rhs) {
+	RelationalExpression(Expression* lhs, int op, Expression* rhs) {
 		this->lhs = lhs;
 		this->rhs = rhs;
 		this->Myname = "RelationalExpression";
