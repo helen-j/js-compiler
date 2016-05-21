@@ -34,11 +34,10 @@ int main(int argc, char* argv[])
 		cout << "x=hello" <<endl;
 	}
 
-
-
-
-
-
+	//INCREMENT OPERATOR TEST
+	global->set("x", new jsNumber(42));
+	global->set("y", Increment(global->get("x")));
+	consolelog(global->get("y"));
 
 
 

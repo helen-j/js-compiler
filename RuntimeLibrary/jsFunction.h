@@ -61,6 +61,15 @@ jsValue* Minus(jsValue* lnum, jsValue* rnum) {
 		return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
 }
 
+//Increment operator
+jsValue* Increment(jsValue* expr) {
+	expr = expr->ToNumber();
+	//TODO ReturnIfAbrupt(oldValue).
+	expr = Plus(expr, new jsNumber(1));
+	//TODO Let status be PutValue(expr, newValue).
+	//TODO ReturnIfAbrupt(status).
+	return expr;
+}
 
 void consolelog(jsValue* x) {
 	cout << x->ToString()->value << endl;
