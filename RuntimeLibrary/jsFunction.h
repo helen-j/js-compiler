@@ -55,9 +55,12 @@ jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 		}
 
 }
+//Subtraction operator 
+jsValue* Minus(jsValue* lnum, jsValue* rnum) {
 
+		return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
+}
 
-	
 
 void consolelog(jsValue* x) {
 	cout << x->ToString()->value << endl;

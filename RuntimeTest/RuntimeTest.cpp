@@ -22,6 +22,11 @@ int main(int argc, char* argv[])
 	//z=(x==y)
 	global->set("z", Equals(global->get("x"), (global->get("y"))));
 
+	/*
+	//y=x-5 test for subtraction
+	global->set("y", Minus(global->get("x"), new jsNumber(5)));
+	consolelog(global->get("y"));
+	*/
 	
 	// if (z)
 	if (global->get("z")->ToBool()->value){
