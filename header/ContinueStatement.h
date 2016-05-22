@@ -12,13 +12,14 @@ class ContinueStatement : public Statement
 private:
 	Expression *expr;
 public:
-	ContinueStatement(Expression *expr){
+	ContinueStatement(Expression *expr) : expr(expr) {
 		this->expr = expr;
 	};
 	void DumpValue(int indent) {
 		this->Indent(indent);
 		cout << "ContinueStatement" << endl;
-		expr->DumpValue(indent + 1);
+		if (expr!=nullptr)
+			expr->DumpValue(indent + 1);
 	};
 };
 

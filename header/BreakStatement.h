@@ -18,7 +18,8 @@ public:
 	void DumpValue(int indent) {
 		this->Indent(indent);
 		cout << "BreakStatement" << endl;
-		expr->DumpValue(indent + 1);
+		if (expr!=nullptr)
+			expr->DumpValue(indent + 1);
 	};
 };
 
