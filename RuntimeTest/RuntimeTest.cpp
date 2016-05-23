@@ -5,7 +5,10 @@
 int main(int argc, char* argv[])
 {	
 	jsObject* global = new jsObject();
-
+	jsValue* r0 = new jsReference(global, "x");
+	jsValue* r1 = new jsNumber(42);
+	jsValue* r2 = Assign(r0, r1);
+/*
 	global->set("x", new jsNumber(42));
 
 	global->set("y", Plus(global->get("x"), new jsNumber(0)));
@@ -20,7 +23,7 @@ int main(int argc, char* argv[])
 	consolelog(global->get("y"));
 	*/
 	//z=(x==y)
-	global->set("z", Equals(global->get("x"), (global->get("y"))));
+//global->set("z", Equals(global->get("x"), (global->get("y"))));
 
 	/*
 	//y=x-5 test for subtraction
@@ -29,7 +32,7 @@ int main(int argc, char* argv[])
 	*/
 	
 	// if (z)
-	if (global->get("z")->ToBool()->value){
+/*f (global->get("z")->ToBool()->value){
 
 		cout << "x=hello" <<endl;
 	}
@@ -38,7 +41,7 @@ int main(int argc, char* argv[])
 	global->set("x", new jsNumber(42));
 	global->set("y", Increment(global->get("x")));
 	consolelog(global->get("y"));
-
+*/
 
 
 }
