@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "jsValue.h"
+#include "jsReference.h"
 
 using namespace std;
 
@@ -13,6 +14,38 @@ jsValue* Plus(jsValue* lprim, jsValue* rprim) {
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
 
+jsValue* GetValue(jsValue* V)
+{
+//If Type(V) is not Reference, return V.
+			jsReference *ref = dynamic_cast<jsReference*>(V);
+			if (ref == NULL)
+				return V;
+//Return base.[[Get]](GetReferencedName(V), GetThisValue(V)).
+			return	ref->base->get(ref->name);
+
+}
+
+void* PutValue(jsValue* V, jsValue* W)
+{
+//if Type(V) is not Reference, throw a ReferenceError exception.
+			jsReference *ref = dynamic_cast<jsReference*>(V);
+			if (ref == NULL)
+				throw new std::exception("Reference error");
+//let succeeded be base.[[Set]](GetReferencedName(V), W, GetThisValue(V)).
+			ref->base->set(ref->name, W);
+}
+
+}
+
+jsValue* Assign(jsValue* lref, jsValue* rref) 
+{
+	//1.D Let rval be GetValue(rref)
+	jsValue* rval = GetValue(rref);
+	//1.F Let status be PutValue(lref, rval)
+	jsValue* status = PutValue(lref, rval);
+	return status;
+
+}
 
 jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 	//	1.	ReturnIfAbrupt(x).
