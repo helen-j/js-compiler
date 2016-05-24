@@ -107,12 +107,12 @@ ReturnStatement: RETURN SEMICOLON {$$=new ReturnStatement(NULL);}
 			| RETURN Expression SEMICOLON {$$= new ReturnStatement($2);}
 				 ;
 
-BreakStatement: BREAK SEMICOLON
-			| BREAK Identifier SEMICOLON {$$= new BreakStatement($2);}
+BreakStatement: BREAK SEMICOLON {$$=new BreakStatement(NULL);}
+			| BREAK Expression SEMICOLON {$$= new BreakStatement($2);}
 				;
 
-ContinueStatement: CONTINUE SEMICOLON
-			| CONTINUE Identifier SEMICOLON {$$= new ContinueStatement($2);}
+ContinueStatement: CONTINUE SEMICOLON {$$=new ContinueStatement(NULL);}
+			| CONTINUE Expression SEMICOLON {$$= new ContinueStatement($2);}
 				  ;
 
 BreakableStatement: IterationStatement {$$=$1;}
