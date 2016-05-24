@@ -13,6 +13,31 @@ jsValue* Plus(jsValue* lprim, jsValue* rprim) {
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
 
+jsValue* Lessthan(jsValue* lprim, jsValue* rprim) 
+{
+	    //1.ReturnIfAbrupt(x).
+		//2.ReturnIfAbrupt(y).
+		//3.If the LeftFirst flag is true, then a.Let px be ToPrimitive(x, hint Number).
+		//b.ReturnIfAbrupt(px).
+		//c.Let py be ToPrimitive(y, hint Number).
+		//d.ReturnIfAbrupt(py).
+
+		//4.Else the order of evaluation needs to be reversed to preserve left to right evaluation a.Let py be ToPrimitive(y, hint Number).
+		//b.ReturnIfAbrupt(py).
+		//c.Let px be ToPrimitive(x, hint Number).
+		//d.ReturnIfAbrupt(px).
+
+
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value < rprim->ToString()->value);
+	}
+	else 
+		return new jsBoolean(lprim->ToNumber()->value < rprim->ToNumber()->value);
+
+}
+
+
 
 jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 	//	1.	ReturnIfAbrupt(x).

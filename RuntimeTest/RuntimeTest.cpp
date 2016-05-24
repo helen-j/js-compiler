@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 
 	global->set("x", new jsNumber(42));
 
-	global->set("y", Plus(global->get("x"), new jsNumber(0)));
+	global->set("y", Plus(global->get("x"), new jsNumber(1)));
 
 	consolelog(global->get("y"));
 
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 	consolelog(global->get("y"));
 	*/
 	//z=(x==y)
-	global->set("z", Equals(global->get("x"), (global->get("y"))));
+	global->set("z", Lessthan(global->get("x"), (global->get("y"))));
 
 	/*
 	//y=x-5 test for subtraction
@@ -35,9 +35,9 @@ int main(int argc, char* argv[])
 	}
 
 	//INCREMENT OPERATOR TEST
-	global->set("x", new jsNumber(42));
+	/*global->set("x", new jsNumber(42));
 	global->set("y", Increment(global->get("x")));
-	consolelog(global->get("y"));
+	consolelog(global->get("y"));*/
 
 
 
