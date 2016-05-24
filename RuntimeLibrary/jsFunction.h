@@ -13,6 +13,53 @@ jsValue* Plus(jsValue* lprim, jsValue* rprim) {
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
 
+jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
+{
+	//1.ReturnIfAbrupt(x).
+	//2.ReturnIfAbrupt(y).
+	//3.If the LeftFirst flag is true, then a.Let px be ToPrimitive(x, hint Number).
+	//b.ReturnIfAbrupt(px).
+	//c.Let py be ToPrimitive(y, hint Number).
+	//d.ReturnIfAbrupt(py).
+
+	//4.Else the order of evaluation needs to be reversed to preserve left to right evaluation a.Let py be ToPrimitive(y, hint Number).
+	//b.ReturnIfAbrupt(py).
+	//c.Let px be ToPrimitive(x, hint Number).
+	//d.ReturnIfAbrupt(px).
+
+
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value < rprim->ToString()->value);
+	}
+	else
+		return new jsBoolean(lprim->ToNumber()->value < rprim->ToNumber()->value);
+
+}
+
+jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
+{
+	if (lprim->ToBool() && rprim->ToBool())
+		
+		{
+			if (lprim->ToBool() == false)
+				return new jsBoolean(lprim->ToBool()->value);
+			else
+			{
+				
+				
+					if (rprim->ToBool() == false)
+						return new jsBoolean(rprim->ToBool()->value);
+					else
+					{
+						return new jsBoolean(rprim->ToBool()->value);
+					}
+				}
+			
+		}
+}
+
+
 
 jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 	//	1.	ReturnIfAbrupt(x).
@@ -55,9 +102,36 @@ jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 		}
 
 }
+//Subtraction operator 
+jsValue* Minus(jsValue* lnum, jsValue* rnum) {
 
+		return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
+}
 
-	
+//Increment operator
+jsValue* Increment(jsValue* expr) {
+	expr = expr->ToNumber();
+	//TODO ReturnIfAbrupt(oldValue).
+	expr = Plus(expr, new jsNumber(1));
+	//TODO Let status be PutValue(expr, newValue).
+	//TODO ReturnIfAbrupt(status).
+	return expr;
+}
+
+//The unary + operator converts its operand to Number type.
+jsValue* unaryPlus(jsValue* expr) {
+	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
+	//1.Let expr be the result of evaluating UnaryExpression.
+	if (expr->Type() == String) {
+		return new jsString("please use integer value instead of a string or an integer string");
+	}else if (expr->Type() == Bool) {
+		return new jsString("A boolean type is not supported");
+	}else {
+	//2.Return ToNumber(GetValue(expr)).
+		return new jsNumber(expr->ToNumber()->value);
+	}
+}
+
 
 void consolelog(jsValue* x) {
 	cout << x->ToString()->value << endl;

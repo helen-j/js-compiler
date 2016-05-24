@@ -220,3 +220,5 @@ parser.tab.c
 parser.tab.h
 
 scanner.lex
+
+header/parser.tab.h
