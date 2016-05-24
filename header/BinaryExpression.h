@@ -4,6 +4,7 @@
 #include "Expression.h"
 #include "parser.tab.h"
 #endif
+extern int LastLabel;
 using namespace std;
 
 
@@ -42,5 +43,7 @@ public:
 		
 		rhs->DumpValue(indent + 1);
 	};
-
+	int GenCode(FILE* file) {
+		return LastLabel;
+	};
 };

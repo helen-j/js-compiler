@@ -22,5 +22,6 @@ public:
 		cout << "LabelledStatement" << endl;
 		exp->DumpValue(indent + 1);
 	};
+	void GenCode(FILE* file) {};
 };
 

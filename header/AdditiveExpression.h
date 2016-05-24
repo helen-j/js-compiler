@@ -25,4 +25,7 @@ public:
 		lhs->DumpValue(indent + 1);
 		rhs->DumpValue(indent + 1);
 	};
+	int GenCode(FILE* file) {
+		return 0;
+	};
 };

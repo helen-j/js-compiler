@@ -5,7 +5,6 @@
 #endif
 using namespace std;
 
-
 class BooleanLiteral : public Expression
 {
 private:
@@ -26,5 +25,8 @@ public:
 		cout << value << endl;
 		this->Indent(indent + 1);
 		cout << "}" << endl;
+	};
+	int GenCode(FILE* file) {
+		return 0;
 	};
 };

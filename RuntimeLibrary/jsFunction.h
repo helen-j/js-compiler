@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "jsValue.h"
+#include "jsReference.h"
 
 using namespace std;
 
@@ -13,6 +14,27 @@ jsValue* Plus(jsValue* lprim, jsValue* rprim) {
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
 
+jsValue* GetValue(jsValue* V)
+{
+	//If Type(V) is not Reference, return V.
+	jsReference *ref = dynamic_cast<jsReference*>(V);
+	if (ref == NULL)
+		return V;
+	//Return base.[[Get]](GetReferencedName(V), GetThisValue(V)).
+	return	ref->base->get(ref->name);
+
+}
+
+bool PutValue(jsValue* V, jsValue* W)
+{
+	//if Type(V) is not Reference, throw a ReferenceError exception.
+	jsReference *ref = dynamic_cast<jsReference*>(V);
+	if (ref == NULL)
+		throw new std::exception("Reference error");
+	//let succeeded be base.[[Set]](GetReferencedName(V), W, GetThisValue(V)).
+	ref->base->set(ref->name, W);
+	return true;
+}
 jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 {
 	//1.ReturnIfAbrupt(x).
@@ -40,26 +62,68 @@ jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
 {
 	if (lprim->ToBool() && rprim->ToBool())
-		
+
+	{
+		if (lprim->ToBool() == false)
+			return new jsBoolean(lprim->ToBool()->value);
+		else
 		{
-			if (lprim->ToBool() == false)
-				return new jsBoolean(lprim->ToBool()->value);
+
+
+			if (rprim->ToBool() == false)
+				return new jsBoolean(rprim->ToBool()->value);
 			else
 			{
-				
-				
-					if (rprim->ToBool() == false)
-						return new jsBoolean(rprim->ToBool()->value);
-					else
-					{
-						return new jsBoolean(rprim->ToBool()->value);
-					}
-				}
-			
+				return new jsBoolean(rprim->ToBool()->value);
+			}
 		}
+
+	}
 }
 
 
+//Subtraction operator 
+jsValue* Minus(jsValue* lnum, jsValue* rnum) {
+
+	return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
+}
+
+//Increment operator
+jsValue* Increment(jsValue* expr) {
+	expr = expr->ToNumber();
+	//TODO ReturnIfAbrupt(oldValue).
+	expr = Plus(expr, new jsNumber(1));
+	//TODO Let status be PutValue(expr, newValue).
+	//TODO ReturnIfAbrupt(status).
+	return expr;
+}
+
+//The unary + operator converts its operand to Number type.
+jsValue* unaryPlus(jsValue* expr) {
+	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
+	//1.Let expr be the result of evaluating UnaryExpression.
+	if (expr->Type() == String) {
+		return new jsString("please use integer value instead of a string or an integer string");
+	}
+	else if (expr->Type() == Bool) {
+		return new jsString("A boolean type is not supported");
+	}
+	else {
+		//2.Return ToNumber(GetValue(expr)).
+		return new jsNumber(expr->ToNumber()->value);
+	}
+}
+
+
+jsValue* Assign(jsValue* lref, jsValue* rref)
+{
+	//1.D Let rval be GetValue(rref)
+	jsValue* rval = GetValue(rref);
+	//1.F Let status be PutValue(lref, rval)
+	bool status = PutValue(lref, rval);
+	//1.G return rval
+	return rval;
+}
 
 jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 	//	1.	ReturnIfAbrupt(x).
@@ -101,35 +165,6 @@ jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 
 		}
 
-}
-//Subtraction operator 
-jsValue* Minus(jsValue* lnum, jsValue* rnum) {
-
-		return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
-}
-
-//Increment operator
-jsValue* Increment(jsValue* expr) {
-	expr = expr->ToNumber();
-	//TODO ReturnIfAbrupt(oldValue).
-	expr = Plus(expr, new jsNumber(1));
-	//TODO Let status be PutValue(expr, newValue).
-	//TODO ReturnIfAbrupt(status).
-	return expr;
-}
-
-//The unary + operator converts its operand to Number type.
-jsValue* unaryPlus(jsValue* expr) {
-	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
-	//1.Let expr be the result of evaluating UnaryExpression.
-	if (expr->Type() == String) {
-		return new jsString("please use integer value instead of a string or an integer string");
-	}else if (expr->Type() == Bool) {
-		return new jsString("A boolean type is not supported");
-	}else {
-	//2.Return ToNumber(GetValue(expr)).
-		return new jsNumber(expr->ToNumber()->value);
-	}
 }
 
 

@@ -8,6 +8,8 @@
 #endif
 
 #include <vector>
+
+extern int LastLabel;
 using namespace std;
 
 class VariableStatement : public Statement
@@ -25,6 +27,7 @@ public:
 		for (std::vector<Expression*>::iterator iter = exprs->begin(); iter != exprs->end(); ++iter)
 			(*iter)->DumpValue(indent + 1);
 	}
+	void GenCode(FILE* file){}
 };
 
 
@@ -41,5 +44,8 @@ public:
 		cout << "VariableDeclaration" << endl;
 		ident->DumpValue(indent + 1);
 		init->DumpValue(indent + 1);
+	};
+	int GenCode(FILE* file) {
+		return LastLabel;
 	};
 };

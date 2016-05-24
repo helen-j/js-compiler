@@ -22,4 +22,5 @@ public:
 		expr->DumpValue(indent + 1);
 		stm->DumpValue(indent + 1);
 	}
+	void GenCode(FILE* file) {};
 };

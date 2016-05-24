@@ -7,6 +7,9 @@
 
 using namespace std;
 
-class Expression : public Node { };
+class Expression : public Node {
+public:
+	virtual int GenCode(FILE* file) = 0;
+};
 
 #endif

@@ -23,4 +23,5 @@ public:
 		cout << Myname << endl;
 		(exp)->DumpValue(indent+1);
 	};
+	void GenCode(FILE* file) {};
 };

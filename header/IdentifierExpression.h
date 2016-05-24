@@ -3,6 +3,7 @@
 #ifndef Expression_H_
 #include "Expression.h"
 #endif
+extern int LastLabel;
 using namespace std;
 
 class IdentifierExpression : public Expression
@@ -25,5 +26,9 @@ public:
 		cout << name << endl;
 		this->Indent(indent + 1);
 		cout << "}" << endl;
+	};
+	int GenCode(FILE* file) {
+		emit(file, "jsValue* r%d = new jsReference(global, \"%s\");", LastLabel, this->name.c_str());
+		return LastLabel++;
 	};
 };

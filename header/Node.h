@@ -7,6 +7,14 @@ using namespace std;
 class Node
 {
 public:
+	void emit(FILE* outputfile, char* fmt, ...)
+	{
+		va_list args;
+		va_start(args, fmt);
+		vfprintf(outputfile, fmt, args);
+		fprintf(outputfile, "\n");
+		va_end(args);
+	}
 	virtual void DumpValue(int indent) = 0;
 	void Indent(int N)
 	{
