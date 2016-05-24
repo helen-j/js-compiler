@@ -43,4 +43,5 @@ public:
 			(stm1)->DumpValue(indent + 1);
 		}
 	};
+	void GenCode(FILE* file) {};
 };

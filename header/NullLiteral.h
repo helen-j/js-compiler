@@ -25,4 +25,7 @@ public:
 		this->Indent(indent + 1);
 		cout << "}" << endl;
 	};
+	int GenCode(FILE* file) {
+		return 0;
+	};
 };

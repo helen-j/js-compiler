@@ -20,5 +20,8 @@ public:
 		cout << "ExpressionStatement" << endl;
 		expr->DumpValue(indent + 1);
 	};
+	void GenCode(FILE* file) {
+		expr->GenCode(file);
+	};
 };
 

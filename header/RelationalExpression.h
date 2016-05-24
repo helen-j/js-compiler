@@ -4,6 +4,8 @@
 #ifndef Expression_H_
 #include "Expression.h"
 #endif
+
+extern int LastLabel;
 using namespace std;
 
 
@@ -24,5 +26,8 @@ public:
 		cout << Myname << endl;
 		lhs->DumpValue(indent + 1);
 		rhs->DumpValue(indent + 1);
+	};
+	int GenCode(FILE* file) {
+		return LastLabel;
 	};
 };

@@ -18,8 +18,9 @@ public:
 	void DumpValue(int indent) {
 		this->Indent(indent);
 		cout << "BreakStatement" << endl;
-		if (expr!=nullptr)
+		if (expr != nullptr)
 			expr->DumpValue(indent + 1);
 	};
+	void GenCode(FILE* file) {};
 };
 

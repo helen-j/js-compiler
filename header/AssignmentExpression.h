@@ -6,6 +6,7 @@
 #endif
 using namespace std;
 
+extern int LastLabel;
 
 class AssignmentExpression : public Expression {
 private:
@@ -23,4 +24,11 @@ public:
 		lhs->DumpValue(indent + 1);
 		rhs->DumpValue(indent + 1);
 	};
+	int GenCode(FILE* file) {
+		int lrefno, rrefno;
+		lrefno = lhs->GenCode(file);
+		rrefno = rhs->GenCode(file);
+		emit(file, "jsValue* r%d = Assign(r%d,r%d);", LastLabel,lrefno,rrefno);
+		return LastLabel++;
+	}; 
 };

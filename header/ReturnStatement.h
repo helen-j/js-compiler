@@ -21,5 +21,6 @@ public:
 		if (expr!=nullptr)
 			expr->DumpValue(indent + 1);
 	};
+	void GenCode(FILE* file) {};
 };
 

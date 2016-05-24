@@ -2,6 +2,7 @@
 #ifndef Expression_H_
 #include "Expression.h"
 #endif
+extern int LastLabel;
 using namespace std;
 
 
@@ -23,5 +24,9 @@ public:
 		cout << value << endl;
 		this->Indent(indent + 1);
 		cout << "}" << endl;
+	};
+	int GenCode(FILE* file) {
+		emit(file, "jsValue* r%d = new jsNumber(%f);", LastLabel, value);
+		return LastLabel++;
 	};
 };
