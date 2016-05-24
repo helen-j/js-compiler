@@ -96,6 +96,21 @@ jsValue* Increment(jsValue* expr) {
 	return expr;
 }
 
+//The unary + operator converts its operand to Number type.
+jsValue* unaryPlus(jsValue* expr) {
+	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
+	//1.Let expr be the result of evaluating UnaryExpression.
+	if (expr->Type() == String) {
+		return new jsString("please use integer value instead of a string or an integer string");
+	}else if (expr->Type() == Bool) {
+		return new jsString("A boolean type is not supported");
+	}else {
+	//2.Return ToNumber(GetValue(expr)).
+		return new jsNumber(expr->ToNumber()->value);
+	}
+}
+
+
 void consolelog(jsValue* x) {
 	cout << x->ToString()->value << endl;
 }

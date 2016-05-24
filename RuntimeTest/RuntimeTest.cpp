@@ -39,6 +39,14 @@ int main(int argc, char* argv[])
 	global->set("y", Increment(global->get("x")));
 	consolelog(global->get("y"));*/
 
+	//+unary test
+	global->set("m", new jsNumber(43));
+	global->set("n", unaryPlus(global->get("m")));
+	consolelog(global->get("n"));
+
+	global->set("o", new jsString("FourtyThree"));
+	global->set("p", unaryPlus(global->get("p")));
+	consolelog(global->get("p"));
 
 
 }
