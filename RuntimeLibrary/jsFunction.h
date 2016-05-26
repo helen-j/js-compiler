@@ -6,12 +6,10 @@
 
 using namespace std;
 
-jsValue* Plus(jsValue* lprim, jsValue* rprim) {
-	if (lprim->Type() == String || rprim->Type() == String) {
-		return new jsString(lprim->ToString()->value + rprim->ToString()->value);
-	}
-	else
-		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
+jsValue* ToPrimitive(jsValue* input) {
+	if (input->Type() == String || input->Type() == Number || input->Type() == Bool)
+		return input;
+	return NULL;
 }
 
 jsValue* GetValue(jsValue* V)
@@ -22,7 +20,6 @@ jsValue* GetValue(jsValue* V)
 		return V;
 	//Return base.[[Get]](GetReferencedName(V), GetThisValue(V)).
 	return	ref->base->get(ref->name);
-
 }
 
 bool PutValue(jsValue* V, jsValue* W)
@@ -35,6 +32,42 @@ bool PutValue(jsValue* V, jsValue* W)
 	ref->base->set(ref->name, W);
 	return true;
 }
+
+jsValue* Plus(jsValue* lref, jsValue* rref) {
+	//Let lref be the result of evaluating AdditiveExpression.
+	//Let lval be GetValue(lref).
+	jsValue* lval = GetValue(lref);
+	//ReturnIfAbrupt(lval).
+	//Let rref be the result of evaluating MultiplicativeExpression.
+	//Let rval be GetValue(rref).
+	jsValue* rval = GetValue(rref);
+	//ReturnIfAbrupt(rval).
+	//Let lprim be ToPrimitive(lval).
+	jsValue* lprim = ToPrimitive(lval);
+	//ReturnIfAbrupt(lprim).
+	//Let rprim be ToPrimitive(rval).
+	jsValue* rprim = ToPrimitive(rval);
+	//ReturnIfAbrupt(rprim).
+	if (lprim->Type() == String || rprim->Type() == String) {
+		/*If Type(lprim) is String or Type(rprim) is String, then
+		Let lstr be ToString(lprim).
+		ReturnIfAbrupt(lstr).
+		Let rstr be ToString(rprim).
+		ReturnIfAbrupt(rstr).
+		Return the String that is the result of concatenating lstr and rstr.
+		*/
+		return new jsString(lprim->ToString()->value + rprim->ToString()->value);
+	}
+	else
+		/*Let lnum be ToNumber(lprim).
+		ReturnIfAbrupt(lnum).
+		Let rnum be ToNumber(rprim).
+		ReturnIfAbrupt(rnum).
+		Return the result of applying the addition operation to lnum and rnum.See the Note below 12.7.5.
+		*/
+		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
+}
+
 jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 {
 	//1.ReturnIfAbrupt(x).
