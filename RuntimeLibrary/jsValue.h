@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace std;
-enum jsType {Number,String,Bool};
+enum jsType {Number,String,Bool,Reference};
 
 class jsString;
 class jsNumber;
