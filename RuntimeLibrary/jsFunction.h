@@ -68,6 +68,56 @@ jsValue* Plus(jsValue* lref, jsValue* rref) {
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
 
+jsValue* Multiplication(jsValue* lref, jsValue* rref) {
+
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
+
+		
+	if (lprim->Type() == String || rprim->Type() == String) {
+		jsValue* lprimValue = new jsString(lprim->ToNumber()->value);
+		jsValue* rprimValue = new jsString(rprim->ToNumber()->value);
+
+		if (lprimValue == NULL) {
+			throw new std::exception("Reference error");
+		}
+		else if (rprimValue == NULL) {
+			throw new std::exception("Reference error");
+		}
+		 else 
+			return new jsNumber(lprim->ToNumber()->value * rprim->ToNumber()->value);
+
+	}
+
+	else if (lprim->Type() == Number || rprim->Type() == String) {
+		jsValue* rprimValue = new jsString(rprim->ToNumber()->value);
+			if  (rprimValue == NULL) {
+			throw n\ew std::exception("Reference error")
+		}
+		else 
+			return new jsNumber(lprim->value * rprim->ToNumber()->value);
+		
+	}
+
+	
+	else if (lprim->Type() == String || rprim->Type() == Number) {
+		jsValue* lprimValue = new jsString(lprim->ToNumber()->value);
+			if  (lprimValue == NULL) {
+			throw new std::exception("Reference error")
+			}
+			else 
+				return new jsNumber(lprim->ToNumber()->value * rprim->value);
+		
+	}
+	else if (lprim->Type() == Number || rprim->Type() == Number) {
+		return new jsNumber(lprim->value * rprim->value);
+	}
+
+}
+
+
 jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 {
 	//1.ReturnIfAbrupt(x).
