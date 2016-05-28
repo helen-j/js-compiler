@@ -44,10 +44,16 @@ int main(int argc, char* argv[])
 	}
 
 	//INCREMENT OPERATOR TEST
-	/*global->set("x", new jsNumber(42));
+	global->set("x", new jsNumber(42));
 	global->set("y", Increment(global->get("x")));
-	consolelog(global->get("y"));*/
-}
+	consolelog(global->get("y"));
+
+
+    //DECREMENT OPERATOR TEST
+    global->set("x", new jsNumber(43));
+    global->set("y", Decrement(global->get("x")));
+    consolelog(global->get("y"));
+
 
 	//+unary test
 	global->set("m", new jsNumber(43));
@@ -57,4 +63,7 @@ int main(int argc, char* argv[])
 	global->set("o", new jsString("FourtyThree"));
 	global->set("p", unaryPlus(global->get("p")));
 	consolelog(global->get("p"));
+
+
+}
 

@@ -131,6 +131,13 @@ jsValue* Increment(jsValue* expr) {
 	return expr;
 }
 
+//Decrement Operator
+jsValue* Decrement(jsValue* expr) {
+	expr = expr->ToNumber();
+	expr = Minus(expr, new jsNumber(1));
+	return expr;
+}
+
 //The unary + operator converts its operand to Number type.
 jsValue* unaryPlus(jsValue* expr) {
 	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
