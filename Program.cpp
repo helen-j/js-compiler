@@ -24,6 +24,7 @@ void CodeGeneration(char* inputfile, Statement* root)
 	root->emit(outputFile, "{");
 	//global environment
 	root->emit(outputFile, "jsObject* global = new jsObject();");
+	root->emit(outputFile, "jsObject* env = global;");
 	root->GenCode(outputFile);
 	root->emit(outputFile, "consolelog(GetValue(r%d));", LastLabel-1);
 	root->emit(outputFile, "}"); // end of Main
