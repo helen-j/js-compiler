@@ -67,7 +67,7 @@ jsValue* Plus(jsValue* lref, jsValue* rref) {
 		*/
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
-
+/*
 jsValue* Multiplication(jsValue* lref, jsValue* rref) {
 
 	jsValue* lval = GetValue(lref);
@@ -116,7 +116,7 @@ jsValue* Multiplication(jsValue* lref, jsValue* rref) {
 	}
 
 }
-
+*/
 
 jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 {
@@ -166,9 +166,12 @@ jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
 
 
 //Subtraction operator 
-jsValue* Minus(jsValue* lnum, jsValue* rnum) {
-
-	return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
+jsValue* Minus(jsValue* lref, jsValue* rref) {
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
+	return new jsNumber(lprim->ToNumber()->value - rprim->ToNumber()->value);
 }
 
 //Increment operator
