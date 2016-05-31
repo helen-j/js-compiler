@@ -28,7 +28,7 @@ public:
 		cout << "}" << endl;
 	};
 	int GenCode(FILE* file) {
-		emit(file, "jsValue* r%d = new jsReference(global, \"%s\");", LastLabel, this->name.c_str());
+		emit(file, "jsValue* r%d = new jsReference(env, \"%s\");", LastLabel, this->name.c_str());
 		return LastLabel++;
 	};
 };

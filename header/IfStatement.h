@@ -31,5 +31,16 @@ public:
 			(stm2)->DumpValue(indent+1);
 		}
 	};
-	void GenCode(FILE* file) {};
+	void GenCode(FILE* file) {
+		int refno;
+		refno = exp->GenCode(file);
+		emit(file, "if (GetValue(r%d)->ToBool()->value) {", LastLabel - 1);
+		stm1->GenCode(file);
+		emit(file, "}");
+		if (stm2 != nullptr) {
+			emit(file, "else {");
+			stm2->GenCode(file);
+			emit(file, "}");
+		}
+	};
 };

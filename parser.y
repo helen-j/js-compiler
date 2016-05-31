@@ -25,7 +25,8 @@
 	#include "LabelledStatement.h"
 	#include "SwitchStatement.h"
 	#include "RelationalExpression.h"
-
+	#include "EqualityExpression.h"
+	#include "LogicalExpression.h"
 
 
 	int yylex();
@@ -189,11 +190,11 @@ ConditionalExpression: LogicalORExpression {$$ = $1;}
 		     ;
 
 LogicalORExpression: LogicalANDExpression {$$ = $1;}
-			| LogicalANDExpression OR BitwiseORExpression
+			| LogicalANDExpression OR BitwiseORExpression {$$= new LogicalExpression($1,OR,$3);}
 		   ;
 
 LogicalANDExpression: BitwiseORExpression {$$ = $1;}
-			| LogicalANDExpression AND BitwiseORExpression
+			| LogicalANDExpression AND BitwiseORExpression {$$= new LogicalExpression($1,AND,$3);}
 		    ;
 
 BitwiseORExpression: BitwiseXORExpression {$$ = $1;}
@@ -209,10 +210,10 @@ BitwiseANDExpression: EqualityExpression {$$ = $1;}
 		    ;
 
 EqualityExpression: RelationalExpression {$$ = $1;}
-			| EqualityExpression ET RelationalExpression
-			| EqualityExpression NEV RelationalExpression
-			| EqualityExpression NEVT RelationalExpression
-			| EqualityExpression ETT RelationalExpression
+			| EqualityExpression ET RelationalExpression {$$ = new EqualityExpression($1, ET, $3);}
+			| EqualityExpression NEV RelationalExpression  {$$ = new EqualityExpression($1, NEV, $3);}
+			| EqualityExpression NEVT RelationalExpression  {$$ = new EqualityExpression($1, NEVT, $3);}
+			| EqualityExpression ETT RelationalExpression  {$$ = new EqualityExpression($1, ETT, $3);}
 		 ;
 
 RelationalExpression: ShiftExpression {$$ = $1;}
