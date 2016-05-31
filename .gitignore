@@ -222,3 +222,4 @@ parser.tab.h
 scanner.lex
 
 header/parser.tab.h
+/testcases/test_all.js.cpp

@@ -67,6 +67,56 @@ jsValue* Plus(jsValue* lref, jsValue* rref) {
 		*/
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
+/*
+jsValue* Multiplication(jsValue* lref, jsValue* rref) {
+
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
+
+		
+	if (lprim->Type() == String || rprim->Type() == String) {
+		jsValue* lprimValue = new jsString(lprim->ToNumber()->value);
+		jsValue* rprimValue = new jsString(rprim->ToNumber()->value);
+
+		if (lprimValue == NULL) {
+			throw new std::exception("Reference error");
+		}
+		else if (rprimValue == NULL) {
+			throw new std::exception("Reference error");
+		}
+		 else 
+			return new jsNumber(lprim->ToNumber()->value * rprim->ToNumber()->value);
+
+	}
+
+	else if (lprim->Type() == Number || rprim->Type() == String) {
+		jsValue* rprimValue = new jsString(rprim->ToNumber()->value);
+			if  (rprimValue == NULL) {
+			throw n\ew std::exception("Reference error")
+		}
+		else 
+			return new jsNumber(lprim->value * rprim->ToNumber()->value);
+		
+	}
+
+	
+	else if (lprim->Type() == String || rprim->Type() == Number) {
+		jsValue* lprimValue = new jsString(lprim->ToNumber()->value);
+			if  (lprimValue == NULL) {
+			throw new std::exception("Reference error")
+			}
+			else 
+				return new jsNumber(lprim->ToNumber()->value * rprim->value);
+		
+	}
+	else if (lprim->Type() == Number || rprim->Type() == Number) {
+		return new jsNumber(lprim->value * rprim->value);
+	}
+
+}
+*/
 
 jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 {
@@ -116,9 +166,12 @@ jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
 
 
 //Subtraction operator 
-jsValue* Minus(jsValue* lnum, jsValue* rnum) {
-
-	return new jsNumber(lnum->ToNumber()->value - rnum->ToNumber()->value);
+jsValue* Minus(jsValue* lref, jsValue* rref) {
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
+	return new jsNumber(lprim->ToNumber()->value - rprim->ToNumber()->value);
 }
 
 //Increment operator
@@ -128,6 +181,13 @@ jsValue* Increment(jsValue* expr) {
 	expr = Plus(expr, new jsNumber(1));
 	//TODO Let status be PutValue(expr, newValue).
 	//TODO ReturnIfAbrupt(status).
+	return expr;
+}
+
+//Decrement Operator
+jsValue* Decrement(jsValue* expr) {
+	expr = expr->ToNumber();
+	expr = Minus(expr, new jsNumber(1));
 	return expr;
 }
 
