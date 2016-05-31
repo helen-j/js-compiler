@@ -29,7 +29,13 @@ jsValue* r16 = new jsReference(env, "y");
 jsValue* r17 = new jsNumber(0.000000);
 jsValue* r18 = Assign(r16,r17);
 }
-// Manually add the following lines to print out y.
-jsValue* r19 = new jsReference(env, "y");
-consolelog(GetValue(r19));
+jsValue* r19 = new jsReference(env, "x");
+jsValue* r20 = new jsReference(env, "x");
+jsValue* r21 = new jsNumber(1.000000);
+jsValue* r22 = Minus(r20,r21);
+jsValue* r23 = Assign(r19,r22);
+consolelog(GetValue(r23));
+//Manually add the following lines to print y
+jsValue* r24 = new jsReference(env, "y");
+consolelog(GetValue(r24));
 }
