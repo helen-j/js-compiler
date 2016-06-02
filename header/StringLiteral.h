@@ -13,6 +13,10 @@ private:
 public:
 	StringLiteral(string value)
 	{
+		//Remove Quotations
+		value=value.erase(0, 1);
+		value=value.erase(value.size()-1, value.size());
+		//Set value
 		this->value = value;
 	};
 	void DumpValue(int indent) {
@@ -26,6 +30,7 @@ public:
 		cout << "}" << endl;
 	};
 	int GenCode(FILE* file) {
-		return 0;
+		emit(file, "jsValue* r%d = new jsString(\"%s\");", LastLabel, value.c_str());
+		return LastLabel++;
 	};
 };

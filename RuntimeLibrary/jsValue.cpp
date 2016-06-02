@@ -29,7 +29,9 @@ jsNumber* jsBoolean::ToNumber() {
 }
 
 jsString* jsBoolean::ToString() {
-	return NULL;
+	if (value) return new jsString("TRUE");
+	else return new jsString("FALSE");
+	//return NULL;
 }
 
 jsType jsBoolean::Type() {
@@ -59,13 +61,30 @@ jsString* jsNumber::ToString() {
 }
 
 jsBoolean* jsNumber::ToBool() {
-	if (this->Type() == Number) {
 		if (this->value == 0) {
 			return new jsBoolean(false);
 		}
 		else {
 			return new jsBoolean(true);
 		}
-	}
 }
 
+
+jsObject::jsObject() {
+		this->property_table.clear();
+	}
+
+jsType jsObject::Type() {
+	return Object;
+}
+jsString* jsObject::ToString() {
+	//NOT DONE
+	return NULL;
+}
+jsBoolean* jsObject::ToBool() {
+	return new jsBoolean(true);
+}
+jsNumber* jsObject::ToNumber() {
+	//NOT DONE
+	return NULL;
+}

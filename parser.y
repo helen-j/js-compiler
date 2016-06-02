@@ -274,9 +274,9 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 	  ;
 
 Literal: NumericLiteral  {$$ = $1;}
-	|STRINGLITERAL {$$=new StringLiteral($1);}
-	|NULLLITERAL   {$$=new NullLiteral($1);}
-	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
+	|STRINGLITERAL {$$ = new StringLiteral($1);}
+	|NULLLITERAL   {$$ = new NullLiteral($1);}
+	|BOOLEANLITERAL {$$ = new BooleanLiteral($1);}
 	;
 
 NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}
