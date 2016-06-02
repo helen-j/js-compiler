@@ -1,4 +1,5 @@
 #include "Statement.h"
+#include "WhileStatement.h"
 
 using namespace std;
 
@@ -8,6 +9,7 @@ extern FILE *yyin;
 extern Statement *root;
 
 int LastLabel = 0;
+int WhileStatement::WhileObject = 0;
 
 void CodeGeneration(char* inputfile, Statement* root)
 {
