@@ -67,58 +67,25 @@ jsValue* Plus(jsValue* lref, jsValue* rref) {
 		*/
 		return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 }
-/*
+
 jsValue* Multiplication(jsValue* lref, jsValue* rref) {
+//Let left be the result of evaluating MultiplicativeExpression.
+//Let leftValue be GetValue(left).
+jsValue* lval = GetValue(lref);
+//ReturnIfAbrupt(leftValue).
+//Let right be the result of evaluating UnaryExpression.
+//Let rightValue be GetValue(right).
+jsValue* rval = GetValue(rref);
+//Let lnum be ToNumber(leftValue).
 
-	jsValue* lval = GetValue(lref);
-	jsValue* rval = GetValue(rref);
-	jsValue* lprim = ToPrimitive(lval);
-	jsValue* rprim = ToPrimitive(rval);
-
-		
-	if (lprim->Type() == String || rprim->Type() == String) {
-		jsValue* lprimValue = new jsString(lprim->ToNumber()->value);
-		jsValue* rprimValue = new jsString(rprim->ToNumber()->value);
-
-		if (lprimValue == NULL) {
-			throw new std::exception("Reference error");
-		}
-		else if (rprimValue == NULL) {
-			throw new std::exception("Reference error");
-		}
-		 else 
-			return new jsNumber(lprim->ToNumber()->value * rprim->ToNumber()->value);
-
-	}
-
-	else if (lprim->Type() == Number || rprim->Type() == String) {
-		jsValue* rprimValue = new jsString(rprim->ToNumber()->value);
-			if  (rprimValue == NULL) {
-			throw n\ew std::exception("Reference error")
-		}
-		else 
-			return new jsNumber(lprim->value * rprim->ToNumber()->value);
-		
-	}
-
-	
-	else if (lprim->Type() == String || rprim->Type() == Number) {
-		jsValue* lprimValue = new jsString(lprim->ToNumber()->value);
-			if  (lprimValue == NULL) {
-			throw new std::exception("Reference error")
-			}
-			else 
-				return new jsNumber(lprim->ToNumber()->value * rprim->value);
-		
-	}
-	else if (lprim->Type() == Number || rprim->Type() == Number) {
-		return new jsNumber(lprim->value * rprim->value);
-	}
-
+//ReturnIfAbrupt(lnum).
+//Let rnum be ToNumber(rightValue).
+//ReturnIfAbrupt(rnum).
+//Return the result of applying the MultiplicativeOperator(*, / , or %) to lnum and rnum
+return new jsNumber(lval->ToNumber()->value * rval->ToNumber()->value);
 }
-*/
 
-jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
+jsValue* Lessthan(jsValue* lref, jsValue* rref)
 {
 	//1.ReturnIfAbrupt(x).
 	//2.ReturnIfAbrupt(y).
@@ -131,7 +98,12 @@ jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 	//b.ReturnIfAbrupt(py).
 	//c.Let px be ToPrimitive(x, hint Number).
 	//d.ReturnIfAbrupt(px).
-
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	//ReturnIfAbrupt(lprim).
+	//Let rprim be ToPrimitive(rval).
+	jsValue* rprim = ToPrimitive(rval);
 
 	if (lprim->Type() == String || rprim->Type() == String)
 	{   //5. if both px and py are strings,then
@@ -140,6 +112,10 @@ jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 	else
 		return new jsBoolean(lprim->ToNumber()->value < rprim->ToNumber()->value);
 
+}
+
+jsValue* Greaterthan(jsValue* lref, jsValue* rref) {
+	return Lessthan(rref, lref);
 }
 
 jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
@@ -218,7 +194,16 @@ jsValue* Assign(jsValue* lref, jsValue* rref)
 	return rval;
 }
 
-jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
+jsBoolean* Equals(jsValue* lref, jsValue* rref) {
+	//Let lref be the result of evaluating EqualityExpression.
+	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
+	jsValue* lprim = GetValue(lref);
+	//ReturnIfAbrupt(lval).
+	//Let rref be the result of evaluating RelationalExpression.
+	//Let rval be GetValue(rref). -- Use rprim instead to work with the previously written codes.
+	jsValue* rprim = GetValue(rref);
+	//ReturnIfAbrupt(rval).
+	//Return the result of performing Abstract Equality Comparison rval == lval.
 	//	1.	ReturnIfAbrupt(x).
 	//		2.	ReturnIfAbrupt(y).
 	//		3.	If Type(x) is the same as Type(y), then
