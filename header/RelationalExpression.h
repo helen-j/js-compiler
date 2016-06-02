@@ -28,6 +28,26 @@ public:
 		rhs->DumpValue(indent + 1);
 	};
 	int GenCode(FILE* file) {
-		return LastLabel;
+		int lrefno, rrefno;
+		lrefno = lhs->GenCode(file);
+		rrefno = rhs->GenCode(file);
+		switch (op)
+		{
+		case '<':
+			emit(file, "jsValue* r%d = Lessthan(r%d,r%d);", LastLabel, lrefno, rrefno);
+			break;
+		case '>':
+			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno, rrefno);
+			break;
+		case LE:
+			break;
+		case GE:
+			break;
+		case INSTANCEOF:
+			break;
+		case IN:
+			break;
+		}
+		return LastLabel++;
 	};
 };
