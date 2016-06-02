@@ -41,6 +41,7 @@ jsNumber* ToNumber(jsValue* input) {
 		try { double double_s = stof(s); return new jsNumber(double_s); }
 		catch (exception e) { return new jsNumber(NAN); }
 	}
+	else if (input->Type() == Number) { return input->ToNumber(); }
 	//Symbol and Object not included yet
 }
 // TO DO 
@@ -361,34 +362,39 @@ jsBoolean* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool Lef
 		string spy = ((jsString*)py)->value;
 
 		if (spx.size() > spy.size()) {
-			bool result = spx.compare(0, spy.size(), spy);
-			if (result) { return new jsBoolean(false); }
+			int result = spx.compare(0, spy.size(), spy);
+			if (result==0) { return new jsBoolean(false); }
 		}
 		else if (spx.size() <= spy.size()) {
 			bool result = spy.compare(0, spx.size(), spx);
-			if (result) { return new jsBoolean(true); }
+			if (result==0) { return new jsBoolean(true); }
 		}
-		else {
-			int diff_index = 0;
-			bool finish = false;
 
-			if (spx.size() >= spy.size()) {
-				while (!finish) {
-					if (spx.at(diff_index) != spy.at(diff_index)) { finish = true; }
-					else { diff_index++; }
+		int diff_index = 0;
+		bool finish = false;
+
+		if (spx.size() >= spy.size()) {
+			while (!finish) {
+				if (spx.at(diff_index) != spy.at(diff_index)) {
+					    finish = true;
+					}
+					else {
+						++diff_index; if(diff_index > spy.size()) { finish = true; }
+					}
 				}
 			}
-			else {
+		else {
 				while (!finish) {
-					if (spy.at(diff_index) != spx.at(diff_index)) { finish = true; }
-					else { diff_index++; }
+					if (spy.at(diff_index) != spx.at(diff_index)) {
+						finish = true; }
+					else { ++diff_index; if (diff_index > spx.size()) { finish = true; }
+					}
 				}
 			}
 
 			if (spx.at(diff_index) < spy.at(diff_index)) { return new jsBoolean(true); }
 			else { return new jsBoolean(false); }
 		}
-	}
 	else {
 		jsNumber* nx = ToNumber(px);
 		jsNumber* ny = ToNumber(py);
