@@ -182,28 +182,18 @@ jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
 
 
 
-jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
+jsValue* And(jsBoolean* lref, jsBoolean* rref)
 {
-	if (lprim->ToBool() && rprim->ToBool())
-
-	{
-		if (lprim->ToBool() == false)
-			return new jsBoolean(lprim->ToBool()->value);
-		else
-		{
-
-
-			if (rprim->ToBool() == false)
-				return new jsBoolean(rprim->ToBool()->value);
-			else
-			{
-				return new jsBoolean(rprim->ToBool()->value);
-			}
-		}
-
-	}
+	//1.Let lref be the result of evaluating LogicalANDExpression.
+	//2.Let lval be GetValue(lref).
+	jsValue* lval = GetValue(lref);
+	//3.If ToBoolean(lval) is false, return lval.
+	if (!lval->ToBool()->value) return lval;
+	//4.Let rref be the result of evaluating BitwiseORExpression.
+	//5.Return GetValue(rref).
+	jsValue* rval = GetValue(rref);
+	return rval;
 }
-
 
 //Subtraction operator 
 jsValue* Minus(jsValue* lref, jsValue* rref) {
