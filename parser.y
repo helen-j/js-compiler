@@ -27,7 +27,7 @@
 	#include "RelationalExpression.h"
 	#include "EqualityExpression.h"
 	#include "LogicalExpression.h"
-
+	#include "UnaryExpression.h"
 
 	int yylex();
 	extern FILE *yyin;
@@ -245,10 +245,10 @@ MultiplicativeExpression: UnaryExpression {$$ = $1;}
 			
 UnaryExpression: PostfixExpression {$$ = $1;}
 			| DELETE UnaryExpression
-			| '+' UnaryExpression
-			| '-' UnaryExpression
-			| INC UnaryExpression
-			| DEC UnaryExpression
+			| '+' UnaryExpression {$$ = new UnaryExpression("+",$2);}
+			| '-' UnaryExpression {$$ = new UnaryExpression("-",$2);}
+			| INC UnaryExpression {$$ = new UnaryExpression(INC,$2);}
+			| DEC UnaryExpression {$$ = new UnaryExpression(DEC,$2);}
 			;
 
 PostfixExpression: LeftHandSideExpression {$$ = $1;}
@@ -274,9 +274,9 @@ Identifier: IDENTIFIERNAME     { $$ = new IdentifierExpression($1); }
 	  ;
 
 Literal: NumericLiteral  {$$ = $1;}
-	|STRINGLITERAL {$$=new StringLiteral($1);}
-	|NULLLITERAL   {$$=new NullLiteral($1);}
-	|BOOLEANLITERAL {$$=new BooleanLiteral($1);}
+	|STRINGLITERAL {$$ = new StringLiteral($1);}
+	|NULLLITERAL   {$$ = new NullLiteral($1);}
+	|BOOLEANLITERAL {$$ = new BooleanLiteral($1);}
 	;
 
 NumericLiteral: DECIMALLITERAL {$$ = new NumericLiteralExpression($1);}

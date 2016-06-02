@@ -18,7 +18,6 @@ void CodeGeneration(char* inputfile, Statement* root)
 	FILE* outputFile = fopen(outputFilename, "w");
 	//include header files
 	root->emit(outputFile, "#include \"jsValue.h\"");
-	root->emit(outputFile, "#include \"jsObject.h\"");
 	root->emit(outputFile, "#include \"jsFunction.h\"");
 	root->emit(outputFile, "#include \"jsReference.h\"");
 	//main function
