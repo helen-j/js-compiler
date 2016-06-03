@@ -26,6 +26,10 @@ public:
 		rhs->DumpValue(indent + 1);
 	};
 	int GenCode(FILE* file) {
-		return 0;
+		int lrefno, rrefno;
+		lrefno = lhs->GenCode(file);
+		rrefno = rhs->GenCode(file);
+		emit(file, "jsValue* r%d = Multiplication(r%d,r%d);", LastLabel, lrefno, rrefno);
+		return LastLabel++;
 	};
 };
