@@ -245,8 +245,8 @@ MultiplicativeExpression: UnaryExpression {$$ = $1;}
 			
 UnaryExpression: PostfixExpression {$$ = $1;}
 			| DELETE UnaryExpression
-			| '+' UnaryExpression {$$ = new UnaryExpression("+",$2);}
-			| '-' UnaryExpression {$$ = new UnaryExpression("-",$2);}
+			| '+' UnaryExpression {$$ = new UnaryExpression('+',$2);}
+			| '-' UnaryExpression {$$ = new UnaryExpression('-',$2);}
 			| INC UnaryExpression {$$ = new UnaryExpression(INC,$2);}
 			| DEC UnaryExpression {$$ = new UnaryExpression(DEC,$2);}
 			;

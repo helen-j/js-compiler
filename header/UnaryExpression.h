@@ -13,7 +13,7 @@ private:
 	int Operator;
 	Expression *lhs;
 public:
-	UnaryExpression(Expression* lhs, int Operator, Expression* rhs) {
+	UnaryExpression(int Operator, Expression* lhs) {
 
 		this->lhs = lhs;
 		this->Operator = Operator;
