@@ -29,7 +29,12 @@ public:
 		int lrefno, rrefno;
 		lrefno = lhs->GenCode(file);
 		rrefno = rhs->GenCode(file);
-		emit(file, "jsValue* r%d = Multiplication(r%d,r%d);", LastLabel, lrefno, rrefno);
+		if (strcmp(op, "*") == 0)
+			emit(file, "jsValue* r%d = Multiplication(r%d,r%d);", LastLabel, lrefno, rrefno);
+		else if (strcmp(op, "/") == 0)
+			emit(file, "jsValue* r%d = Division(r%d,r%d);", LastLabel, lrefno, rrefno);
+		else if (strcmp(op, "%") == 0)
+			emit(file, "jsValue* r%d = Modulus(r%d,r%d);", LastLabel, lrefno, rrefno);
 		return LastLabel++;
 	};
 };

@@ -133,6 +133,69 @@ return new jsNumber(lval->ToNumber()->value * rval->ToNumber()->value);
 
 }
 
+jsValue* Division(jsValue* lref, jsValue* rref) {
+	/*Let left be the result of evaluating MultiplicativeExpression.
+	Let leftValue be GetValue(left).
+	ReturnIfAbrupt(leftValue).
+	Let right be the result of evaluating UnaryExpression.
+	Let rightValue be GetValue(right).
+	Let lnum be ToNumber(leftValue).
+	ReturnIfAbrupt(lnum).
+	Let rnum be ToNumber(rightValue).
+	ReturnIfAbrupt(rnum).
+	Return the result of applying the MultiplicativeOperator(*, / , or %) to lnum and rnum as specified in 12.6.3.1, 12.6.3.2, or 12.6.3.3.*/
+	
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
+	jsValue* returnValue;
+	
+	if (lprim->Type() == String || rprim->Type() == String) {
+		jsValue* lprimValue = new jsBoolean(lprim->ToNumber()->value);
+		jsValue* rprimValue = new jsBoolean(rprim->ToNumber()->value);
+		lprimValue == NULL || rprimValue == NULL ? throw new std::exception("Reference error") : returnValue = new jsNumber(lprim->ToNumber()->value / rprim->ToNumber()->value);
+	}
+	else if (lprim->Type() == Number && rprim->Type() == Number) {
+		returnValue = new jsNumber(lprim->ToNumber()->value / rprim->ToNumber()->value);
+	}
+	return returnValue;
+}
+
+jsValue* Modulus(jsValue* lref, jsValue* rref) {
+	/*Let left be the result of evaluating MultiplicativeExpression.
+	Let leftValue be GetValue(left).
+	ReturnIfAbrupt(leftValue).
+	Let right be the result of evaluating UnaryExpression.
+	Let rightValue be GetValue(right).
+	Let lnum be ToNumber(leftValue).
+	ReturnIfAbrupt(lnum).
+	Let rnum be ToNumber(rightValue).
+	ReturnIfAbrupt(rnum).
+	Return the result of applying the MultiplicativeOperator(*, / , or %) to lnum and rnum as specified in 12.6.3.1, 12.6.3.2, or 12.6.3.3.*/
+
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
+	jsValue* returnValue;
+
+	if (lprim->Type() == String || rprim->Type() == String) {
+		jsValue* lprimValue = new jsBoolean(lprim->ToNumber()->value);
+		jsValue* rprimValue = new jsBoolean(rprim->ToNumber()->value);
+		lprimValue == NULL || rprimValue == NULL ? throw new std::exception("Reference error") : returnValue = new jsNumber(lprim->ToNumber()->value / rprim->ToNumber()->value);
+	}
+	else if (lprim->Type() == Number && rprim->Type() == Number) {
+		returnValue = new jsNumber(fmod(lprim->ToNumber()->value, rprim->ToNumber()->value));
+		/*In C and C++, the remainder operator accepts only integral operands; in ECMAScript, it also accepts floating - point operands.
+		The result of a floating - point remainder operation as computed by the % operator is not the same as the “remainder” operation defined by IEEE 754 - 2008. 
+		The IEEE 754 - 2008 “remainder” operation computes the remainder from a rounding division, not a truncating division, and so its behaviour is not analogous to that of the usual integer remainder operator. 
+		Instead the ECMAScript language defines % on floating - point operations to behave in a manner analogous to that of the Java integer remainder operator; 
+		this may be compared with the C library function fmod.*/
+	}
+	return returnValue;
+}
+
 
 jsValue* Lessthan(jsValue* lref, jsValue* rref)
 {
