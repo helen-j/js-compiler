@@ -37,11 +37,13 @@ public:
 			emit(file, "jsValue* r%d = Lessthan(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case '>':
-			emit(file, "jsBoolean* r%d = AbstractRelationalComparison(GetValue(r%d),GetValue(r%d),false);", LastLabel, rrefno, lrefno);
+			emit(file, "jsBoolean* r%d = GreaterThan(r%d,r%d);", LastLabel, lrefno,rrefno);
 			break;
 		case LE:
+			emit(file, "jsBoolean* r%d = LessThanEqual(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case GE:
+			emit(file, "jsBoolean* r%d = GreaterThanEqual(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case INSTANCEOF:
 			break;

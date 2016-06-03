@@ -176,6 +176,10 @@ jsValue* Lessthan(jsValue* lref, jsValue* rref)
 
 }
 
+
+/* AS I do not want to remove the less than operater, as it is someone elses work, I will keep it as is and only change the others*/
+
+
 jsValue* Greaterthan(jsValue* lref, jsValue* rref) {
 	return Lessthan(rref, lref);
 }
@@ -256,58 +260,10 @@ jsValue* Assign(jsValue* lref, jsValue* rref)
 	return rval;
 }
 
-jsBoolean* Equals(jsValue* lref, jsValue* rref) {
-	//Let lref be the result of evaluating EqualityExpression.
-	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
-	jsValue* lprim = GetValue(lref);
-	//ReturnIfAbrupt(lval).
-	//Let rref be the result of evaluating RelationalExpression.
-	//Let rval be GetValue(rref). -- Use rprim instead to work with the previously written codes.
-	jsValue* rprim = GetValue(rref);
-	//ReturnIfAbrupt(rval).
-	//Return the result of performing Abstract Equality Comparison rval == lval.
-	//	1.	ReturnIfAbrupt(x).
-	//		2.	ReturnIfAbrupt(y).
-	//		3.	If Type(x) is the same as Type(y), then
-	//		a.Return the result of performing Strict Equality Comparison    x == = y.
-		if (lprim->Type() == rprim->Type()) {
-			if (lprim->Type()==String )
-				return new jsBoolean(lprim->ToString()->value == rprim->ToString()->value);
-			else if (lprim->Type() == Number)
-				return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
-			else if (lprim->Type() == Bool)
-				return new jsBoolean(lprim->ToBool()->value == rprim->ToBool()->value);
-		}
-		else {
-			//		4.	If x is null and y is undefined, return   true.
-			//		5.	If x is undefined and y is null, return    true.
-			/*			if (lprim == NULL)
 
-						return new jsNumber(lprim->ToNumber()->value->value + rprim->ToNumber()->value->value);
-					//*/
-
-					//		6.	If Type(x) is Number and Type(y) is   String,
-					//		return the result of the comparison  x == ToNumber(y).
-			if ((lprim->Type() == Number) && (rprim->Type() == String))
-				return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
-
-			//		7.	If Type(x) is String and Type(y) is   Number,
-			//		return the result of the comparison ToNumber(x) == y.
-			if ((lprim->Type() == String) && (rprim->Type() == Number))
-				return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
-
-			//		8.	If Type(x) is Boolean, return the result of the comparison ToNumber(x) == y.
-			//		9.	If Type(y) is Boolean, return the result of the comparison  x == ToNumber(y).
-			//		10.	If Type(x) is either String, Number, or Symbol and Type(y) is Object, then return the result of the comparison  x == ToPrimitive(y).
-			//		11.	If Type(x) is Object and Type(y) is either String, Number, or Symbol, then return the result of the comparison ToPrimitive(x) == y.
-			//		12.	Return false.
-
-		}
-
-}
 
 //Strict Equality 7.2.13
-jsBoolean* StrictEquality(jsValue* lprim, jsValue* rprim) {
+jsBoolean* StrictEqualityComparison(jsValue* lprim, jsValue* rprim) {
 	//1
 	if (lprim->Type() != rprim->Type()) { return new jsBoolean(false); }
 	else if (lprim->Type() == Undefined) { return new jsBoolean(true); }
@@ -332,7 +288,7 @@ jsBoolean* StrictEquality(jsValue* lprim, jsValue* rprim) {
 }
 //Abstract Equality 7.2.12
 jsBoolean* AbstractEquality(jsValue* lprim, jsValue* rprim) {
-	if (lprim->Type() == rprim->Type()) { return StrictEquality(lprim, rprim); }
+	if (lprim->Type() == rprim->Type()) { return StrictEqualityComparison(lprim, rprim); }
 	else if ((lprim->Type() == Null) && (rprim->Type() == Undefined)) { return new jsBoolean(true); }
 	else if ((lprim->Type() == Undefined) && (rprim->Type() == Null)) { return new jsBoolean(true); }
 	else if ((lprim->Type() == Number) && (rprim->Type() == String)) { return new jsBoolean(lprim->ToNumber()->value == ToNumber(rprim)->value); }
@@ -410,9 +366,96 @@ jsBoolean* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool Lef
 	}
 }
 
+//GreaterThan 12.9.3
+jsBoolean* GreaterThan(jsValue* lref, jsValue* rref)
+{
+	//1,2
+	jsValue* lval = GetValue(lref);
+	//4,5
+	jsValue* rval = GetValue(rref);
+	//6
+	jsBoolean* r = AbstractRelationalComparison(rval, lval, false);
+	//7 
+	return r;
+}
 
 
+//LessThanEqual 12.9.3
+jsBoolean* GreaterThanEqual(jsValue* lref, jsValue* rref)
+{
+	//1,2
+	jsValue* lval = GetValue(lref);
+	//4,5
+	jsValue* rval = GetValue(rref);
+	//6
+	jsBoolean* r = AbstractRelationalComparison(lval, rval, true);
+	//7 
+	if (r->value) {
+		return new jsBoolean(false);
+	}
+	else { return new jsBoolean(true); }
+}
 
+//LessThanEqual 12.9.3
+jsBoolean* LessThanEqual(jsValue* lref, jsValue* rref)
+{
+	//1,2
+	jsValue* lval = GetValue(lref);
+	//4,5
+	jsValue* rval = GetValue(rref);
+	//6
+	jsBoolean* r = AbstractRelationalComparison(rval, lval, false);
+	//7 
+	if (r->value) {
+		return new jsBoolean(false);
+	}
+	else { return new jsBoolean(true); }
+}
+//Equality  12.10.3 (almost the same - just called new function)
+jsBoolean* Equality(jsValue* lref, jsValue* rref) {
+	//Let lref be the result of evaluating EqualityExpression.
+	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
+	jsValue*  lval = GetValue(lref);
+	//ReturnIfAbrupt(lval).
+	//Let rref be the result of evaluating RelationalExpression.
+	//Let rval be GetValue(rref). -- Use rprim instead to work with the previously written codes.
+	jsValue* rval = GetValue(rref);
+	//ReturnIfAbrupt(rval).
+	//Return the result of performing Abstract Equality Comparison rval == lval.
+	//	1.	ReturnIfAbrupt(x).
+	//		2.	ReturnIfAbrupt(y).
+	//		3.	If Type(x) is the same as Type(y), then
+	//		a.Return the result of performing Strict Equality Comparison    x == = y.
+	return AbstractEquality(rval, lval);
+}
+
+//NOT Equality  12.10.3 (almost the same - just called new function)
+jsBoolean* NotEquality(jsValue* lref, jsValue* rref) {
+	
+	jsBoolean* r = Equality(lref, rref);
+	if (r->value) { return new jsBoolean(false); }
+	else { return new jsBoolean(true); }
+}
+
+//Strict Equality  12.10.3 (almost the same - just called new function)
+jsBoolean* StrictEquality(jsValue* lref, jsValue* rref) {
+	//Let lref be the result of evaluating EqualityExpression.
+	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
+	jsValue*  lval = GetValue(lref);
+	//ReturnIfAbrupt(lval).
+	//Let rref be the result of evaluating RelationalExpression.
+	//Let rval be GetValue(rref). -- Use rprim instead to work with the previously written codes.
+	jsValue* rval = GetValue(rref);
+
+	return StrictEqualityComparison(rref, lref);
+}
+
+//NOT Strict Equality  12.10.3 (almost the same - just called new function)
+jsBoolean* NotStricttEquality(jsValue* lref, jsValue* rref) {
+	jsBoolean* r = StrictEquality(lref, rref);
+	if (r->value) { return new jsBoolean(false); }
+	else { return new jsBoolean(true); }
+}
 
 void consolelog(jsValue* x) {
 	cout << x->ToString()->value << endl;
