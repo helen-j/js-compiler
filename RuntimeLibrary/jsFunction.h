@@ -141,6 +141,28 @@ jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 		return new jsBoolean(lprim->ToNumber()->value < rprim->ToNumber()->value);
 
 }
+jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
+{
+	
+
+	//1.Let lref be the result of evaluating RelationalExpression.
+        //2.Let lval be GetValue(lref).
+        //3.ReturnIfAbrupt(lval).
+        // 4.Let rref be the result of evaluating ShiftExpression.
+        //5.Let rval be GetValue(rref).
+        //6.Let r be the result of performing Abstract Relational Comparison rval < lval with LeftFirst              equal to false.
+        //7.ReturnIfAbrupt(r).
+        //8.If r is undefined, return false. Otherwise, return r
+
+
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value > rprim->ToString()->value);
+	}
+	else
+		return new jsBoolean(lprim->ToNumber()->value > rprim->ToNumber()->value);
+
+
 
 jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
 {

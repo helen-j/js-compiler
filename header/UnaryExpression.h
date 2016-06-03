@@ -53,8 +53,10 @@ public:
  			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno);
  			break;
  		case INC:
+		    emit(file, "jsValue* r%d = Increment(r%d,r%d);", LastLabel, lrefno);
  			break;
 		case DEC:
+			emit(file, "jsValue* r%d = Decrement(r%d,r%d);", LastLabel, lrefno);
  			break;
  		}
  		return LastLabel++;
