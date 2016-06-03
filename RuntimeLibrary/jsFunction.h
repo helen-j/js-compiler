@@ -301,7 +301,7 @@ jsBoolean* AbstractEquality(jsValue* lprim, jsValue* rprim) {
 }
 
 //Abstract Relational Comparison 7.2.11
-jsBoolean* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool LeftFirst) {
+jsValue* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool LeftFirst) {
 	//3 without primative hint (call functions missing); wont work for objects
 	jsValue* px;
 	jsValue* py;
@@ -352,8 +352,8 @@ jsBoolean* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool Lef
 			else { return new jsBoolean(false); }
 		}
 	else {
-		jsNumber* nx = ToNumber(px);
-		jsNumber* ny = ToNumber(py);
+		jsNumber* nx = px->ToNumber();
+		jsNumber* ny = py->ToNumber();
 		if (nx->value == ny->value) { return new jsBoolean(false); }
 		else if (nx->value == +0 && ny->value == -0) { return new jsBoolean(false); }
 		else if (nx->value == -0 && ny->value == +0) { return new jsBoolean(false); }
@@ -367,14 +367,14 @@ jsBoolean* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool Lef
 }
 
 //GreaterThan 12.9.3
-jsBoolean* GreaterThan(jsValue* lref, jsValue* rref)
+jsValue* GreaterThan(jsValue* lref, jsValue* rref)
 {
 	//1,2
 	jsValue* lval = GetValue(lref);
 	//4,5
 	jsValue* rval = GetValue(rref);
 	//6
-	jsBoolean* r = AbstractRelationalComparison(rval, lval, false);
+	jsValue* r = AbstractRelationalComparison(lval, rval, false);
 	//7 
 	return r;
 }
