@@ -180,6 +180,28 @@ jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
 	
 }
 
+jsValue* GreaterEQ(jsValue* lprim, jsValue* rprim)
+{
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value >= rprim->ToString()->value);
+	}
+	else
+		return new jsBoolean(lprim->ToNumber()->value >= rprim->ToNumber()->value);
+}
+
+jsValue* LessEQ(jsValue* lprim, jsValue* rprim)
+{
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value <= rprim->ToString()->value);
+	}
+	else
+		return new jsBoolean(lprim->ToNumber()->value <= rprim->ToNumber()->value);
+}
+
+
+
 
 
 jsValue* And(jsBoolean* lref, jsBoolean* rref)

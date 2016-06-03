@@ -26,6 +26,15 @@ public:
 		cout << Myname << endl;
 		lhs->DumpValue(indent + 1);
 		rhs->DumpValue(indent + 1);
+		switch (op)
+		{
+		case LE:
+			cout << "Operator: <=" << endl;
+			break;
+		case GE:
+			cout << "Operator: >=" << endl;
+			break;
+		}
 	};
 	int GenCode(FILE* file) {
 		int lrefno, rrefno;
@@ -40,8 +49,10 @@ public:
 			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case LE:
+			emit(file, "jsValue* r%d = LessEQ(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case GE:
+			emit(file, "jsValue* r%d = GreaterEQ(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case INSTANCEOF:
 			break;
