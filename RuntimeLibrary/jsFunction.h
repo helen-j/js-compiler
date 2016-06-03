@@ -180,30 +180,42 @@ jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
 	
 }
 
-
-
-jsBoolean* And(jsBoolean* lprim, jsBoolean* rprim)
+jsValue* GreaterEQ(jsValue* lprim, jsValue* rprim)
 {
-	if (lprim->ToBool() && rprim->ToBool())
-
-	{
-		if (lprim->ToBool() == false)
-			return new jsBoolean(lprim->ToBool()->value);
-		else
-		{
-
-
-			if (rprim->ToBool() == false)
-				return new jsBoolean(rprim->ToBool()->value);
-			else
-			{
-				return new jsBoolean(rprim->ToBool()->value);
-			}
-		}
-
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value >= rprim->ToString()->value);
 	}
+	else
+		return new jsBoolean(lprim->ToNumber()->value >= rprim->ToNumber()->value);
 }
 
+jsValue* LessEQ(jsValue* lprim, jsValue* rprim)
+{
+	if (lprim->Type() == String || rprim->Type() == String)
+	{   //5. if both px and py are strings,then
+		return new jsBoolean(lprim->ToString()->value <= rprim->ToString()->value);
+	}
+	else
+		return new jsBoolean(lprim->ToNumber()->value <= rprim->ToNumber()->value);
+}
+
+
+
+
+
+jsValue* And(jsBoolean* lref, jsBoolean* rref)
+{
+	//1.Let lref be the result of evaluating LogicalANDExpression.
+	//2.Let lval be GetValue(lref).
+	jsValue* lval = GetValue(lref);
+	//3.If ToBoolean(lval) is false, return lval.
+	if (!lval->ToBool()->value) return lval;
+	//4.Let rref be the result of evaluating BitwiseORExpression.
+	//5.Return GetValue(rref).
+	jsValue* rval = GetValue(rref);
+	return rval;
+}
 
 //Subtraction operator 
 jsValue* Minus(jsValue* lref, jsValue* rref) {
