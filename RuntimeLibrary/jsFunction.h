@@ -134,7 +134,7 @@ return new jsNumber(lval->ToNumber()->value * rval->ToNumber()->value);
 }
 
 
-jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
+jsValue* Lessthan(jsValue* lref, jsValue* rref)
 {
 	//1.ReturnIfAbrupt(x).
 	//2.ReturnIfAbrupt(y).
@@ -147,7 +147,10 @@ jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 	//b.ReturnIfAbrupt(py).
 	//c.Let px be ToPrimitive(x, hint Number).
 	//d.ReturnIfAbrupt(px).
-
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
 
 	if (lprim->Type() == String || rprim->Type() == String)
 	{   //5. if both px and py are strings,then
@@ -157,7 +160,7 @@ jsValue* Lessthan(jsValue* lprim, jsValue* rprim)
 		return new jsBoolean(lprim->ToNumber()->value < rprim->ToNumber()->value);
 
 }
-jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
+jsValue* Greaterthan(jsValue* lref, jsValue* rref)
 {
 	
 
@@ -169,7 +172,10 @@ jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
         //6.Let r be the result of performing Abstract Relational Comparison rval < lval with LeftFirst              equal to false.
         //7.ReturnIfAbrupt(r).
         //8.If r is undefined, return false. Otherwise, return r
-
+	jsValue* lval = GetValue(lref);
+	jsValue* rval = GetValue(rref);
+	jsValue* lprim = ToPrimitive(lval);
+	jsValue* rprim = ToPrimitive(rval);
 
 	if (lprim->Type() == String || rprim->Type() == String)
 	{   //5. if both px and py are strings,then
