@@ -13,7 +13,7 @@ private:
 	int Operator;
 	Expression *lhs;
 public:
-	UnaryExpression(Expression* lhs, int Operator, Expression* rhs) {
+	UnaryExpression(Expression* lhs, int Operator) {
 
 		this->lhs = lhs;
 		this->Operator = Operator;
@@ -40,7 +40,23 @@ public:
 			break;
 		}
 	};
-	int GenCode(FILE* file) {
+	 	int GenCode(FILE* file) {
 		return LastLabel;
-	};
+ 		int lrefno, rrefno;
+ 		lrefno = lhs->GenCode(file);
+ 		switch (Operator)
+ 		{
+ 		case '+':
+ 			emit(file, "jsValue* r%d = unaryPlus(r%d,r%d);", LastLabel, lrefno);
+ 			break;
+		case '-':
+ 			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno);
+ 			break;
+ 		case INC:
+ 			break;
+		case DEC:
+ 			break;
+ 		}
+ 		return LastLabel++;
+  	}
 };
