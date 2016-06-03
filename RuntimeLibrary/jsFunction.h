@@ -161,6 +161,8 @@ jsValue* Greaterthan(jsValue* lprim, jsValue* rprim)
 	}
 	else
 		return new jsBoolean(lprim->ToNumber()->value > rprim->ToNumber()->value);
+	
+}
 
 
 
