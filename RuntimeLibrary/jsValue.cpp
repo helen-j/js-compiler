@@ -4,8 +4,12 @@ jsString::jsString(string value) {
 	this->value = value;
 }
 jsNumber* jsString::ToNumber() {
-	//Todo - refer to specs 9.3.1
-	return NULL;
+	//Refer to specs 9.3.1
+	try { double double_s = stof(value); return new jsNumber(double_s); }
+	catch (exception e) {
+		//return new jsNumber(NAN);
+		return NULL;
+	}
 }
 jsString* jsString::ToString() {
 	return this;
@@ -14,7 +18,8 @@ jsType jsString::Type() {
 	return String;
 }
 jsBoolean* jsString::ToBool() {
-	return NULL;
+	if (value.length() == 0) return new jsBoolean(false);
+	return new jsBoolean(true);
 }
 
 
@@ -25,13 +30,11 @@ jsBoolean::jsBoolean(bool value) {
 jsNumber* jsBoolean::ToNumber() {
 	if (value) return new jsNumber(1);
 	else return new jsNumber(0);
-	//return NULL;
 }
 
 jsString* jsBoolean::ToString() {
-	if (value) return new jsString("TRUE");
-	else return new jsString("FALSE");
-	//return NULL;
+	if (value) return new jsString("true");
+	return new jsString("false");
 }
 
 jsType jsBoolean::Type() {
@@ -61,30 +64,11 @@ jsString* jsNumber::ToString() {
 }
 
 jsBoolean* jsNumber::ToBool() {
-		if (this->value == 0) {
-			return new jsBoolean(false);
-		}
-		else {
-			return new jsBoolean(true);
-		}
-}
-
-
-jsObject::jsObject() {
-		this->property_table.clear();
+	if (this->value == 0) {
+		return new jsBoolean(false);
 	}
+	else {
+		return new jsBoolean(true);
+	}
+}
 
-jsType jsObject::Type() {
-	return Object;
-}
-jsString* jsObject::ToString() {
-	//NOT DONE
-	return NULL;
-}
-jsBoolean* jsObject::ToBool() {
-	return new jsBoolean(true);
-}
-jsNumber* jsObject::ToNumber() {
-	//NOT DONE
-	return NULL;
-}

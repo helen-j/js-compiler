@@ -69,6 +69,22 @@ jsValue* Plus(jsValue* lref, jsValue* rref) {
 }
 
 jsValue* Multiplication(jsValue* lref, jsValue* rref) {
+/*
+//Let left be the result of evaluating MultiplicativeExpression.
+//Let leftValue be GetValue(left).
+jsValue* lval = GetValue(lref);
+//ReturnIfAbrupt(leftValue).
+//Let right be the result of evaluating UnaryExpression.
+//Let rightValue be GetValue(right).
+jsValue* rval = GetValue(rref);
+//Let lnum be ToNumber(leftValue).
+
+//ReturnIfAbrupt(lnum).
+//Let rnum be ToNumber(rightValue).
+//ReturnIfAbrupt(rnum).
+//Return the result of applying the MultiplicativeOperator(*, / , or %) to lnum and rnum
+return new jsNumber(lval->ToNumber()->value * rval->ToNumber()->value);
+*/
 
 	jsValue* lval = GetValue(lref);
 	jsValue* rval = GetValue(rref);
@@ -200,12 +216,17 @@ jsValue* Minus(jsValue* lref, jsValue* rref) {
 
 //Increment operator
 jsValue* Increment(jsValue* expr) {
-	expr = expr->ToNumber();
-	//TODO ReturnIfAbrupt(oldValue).
-	expr = Plus(expr, new jsNumber(1));
-	//TODO Let status be PutValue(expr, newValue).
-	//TODO ReturnIfAbrupt(status).
-	return expr;
+//Let expr be the result of evaluating UnaryExpression.
+//Let oldValue be ToNumber(GetValue(expr)).
+	jsValue* oldValue = GetValue(expr)->ToNumber();
+//ReturnIfAbrupt(oldValue).
+//Let newValue be the result of adding the value 1 to oldValue, using the same rules as for the + operator (see 12.7.5).
+	jsValue* newValue = Plus(oldValue, new jsNumber(1));
+//Let status be PutValue(expr, newValue).
+	bool status = PutValue(expr, newValue);
+//ReturnIfAbrupt(status).
+//Return newValue.
+	return newValue;
 }
 
 //Decrement Operator
@@ -219,16 +240,15 @@ jsValue* Decrement(jsValue* expr) {
 jsValue* unaryPlus(jsValue* expr) {
 	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
 	//1.Let expr be the result of evaluating UnaryExpression.
-	if (expr->Type() == String) {
+	/*if (expr->Type() == String) {
 		return new jsString("please use integer value instead of a string or an integer string");
 	}
 	else if (expr->Type() == Bool) {
 		return new jsString("A boolean type is not supported");
 	}
-	else {
+	else {*/
 		//2.Return ToNumber(GetValue(expr)).
-		return new jsNumber(expr->ToNumber()->value);
-	}
+		return GetValue(expr);
 }
 
 
@@ -288,17 +308,16 @@ jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
 //unary - operator
 jsValue* unaryMinus(jsValue* expr) {
 
-	if (expr->Type() == String) {
+/*	if (expr->Type() == String) {
 		return new jsString("please use integer value instead of a string or an integer string");
 	}
 	else if (expr->Type() == Bool) {
 		return new jsString("A boolean type is not supported");
 	}
 	else {
-		return new jsNumber(expr->ToNumber()->value);
-	}
+	*/
+		return new jsNumber(GetValue(expr)->ToNumber()->value);
 }
-
 
 void consolelog(jsValue* x) {
 	cout << x->ToString()->value << endl;

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include "jsValue.h"
+#include "jsObject.h"
 
 using namespace std;
 
@@ -30,7 +31,4 @@ public:
 	jsBoolean* ToBool() {
 		return NULL;
 	}
-private:
-	jsObject* GetBase() { return this->base; }
-	string GetReferenceName() { return this->name; }
 };
