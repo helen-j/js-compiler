@@ -312,25 +312,28 @@ jsValue* Minus(jsValue* lref, jsValue* rref) {
 }
 
 //Increment operator
-jsValue* Increment(jsValue* expr) {
+jsValue* Increment(jsValue* lref) {
+	jsValue* lval = GetValue(lref);
+	jsValue* lprim = ToPrimitive(lval);
 //Let expr be the result of evaluating UnaryExpression.
 //Let oldValue be ToNumber(GetValue(expr)).
-	jsValue* oldValue = GetValue(expr)->ToNumber();
+	jsValue* oldValue = GetValue(lprim)->ToNumber();
 //ReturnIfAbrupt(oldValue).
 //Let newValue be the result of adding the value 1 to oldValue, using the same rules as for the + operator (see 12.7.5).
 	jsValue* newValue = Plus(oldValue, new jsNumber(1));
 //Let status be PutValue(expr, newValue).
-	bool status = PutValue(expr, newValue);
 //ReturnIfAbrupt(status).
 //Return newValue.
 	return newValue;
 }
 
 //Decrement Operator
-jsValue* Decrement(jsValue* expr) {
-	expr = expr->ToNumber();
-	expr = Minus(expr, new jsNumber(1));
-	return expr;
+jsValue* Decrement(jsValue* lref) {
+	jsValue* lval = GetValue(lref);
+	jsValue* lprim = ToPrimitive(lval);
+	lprim = lprim->ToNumber();
+	lprim = Minus(lprim, new jsNumber(1));
+	return lprim;
 }
 
 //The unary + operator converts its operand to Number type.

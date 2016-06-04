@@ -41,24 +41,24 @@ public:
 		}
 	};
 	int GenCode(FILE* file) {
-		
+
 		int lrefno, rrefno;
- 		lrefno = lhs->GenCode(file);
- 		switch (Operator)
- 		{
- 		case '+':
- 			emit(file, "jsValue* r%d = unaryPlus(r%d,r%d);", LastLabel, lrefno);
- 			break;
+		lrefno = lhs->GenCode(file);
+		switch (Operator)
+		{
+		case '+':
+			emit(file, "jsValue* r%d = unaryPlus(r%d,r%d);", LastLabel, lrefno);
+			break;
 		case '-':
- 			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno);
- 			break;
- 		case INC:
- 		    emit(file, "jsValue* r%d = Increment(r%d,r%d);", LastLabel, lrefno);
- 			break;
+			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno);
+			break;
+		case INC:
+			emit(file, "jsValue* r%d = Increment(r%d,r%d);", LastLabel, lrefno);
+			break;
 		case DEC:
 			emit(file, "jsValue* r%d = Decrement(r%d,r%d);", LastLabel, lrefno);
- 			break;
- 		}
- 		return LastLabel++;
-  	
+			break;
+		}
+		return LastLabel++;
+	}
 };

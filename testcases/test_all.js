@@ -16,6 +16,9 @@ x = x * 3;
 x = x / 2;
 x = x % 4;
 
+x = ++x;
+x = --x;
+
 x="test";
 y="test";
 x==y;

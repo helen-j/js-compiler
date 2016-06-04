@@ -29,7 +29,7 @@ goto WhileLabel1;
 WhileLabel2:
 jsValue* r16 = new jsReference(env, "x");
 jsValue* r17 = new jsNumber(46.000000);
-jsValue* r18 = Greaterthan(r16,r17);
+jsValue* r18 = GreaterThan(r16,r17);
 if (GetValue(r18)->ToBool()->value) {
 jsValue* r19 = new jsReference(env, "x");
 jsValue* r20 = new jsReference(env, "x");
@@ -40,7 +40,7 @@ goto WhileLabel2;
 }
 jsValue* r24 = new jsReference(env, "x");
 jsValue* r25 = new jsNumber(46.000000);
-jsValue* r26 = Greaterthan(r24,r25);
+jsValue* r26 = GreaterThan(r24,r25);
 if (GetValue(r26)->ToBool()->value) {
 jsValue* r27 = new jsReference(env, "y");
 jsValue* r28 = new jsReference(env, "x");
@@ -73,5 +73,13 @@ jsValue* r51 = new jsReference(env, "x");
 jsValue* r52 = new jsNumber(4.000000);
 jsValue* r53 = Modulus(r51,r52);
 jsValue* r54 = Assign(r50,r53);
-consolelog(GetValue(r54));
+jsValue* r55 = new jsReference(env, "x");
+jsValue* r56 = new jsReference(env, "x");
+jsValue* r57 = Increment(r56);
+jsValue* r58 = Assign(r55,r57);
+jsValue* r59 = new jsReference(env, "x");
+jsValue* r60 = new jsReference(env, "x");
+jsValue* r61 = Decrement(r60);
+jsValue* r62 = Assign(r59,r61);
+consolelog(GetValue(r62));
 }
