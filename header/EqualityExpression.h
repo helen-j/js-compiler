@@ -47,16 +47,16 @@ public:
 		rrefno = rhs->GenCode(file);
 		switch (op)
 		{case ET:
-			emit(file, "jsBoolean* r%d = Equality(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = Equality(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case NEV:
-			emit(file, "jsBoolean* r%d = NotEquality(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = NotEquality(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case NEVT:
-			emit(file, "jsBoolean* r%d = StrictEquality(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = StrictEquality(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case ETT:
-			emit(file, "jsBoolean* r%d = NotStrictEquality(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = NotStrictEquality(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		}
 		return LastLabel++;

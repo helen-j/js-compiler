@@ -31,5 +31,10 @@ a="aaaaa";
 x>y;
 x>z;
 x>a;
+x==x;
+x!=y;
 
+x=5;
+x>=x;
+x<=x;
 

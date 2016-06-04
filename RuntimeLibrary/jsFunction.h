@@ -263,7 +263,7 @@ jsValue* Assign(jsValue* lref, jsValue* rref)
 
 
 //Strict Equality 7.2.13
-jsBoolean* StrictEqualityComparison(jsValue* lprim, jsValue* rprim) {
+jsValue* StrictEqualityComparison(jsValue* lprim, jsValue* rprim) {
 	//1
 	if (lprim->Type() != rprim->Type()) { return new jsBoolean(false); }
 	else if (lprim->Type() == Undefined) { return new jsBoolean(true); }
@@ -287,7 +287,7 @@ jsBoolean* StrictEqualityComparison(jsValue* lprim, jsValue* rprim) {
 	else return new jsBoolean(false);
 }
 //Abstract Equality 7.2.12
-jsBoolean* AbstractEquality(jsValue* lprim, jsValue* rprim) {
+jsValue* AbstractEquality(jsValue* lprim, jsValue* rprim) {
 	if (lprim->Type() == rprim->Type()) { return StrictEqualityComparison(lprim, rprim); }
 	else if ((lprim->Type() == Null) && (rprim->Type() == Undefined)) { return new jsBoolean(true); }
 	else if ((lprim->Type() == Undefined) && (rprim->Type() == Null)) { return new jsBoolean(true); }
@@ -374,45 +374,45 @@ jsValue* GreaterThan(jsValue* lref, jsValue* rref)
 	//4,5
 	jsValue* rval = GetValue(rref);
 	//6
-	jsValue* r = AbstractRelationalComparison(lval, rval, false);
+	jsValue* r = AbstractRelationalComparison(rval, lval, false);
 	//7 
 	return r;
 }
 
 
 //LessThanEqual 12.9.3
-jsBoolean* GreaterThanEqual(jsValue* lref, jsValue* rref)
+jsValue* GreaterThanEqual(jsValue* lref, jsValue* rref)
 {
 	//1,2
 	jsValue* lval = GetValue(lref);
 	//4,5
 	jsValue* rval = GetValue(rref);
 	//6
-	jsBoolean* r = AbstractRelationalComparison(lval, rval, true);
+	jsValue* r = AbstractRelationalComparison(lval, rval, true);
 	//7 
-	if (r->value) {
+	if (r->ToBool()->value) {
 		return new jsBoolean(false);
 	}
 	else { return new jsBoolean(true); }
 }
 
 //LessThanEqual 12.9.3
-jsBoolean* LessThanEqual(jsValue* lref, jsValue* rref)
+jsValue* LessThanEqual(jsValue* lref, jsValue* rref)
 {
 	//1,2
 	jsValue* lval = GetValue(lref);
 	//4,5
 	jsValue* rval = GetValue(rref);
 	//6
-	jsBoolean* r = AbstractRelationalComparison(rval, lval, false);
+	jsValue* r = AbstractRelationalComparison(rval, lval, false);
 	//7 
-	if (r->value) {
+	if (r->ToBool()->value) {
 		return new jsBoolean(false);
 	}
 	else { return new jsBoolean(true); }
 }
 //Equality  12.10.3 (almost the same - just called new function)
-jsBoolean* Equality(jsValue* lref, jsValue* rref) {
+jsValue* Equality(jsValue* lref, jsValue* rref) {
 	//Let lref be the result of evaluating EqualityExpression.
 	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
 	jsValue*  lval = GetValue(lref);
@@ -430,15 +430,15 @@ jsBoolean* Equality(jsValue* lref, jsValue* rref) {
 }
 
 //NOT Equality  12.10.3 (almost the same - just called new function)
-jsBoolean* NotEquality(jsValue* lref, jsValue* rref) {
+jsValue* NotEquality(jsValue* lref, jsValue* rref) {
 	
-	jsBoolean* r = Equality(lref, rref);
-	if (r->value) { return new jsBoolean(false); }
+	jsValue* r = Equality(lref, rref);
+	if (r->ToBool()->value) { return new jsBoolean(false); }
 	else { return new jsBoolean(true); }
 }
 
 //Strict Equality  12.10.3 (almost the same - just called new function)
-jsBoolean* StrictEquality(jsValue* lref, jsValue* rref) {
+jsValue* StrictEquality(jsValue* lref, jsValue* rref) {
 	//Let lref be the result of evaluating EqualityExpression.
 	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
 	jsValue*  lval = GetValue(lref);
@@ -451,9 +451,9 @@ jsBoolean* StrictEquality(jsValue* lref, jsValue* rref) {
 }
 
 //NOT Strict Equality  12.10.3 (almost the same - just called new function)
-jsBoolean* NotStricttEquality(jsValue* lref, jsValue* rref) {
-	jsBoolean* r = StrictEquality(lref, rref);
-	if (r->value) { return new jsBoolean(false); }
+jsValue* NotStricttEquality(jsValue* lref, jsValue* rref) {
+	jsValue* r = StrictEquality(lref, rref);
+	if (r->ToBool()->value) { return new jsBoolean(false); }
 	else { return new jsBoolean(true); }
 }
 
