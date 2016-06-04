@@ -12,7 +12,9 @@ class BinaryExpression : public Expression {
 private:
 	int Operator;
 	Expression *lhs, *rhs;
+
 public:
+	int LEFTSHIFT = 10;
 	BinaryExpression(Expression* lhs, int Operator, Expression* rhs) {
 
 		cout << Operator << endl;
@@ -44,6 +46,24 @@ public:
 		rhs->DumpValue(indent + 1);
 	};
 	int GenCode(FILE* file) {
-		return LastLabel;
+
+		int lrefno, rrefno;
+		lrefno = lhs->GenCode(file);
+		rrefno = rhs->GenCode(file);
+		switch (Operator)//buzhidao yao bu yao 
+		{
+		case LEFTSHIFT:
+			emit(file, "jsValue* r%d = LEFTSHIFT(r%d,r%d);", LastLabel, lrefno);
+			break;
+		case RIGHTSHIFT:
+			emit(file, "jsValue* r%d = RIGHTSHIFT(r%d,r%d);", LastLabel, lrefno);
+			break;
+		case LOGICRIGHTSHIFT:
+			emit(file, "jsValue* r%d = LOGICRIGHTSHIFT(r%d,r%d);", LastLabel, lrefno);
+			break;
+
+		}
+		return LastLabel++;
+
 	};
 };
