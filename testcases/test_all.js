@@ -49,3 +49,6 @@ x<=x;
 
 x && y;
 x || y;
+
+return x==5;
+return x==true;

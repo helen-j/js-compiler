@@ -32,9 +32,9 @@ public:
 		this->Indent(indent + 1);
 		switch (Operator)
 		{
-		case LEFTSHIFT:
+	/*	case LEFTSHIFT:
 			cout << "Operator: <<" << endl;
-			break;
+			break;  */
 		case RIGHTSHIFT:
 			cout << "Operator: >>" << endl;
 			break;
@@ -52,9 +52,9 @@ public:
 		rrefno = rhs->GenCode(file);
 		switch (Operator)//buzhidao yao bu yao 
 		{
-		case LEFTSHIFT:
+	/*	case LEFTSHIFT:
 			emit(file, "jsValue* r%d = LEFTSHIFT(r%d,r%d);", LastLabel, lrefno);
-			break;
+			break;  */
 		case RIGHTSHIFT:
 			emit(file, "jsValue* r%d = RIGHTSHIFT(r%d,r%d);", LastLabel, lrefno);
 			break;

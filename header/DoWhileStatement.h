@@ -20,8 +20,8 @@ public:
 		this->stm1 = stm1;
 		this->exp = exp;
 		this->Myname = "DoWhileStatement";
-		DoWhileObejct++;
-		DoWhileLabel = DoWhileObejct;
+		//DoWhileObejct++;
+		//DoWhileLabel = DoWhileObejct;
 	};
 	void DumpValue(int indent) {
 		this->Indent(indent);
