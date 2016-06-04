@@ -46,13 +46,13 @@ public:
 			emit(file, "jsValue* r%d = Lessthan(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case '>':
-			emit(file, "jsValue* r%d = Greaterthan(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = GreaterThan(r%d,r%d);", LastLabel, lrefno,rrefno);
 			break;
 		case LE:
-			emit(file, "jsValue* r%d = LessEQ(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = LessThanEqual(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case GE:
-			emit(file, "jsValue* r%d = GreaterEQ(r%d,r%d);", LastLabel, lrefno, rrefno);
+			emit(file, "jsValue* r%d = GreaterThanEqual(r%d,r%d);", LastLabel, lrefno, rrefno);
 			break;
 		case INSTANCEOF:
 			break;

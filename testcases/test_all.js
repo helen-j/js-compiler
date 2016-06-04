@@ -23,4 +23,26 @@ y="test2";
 x==y;
 x!=y;
 
+<<<<<<< HEAD
+=======
+x=3;
+x>5;
+x>2;
+x<5;
+x<2;
+
+x="test2";
+y="test";
+z="teszzz";
+a="aaaaa";
+x>y;
+x>z;
+x>a;
+x==x;
+x!=y;
+
+x=5;
+x>=x;
+x<=x;
+>>>>>>> cody-branch
 

@@ -155,11 +155,13 @@ jsValue* Division(jsValue* lref, jsValue* rref) {
 		jsValue* lprimValue = new jsBoolean(lprim->ToNumber()->value);
 		jsValue* rprimValue = new jsBoolean(rprim->ToNumber()->value);
 		lprimValue == NULL || rprimValue == NULL ? throw new std::exception("Reference error") : returnValue = new jsNumber(lprim->ToNumber()->value / rprim->ToNumber()->value);
+		return returnValue;
 	}
 	else if (lprim->Type() == Number && rprim->Type() == Number) {
 		returnValue = new jsNumber(lprim->ToNumber()->value / rprim->ToNumber()->value);
+		return returnValue;
 	}
-	return returnValue;
+	else { throw new  std::exception("Unsupported Opperand Types"); }
 }
 
 jsValue* Modulus(jsValue* lref, jsValue* rref) {
@@ -184,6 +186,7 @@ jsValue* Modulus(jsValue* lref, jsValue* rref) {
 		jsValue* lprimValue = new jsBoolean(lprim->ToNumber()->value);
 		jsValue* rprimValue = new jsBoolean(rprim->ToNumber()->value);
 		lprimValue == NULL || rprimValue == NULL ? throw new std::exception("Reference error") : returnValue = new jsNumber(lprim->ToNumber()->value / rprim->ToNumber()->value);
+		return returnValue;
 	}
 	else if (lprim->Type() == Number && rprim->Type() == Number) {
 		returnValue = new jsNumber(fmod(lprim->ToNumber()->value, rprim->ToNumber()->value));
@@ -192,8 +195,10 @@ jsValue* Modulus(jsValue* lref, jsValue* rref) {
 		The IEEE 754 - 2008 “remainder” operation computes the remainder from a rounding division, not a truncating division, and so its behaviour is not analogous to that of the usual integer remainder operator. 
 		Instead the ECMAScript language defines % on floating - point operations to behave in a manner analogous to that of the Java integer remainder operator; 
 		this may be compared with the C library function fmod.*/
+		return returnValue;
+
 	}
-	return returnValue;
+	else { throw new std::exception("Unsupported Opperand Types"); }
 }
 
 
@@ -226,7 +231,6 @@ jsValue* Lessthan(jsValue* lref, jsValue* rref)
 jsValue* Greaterthan(jsValue* lref, jsValue* rref)
 {
 	
-
 	//1.Let lref be the result of evaluating RelationalExpression.
         //2.Let lval be GetValue(lref).
         //3.ReturnIfAbrupt(lval).
@@ -246,7 +250,7 @@ jsValue* Greaterthan(jsValue* lref, jsValue* rref)
 	}
 	else
 		return new jsBoolean(lprim->ToNumber()->value > rprim->ToNumber()->value);
-	
+
 }
 
 jsValue* GreaterEQ(jsValue* lprim, jsValue* rprim)
@@ -268,9 +272,6 @@ jsValue* LessEQ(jsValue* lprim, jsValue* rprim)
 	else
 		return new jsBoolean(lprim->ToNumber()->value <= rprim->ToNumber()->value);
 }
-
-
-
 
 
 jsValue* And(jsBoolean* lref, jsBoolean* rref)
@@ -321,83 +322,218 @@ jsValue* Decrement(jsValue* expr) {
 jsValue* unaryPlus(jsValue* expr) {
 	//The production UnaryExpression : +UnaryExpression is evaluated as follows :
 	//1.Let expr be the result of evaluating UnaryExpression.
-	/*if (expr->Type() == String) {
-		return new jsString("please use integer value instead of a string or an integer string");
-	}
-	else if (expr->Type() == Bool) {
-		return new jsString("A boolean type is not supported");
-	}
-	else {*/
-		//2.Return ToNumber(GetValue(expr)).
-		return GetValue(expr);
-}
-
-
-
-jsValue* Assign(jsValue* lref, jsValue* rref)
-{
-	//1.D Let rval be GetValue(rref)
-	jsValue* rval = GetValue(rref);
-	//1.F Let status be PutValue(lref, rval)
-	bool status = PutValue(lref, rval);
-	//1.G return rval
-	return rval;
-}
-
-jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
-	//	1.	ReturnIfAbrupt(x).
-	//		2.	ReturnIfAbrupt(y).
-	//		3.	If Type(x) is the same as Type(y), then
-	//		a.Return the result of performing Strict Equality Comparison    x == = y.
-
-		if (lprim->Type() == rprim->Type()) {
-			if (lprim->Type()==String )
-				return new jsBoolean(lprim->ToString()->value == rprim->ToString()->value);
-			else if (lprim->Type() == Number)
-				return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
-			else if (lprim->Type() == Bool)
-				return new jsBoolean(lprim->ToBool()->value == rprim->ToBool()->value);
-		}
-		else {
-			//		4.	If x is null and y is undefined, return   true.
-			//		5.	If x is undefined and y is null, return    true.
-			/*			if (lprim == NULL)
-
-						return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
-					//*/
-
-					//		6.	If Type(x) is Number and Type(y) is   String,
-					//		return the result of the comparison  x == ToNumber(y).
-			if ((lprim->Type() == Number) && (rprim->Type() == String))
-				return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
-
-			//		7.	If Type(x) is String and Type(y) is   Number,
-			//		return the result of the comparison ToNumber(x) == y.
-			if ((lprim->Type() == String) && (rprim->Type() == Number))
-				return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
-
-			//		8.	If Type(x) is Boolean, return the result of the comparison ToNumber(x) == y.
-			//		9.	If Type(y) is Boolean, return the result of the comparison  x == ToNumber(y).
-			//		10.	If Type(x) is either String, Number, or Symbol and Type(y) is Object, then return the result of the comparison  x == ToPrimitive(y).
-			//		11.	If Type(x) is Object and Type(y) is either String, Number, or Symbol, then return the result of the comparison ToPrimitive(x) == y.
-			//		12.	Return false.
-
-		}
-
-}
-
-//unary - operator
-jsValue* unaryMinus(jsValue* expr) {
-
-/*	if (expr->Type() == String) {
+	if (expr->Type() == String) {
 		return new jsString("please use integer value instead of a string or an integer string");
 	}
 	else if (expr->Type() == Bool) {
 		return new jsString("A boolean type is not supported");
 	}
 	else {
+		//2.Return ToNumber(GetValue(expr)).
+		return GetValue(expr);
+	}
+}
+
+
+
+jsValue* Assign(jsValue* lref, jsValue* rref)
+	{
+		//1.D Let rval be GetValue(rref)
+		jsValue* rval = GetValue(rref);
+		//1.F Let status be PutValue(lref, rval)
+		bool status = PutValue(lref, rval);
+		//1.G return rval
+		return rval;
+	}
+
+	/*
+	jsBoolean* Equals(jsValue* lprim, jsValue* rprim) {
+		//	1.	ReturnIfAbrupt(x).
+		//		2.	ReturnIfAbrupt(y).
+		//		3.	If Type(x) is the same as Type(y), then
+		//		a.Return the result of performing Strict Equality Comparison    x == = y.
+
+			if (lprim->Type() == rprim->Type()) {
+				if (lprim->Type()==String )
+					return new jsBoolean(lprim->ToString()->value == rprim->ToString()->value);
+				else if (lprim->Type() == Number)
+					return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value);
+				else if (lprim->Type() == Bool)
+					return new jsBoolean(lprim->ToBool()->value == rprim->ToBool()->value);
+			}
+			else {
+				//		4.	If x is null and y is undefined, return   true.
+				//		5.	If x is undefined and y is null, return    true.
+				/*			if (lprim == NULL)
+
+							return new jsNumber(lprim->ToNumber()->value + rprim->ToNumber()->value);
 	*/
-		return new jsNumber(GetValue(expr)->ToNumber()->value);
+
+
+
+jsValue* unaryMinus(jsValue* expr) {
+		if (expr->Type() == String) {
+			return new jsString("please use integer value instead of a string or an integer string");
+		}
+	}
+
+
+
+
+//Strict Equality 7.2.13
+	jsValue* StrictEqualityComparison(jsValue* lprim, jsValue* rprim) {
+		//1
+		if (lprim->Type() != rprim->Type()) { return new jsBoolean(false); }
+		//else if (lprim->Type() == Undefined) { return new jsBoolean(true); }
+		//else if (lprim->Type() == Null) { return new jsBoolean(true); }
+		else if (lprim->Type() == Number) {
+			//a,b NaN omitted
+			//c
+
+			if (lprim->ToNumber()->value == rprim->ToNumber()->value) { return new jsBoolean(true); }
+			else if ((lprim->ToNumber()->value == (+0)) && (rprim->ToNumber()->value == (-0))) { return new jsBoolean(true); }
+			else if ((lprim->ToNumber()->value == (-0)) && (rprim->ToNumber()->value == (+0))) { return new jsBoolean(true); }
+			else return new jsBoolean(false);
+		}
+		else if (lprim->Type() == String) { return new jsBoolean((lprim->ToString()->value == rprim->ToString()->value)); }
+		else if (lprim->Type() == Bool) { return new jsBoolean(lprim->ToBool()->value == rprim->ToBool()->value); }
+		//symbol not included
+		//else if (lprim->Type() == Object) {
+	//		bool result = ((jsObject*)lprim)->property_table == ((jsObject*)rprim)->property_table;
+	//		return new jsBoolean(result);
+	//	}
+		else return new jsBoolean(false);
+	}
+//Abstract Equality 7.2.12
+jsValue* AbstractEquality(jsValue* lprim, jsValue* rprim) {
+	if (lprim->Type() == rprim->Type()) { return StrictEqualityComparison(lprim, rprim); }
+	//else if ((lprim->Type() == Null) && (rprim->Type() == Undefined)) { return new jsBoolean(true); }
+	//else if ((lprim->Type() == Undefined) && (rprim->Type() == Null)) { return new jsBoolean(true); }
+	else if ((lprim->Type() == Number) && (rprim->Type() == String)) { return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value); }
+	else if ((lprim->Type() == String) && (rprim->Type() == Number)) { return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value); }
+	//Not exactly 8,9
+	else if (lprim->Type() == Bool) { return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value); }
+	else if (rprim->Type() == Bool) { return new jsBoolean(lprim->ToNumber()->value == rprim->ToNumber()->value); }
+	else if (lprim->Type() == String || lprim->Type() == Number) { return new jsBoolean(ToPrimitive(lprim) == ToPrimitive(rprim)); }
+	else return new jsBoolean(false);
+}
+
+//Abstract Relational Comparison 7.2.11
+jsValue* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool LeftFirst) {
+	//3 without primative hint (call functions missing); wont work for objects
+	jsValue* px;
+	jsValue* py;
+	if (LeftFirst) {
+		px = ToPrimitive(lprim);
+		py = ToPrimitive(rprim);
+	}
+	else {
+		py = ToPrimitive(rprim);
+		px = ToPrimitive(lprim);
+	}
+		jsNumber* nx = px->ToNumber();
+		jsNumber* ny = py->ToNumber();
+		if (nx->value == ny->value) { return new jsBoolean(false); }
+		else if (nx->value == +0 && ny->value == -0) { return new jsBoolean(false); }
+		else if (nx->value == -0 && ny->value == +0) { return new jsBoolean(false); }
+		else if (nx->value == numeric_limits<double>::infinity()) { return new jsBoolean(false); }
+		else if (ny->value == numeric_limits<double>::infinity()) { return new jsBoolean(true); }
+		else if (ny->value == -1*numeric_limits<double>::infinity()) { return new jsBoolean(false); }
+		else if (nx->value == -1*numeric_limits<double>::infinity()) { return new jsBoolean(true); }
+		else if (nx->value<ny->value){ return new jsBoolean(true); }
+		else { return new jsBoolean(false); }
+}
+
+
+//GreaterThan 12.9.3
+jsValue* GreaterThan(jsValue* lref, jsValue* rref)
+{
+	//1,2
+	jsValue* lval = GetValue(lref);
+	//4,5
+	jsValue* rval = GetValue(rref);
+	//6
+	jsValue* r = AbstractRelationalComparison(rval, lval, false);
+	//7 
+	return r;
+}
+
+
+//LessThanEqual 12.9.3
+jsValue* GreaterThanEqual(jsValue* lref, jsValue* rref)
+{
+	//1,2
+	jsValue* lval = GetValue(lref);
+	//4,5
+	jsValue* rval = GetValue(rref);
+	//6
+	jsValue* r = AbstractRelationalComparison(lval, rval, true);
+	//7 
+	if (r->ToBool()->value) {
+		return new jsBoolean(false);
+	}
+	else { return new jsBoolean(true); }
+}
+
+//LessThanEqual 12.9.3
+jsValue* LessThanEqual(jsValue* lref, jsValue* rref)
+{
+	//1,2
+	jsValue* lval = GetValue(lref);
+	//4,5
+	jsValue* rval = GetValue(rref);
+	//6
+	jsValue* r = AbstractRelationalComparison(rval, lval, false);
+	//7 
+	if (r->ToBool()->value) {
+		return new jsBoolean(false);
+	}
+	else { return new jsBoolean(true); }
+}
+//Equality  12.10.3 (almost the same - just called new function)
+jsValue* Equality(jsValue* lref, jsValue* rref) {
+	//Let lref be the result of evaluating EqualityExpression.
+	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
+	jsValue*  lval = GetValue(lref);
+	//ReturnIfAbrupt(lval).
+	//Let rref be the result of evaluating RelationalExpression.
+	//Let rval be GetValue(rref). -- Use rprim instead to work with the previously written codes.
+	jsValue* rval = GetValue(rref);
+	//ReturnIfAbrupt(rval).
+	//Return the result of performing Abstract Equality Comparison rval == lval.
+	//	1.	ReturnIfAbrupt(x).
+	//		2.	ReturnIfAbrupt(y).
+	//		3.	If Type(x) is the same as Type(y), then
+	//		a.Return the result of performing Strict Equality Comparison    x == = y.
+	return AbstractEquality(rval, lval);
+}
+
+//NOT Equality  12.10.3 (almost the same - just called new function)
+jsValue* NotEquality(jsValue* lref, jsValue* rref) {
+	
+	jsValue* r = Equality(lref, rref);
+	if (r->ToBool()->value) { return new jsBoolean(false); }
+	else { return new jsBoolean(true); }
+}
+
+//Strict Equality  12.10.3 (almost the same - just called new function)
+jsValue* StrictEquality(jsValue* lref, jsValue* rref) {
+	//Let lref be the result of evaluating EqualityExpression.
+	//Let lval be GetValue(lref). -- Use lprim instead to work with the previously written codes.
+	jsValue*  lval = GetValue(lref);
+	//ReturnIfAbrupt(lval).
+	//Let rref be the result of evaluating RelationalExpression.
+	//Let rval be GetValue(rref). -- Use rprim instead to work with the previously written codes.
+	jsValue* rval = GetValue(rref);
+
+	return StrictEqualityComparison(rref, lref);
+}
+
+//NOT Strict Equality  12.10.3 (almost the same - just called new function)
+jsValue* NotStricttEquality(jsValue* lref, jsValue* rref) {
+	jsValue* r = StrictEquality(lref, rref);
+	if (r->ToBool()->value) { return new jsBoolean(false); }
+	else { return new jsBoolean(true); }
 }
 
 void consolelog(jsValue* x) {
