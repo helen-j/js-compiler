@@ -191,8 +191,8 @@ jsValue* Modulus(jsValue* lref, jsValue* rref) {
 	else if (lprim->Type() == Number && rprim->Type() == Number) {
 		returnValue = new jsNumber(fmod(lprim->ToNumber()->value, rprim->ToNumber()->value));
 		/*In C and C++, the remainder operator accepts only integral operands; in ECMAScript, it also accepts floating - point operands.
-		The result of a floating - point remainder operation as computed by the % operator is not the same as the “remainder” operation defined by IEEE 754 - 2008. 
-		The IEEE 754 - 2008 “remainder” operation computes the remainder from a rounding division, not a truncating division, and so its behaviour is not analogous to that of the usual integer remainder operator. 
+		The result of a floating - point remainder operation as computed by the % operator is not the same as the “remainder?operation defined by IEEE 754 - 2008. 
+		The IEEE 754 - 2008 “remainder?operation computes the remainder from a rounding division, not a truncating division, and so its behaviour is not analogous to that of the usual integer remainder operator. 
 		Instead the ECMAScript language defines % on floating - point operations to behave in a manner analogous to that of the Java integer remainder operator; 
 		this may be compared with the C library function fmod.*/
 		return returnValue;
@@ -286,6 +286,20 @@ jsValue* And(jsBoolean* lref, jsBoolean* rref)
 	jsValue* rval = GetValue(rref);
 	return rval;
 }
+
+jsValue* or(jsBoolean* lref, jsBoolean* rref)
+{	//Let lref be the result of evaluating LogicalORExpression.
+	//Let lval be GetValue(lref).
+	jsValue*lval = GetValue(lref);
+	//If ToBoolean(lval) is true, return lval.
+	if (lval->ToBool()->value)
+		return lval;
+	//Let rref be the result of evaluating LogicalANDExpression.
+	//Return GetValue(rref).
+	jsValue*rval = GetValue(rref);
+	return rval;
+}
+
 
 //Subtraction operator 
 jsValue* Minus(jsValue* lref, jsValue* rref) {
