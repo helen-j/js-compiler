@@ -431,6 +431,47 @@ jsValue* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool LeftF
 		py = ToPrimitive(rprim);
 		px = ToPrimitive(lprim);
 	}
+	if (px->Type() == String && py->Type() == String) {
+		string spx = ((jsString*)px)->value;
+		string spy = ((jsString*)py)->value;
+
+		if (spx.size() > spy.size()) {
+			int result = spx.compare(0, spy.size(), spy);
+			if (result == 0) { return new jsBoolean(false); }
+		}
+		else if (spx.size() <= spy.size()) {
+			bool result = spy.compare(0, spx.size(), spx);
+			if (result == 0) { return new jsBoolean(true); }
+		}
+
+		int diff_index = 0;
+		bool finish = false;
+
+		if (spx.size() >= spy.size()) {
+			while (!finish) {
+				if (spx.at(diff_index) != spy.at(diff_index)) {
+					finish = true;
+				}
+				else {
+					++diff_index; if (diff_index > spy.size()) { finish = true; }
+				}
+			}
+		}
+		else {
+			while (!finish) {
+				if (spy.at(diff_index) != spx.at(diff_index)) {
+					finish = true;
+				}
+				else {
+					++diff_index; if (diff_index > spx.size()) { finish = true; }
+				}
+			}
+		}
+
+		if (spx.at(diff_index) < spy.at(diff_index)) { return new jsBoolean(true); }
+		else { return new jsBoolean(false); }
+	}
+	else {
 		jsNumber* nx = px->ToNumber();
 		jsNumber* ny = py->ToNumber();
 		if (nx->value == ny->value) { return new jsBoolean(false); }
@@ -438,12 +479,12 @@ jsValue* AbstractRelationalComparison(jsValue* lprim, jsValue* rprim, bool LeftF
 		else if (nx->value == -0 && ny->value == +0) { return new jsBoolean(false); }
 		else if (nx->value == numeric_limits<double>::infinity()) { return new jsBoolean(false); }
 		else if (ny->value == numeric_limits<double>::infinity()) { return new jsBoolean(true); }
-		else if (ny->value == -1*numeric_limits<double>::infinity()) { return new jsBoolean(false); }
-		else if (nx->value == -1*numeric_limits<double>::infinity()) { return new jsBoolean(true); }
-		else if (nx->value<ny->value){ return new jsBoolean(true); }
+		else if (ny->value == -1 * numeric_limits<double>::infinity()) { return new jsBoolean(false); }
+		else if (nx->value == -1 * numeric_limits<double>::infinity()) { return new jsBoolean(true); }
+		else if (nx->value<ny->value) { return new jsBoolean(true); }
 		else { return new jsBoolean(false); }
+	}
 }
-
 
 //GreaterThan 12.9.3
 jsValue* GreaterThan(jsValue* lref, jsValue* rref)
