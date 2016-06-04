@@ -26,7 +26,9 @@ public:
 		this->Indent(indent + 1);
 		cout << "}" << endl;
 	};
+
 	int GenCode(FILE* file) {
-		return 0;
+		emit(file, "jsValue* r%d = new jsBoolean(%i);", LastLabel, value);
+		return LastLabel++;
 	};
 };

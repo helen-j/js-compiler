@@ -274,7 +274,8 @@ jsValue* LessEQ(jsValue* lprim, jsValue* rprim)
 }
 
 
-jsValue* And(jsBoolean* lref, jsBoolean* rref)
+
+jsValue* And(jsValue* lref, jsValue* rref)
 {
 	//1.Let lref be the result of evaluating LogicalANDExpression.
 	//2.Let lval be GetValue(lref).
@@ -287,7 +288,7 @@ jsValue* And(jsBoolean* lref, jsBoolean* rref)
 	return rval;
 }
 
-jsValue* or(jsBoolean* lref, jsBoolean* rref)
+jsValue* Or(jsValue* lref, jsValue* rref)
 {	//Let lref be the result of evaluating LogicalORExpression.
 	//Let lval be GetValue(lref).
 	jsValue*lval = GetValue(lref);
