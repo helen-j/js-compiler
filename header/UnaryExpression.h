@@ -41,8 +41,7 @@ public:
 		}
 	};
 	int GenCode(FILE* file) {
-		return LastLabel;
-	};
+		
 		int lrefno, rrefno;
  		lrefno = lhs->GenCode(file);
  		switch (Operator)
